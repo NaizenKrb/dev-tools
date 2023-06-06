@@ -13,32 +13,12 @@ class sideMenu extends HTMLElement {
                 </button>
             </div>
             <div class="sidebar pointer-events-none opacity-0 relative z-50 ease-in-out duration-500 -translate-x-full;" aria-labelledby="slide-over-title " role="dialog" aria-modal="true">
-                    <!--
-                    Background backdrop, show/hide based on slide-over state.
-
-                    Entering: "ease-in-out duration-500"
-                        From: "opacity-0"
-                        To: "opacity-100"
-                    Leaving: "ease-in-out duration-500"
-                        From: "opacity-100"
-                        To: "opacity-0"
-                    -->
                 <div class="fixed inset-0 bg-gray-500 bg-opacity-40 transition-opacity">
                 </div>
 
                 <div class="fixed inset-0 overflow-hidden">
                     <div class="absolute inset-0 overflow-hidden">
                         <div class="panel-slide pointer-events-none fixed inset-y-0 right-0 flex max-w-full pl-10 transform transition ease-in-out duration-500 translate-x-full sm:duration-700">
-                        <!--
-                            Slide-over panel, show/hide based on slide-over state.
-
-                            Entering: "transform transition ease-in-out duration-500 sm:duration-700"
-                            From: "translate-x-full"
-                            To: "translate-x-0"
-                            Leaving: "transform transition ease-in-out duration-500 sm:duration-700"
-                            From: "translate-x-0"
-                            To: "translate-x-full"
-                        -->
                             <div class="pointer-events-auto relative w-screen max-w-md">
                                 <div class="absolute left-0 top-0 -ml-8 flex pr-2 pt-4 sm:-ml-10 sm:pr-4">
                                     <button type="button" class="close-sidebar rounded-md text-blue-500 hover:text-blue-700 focus:outline-none focus:ring-2 focus:ring-white">
@@ -56,12 +36,11 @@ class sideMenu extends HTMLElement {
                                     <div class="relative mt-6 flex-1 px-4 sm:px-6">
                                         <input type="file" class="" />
                                         <div class="m-3">
-                                        <button class="showXML bg-slate-400 hover:bg-slate-500 text-white font-bold py-1.5 px-4 rounded-md" disabled>
-                                            Editieren
-                                        </button>
+                                            <button class="showXML bg-slate-400 hover:bg-slate-500 text-white font-bold py-1.5 px-4 rounded-md" disabled>
+                                                Editieren
+                                            </button>
+                                        </div>
                                     </div>
-                                    </div>
-                                    
                                 </div>
                             </div>
                         </div>
