@@ -79,16 +79,16 @@ class sideMenu extends HTMLElement {
     showFile(event) {
             let file = this.querySelector('input[type="file"]').files[0];
             let reader = new FileReader();
-            reader.onload = function(e) {
+            reader.onload = (e) => {
                 let contents = e.target.result;
 
                 var modal = document.createElement("yaml-modal");
                 modal.content = yaml.parse(contents);
-             
-                console.log(modal.content);
+
                 document.body.appendChild(modal);
                 modal.toggleModal();
-                this.closeSidebar.bind(this);
+                
+                this.closeSidebar();
 
             };
             reader.readAsText(file);
@@ -170,6 +170,13 @@ class yamlModal extends HTMLElement {
                 this.toggleModal()
             })
         })
+        const closemodal = this.querySelectorAll('.modal-close')
+        for (let i = 0; i < closemodal.length; i++) {
+            closemodal[i].addEventListener('click', this.toggleModal.bind(this));
+
+        }
+        this.querySelector(".modal-overlay").addEventListener("click", this.toggleModal.bind(this));
+
         document.onkeydown = (evt) => {
             evt = evt || window.event
             let isEscape = false
