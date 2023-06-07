@@ -1,0 +1,17 @@
+
+id: weinmesse
+key: TqvLVtmg8Na
+order: 8
+visible: false
+
+title: Jahrhunderthalle Weinmesse
+description: |
+    Weinmesse Beschreibung
+
+alternatives:
+  - id: foyer
+    title: Normal
+    thumbnail: "icons/foyer_eingangsebene_mitte.jpg"
+  - id: steampunk
+    title: Steampunk
+    thumbnail: "icons/steampunk-flavor.jpg"

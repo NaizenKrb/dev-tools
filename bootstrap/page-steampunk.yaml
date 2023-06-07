@@ -1,0 +1,19 @@
+
+id: steampunk
+key: WmCfvmjKrE6
+order: 7
+visible: false
+
+title: Historischer Jahrmarkt
+description:
+
+alternatives:
+  - id: foyer
+    title: Normal
+    thumbnail: "icons/foyer_eingangsebene_mitte.jpg"
+  - id: weinmesse
+    title: Weinmesse
+    thumbnail: "icons/weinmesse-flavor.png"
+  - id: sonepar
+    title: Sonepar
+    thumbnail: "icons/sonepar.jpg"

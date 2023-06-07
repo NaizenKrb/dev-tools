@@ -1,0 +1,46 @@
+
+id: unterwelt
+key: xhB7wKWoXLv
+order: 6
+visible: true
+
+title: Unterwelt
+description: |
+    Erleben Sie die Jahrhunderthalle Bochum „unter Tage“.
+    Die Versorgungsschächte unter der Erde waren früher Teil eines weit verzweigten unterirdischen Systems, das externe Produktionsstätten in ganz Bochum miteinander verband.
+
+config:
+    runtime:
+        hide_unknown: false
+
+alternatives:
+  - id: steampunk
+    title: Steampunk
+    thumbnail: "icons/steampunk-flavor.jpg"
+  - id: weinmesse
+    title: Weinmesse
+    thumbnail: "icons/weinmesse-flavor.png"
+
+points:
+    overview:
+        title: Raumübersicht
+        children:
+            - title: Eingang
+              sweep: 96f790f9162a4a9e8ab0affb6d1d5503
+              rotation: [-14.62, -96.99]
+              thumbnail: "icons/unterwelt_eingang.jpg"
+
+            - title: Mediengang
+              sweep: 7bf8fae0cae042b9ba29bac9f63bc9d5
+              rotation: [-2.57, -113.68]
+              thumbnail: "icons/unterwelt_mediengang.jpg"
+
+            - title: Klangraum
+              sweep: 022b21ba1664455ca780c21bff94b612
+              rotation: [-0.36, -118.01]
+              thumbnail: "icons/unterwelt_hauptraum.jpg"
+
+            - title: Schaukasten
+              sweep: e871e0a64a0f43d38bd95ea55cdfd6c2
+              rotation: [-9.73, -79.32]
+              thumbnail: "icons/unterwelt_schaukasten.jpg"
