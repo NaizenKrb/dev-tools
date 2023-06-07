@@ -164,7 +164,7 @@ class yamlModal extends HTMLElement {
                 <!--Footer-->
                 <div class="flex justify-end border-t border-slate-300 pt-4">
                     <button class="saveButton btn bg-indigo-500 font-bold text-slate-100 py-1.5 px-4 hover:bg-indigo-700 hover:text-slate-50 mr-2">Speichern</button>
-                <button class="modal-close border-2 border-inherit font-bold py-1.5 px-4 rounded-md text-netzfactor hover:bg-gray-100 hover:text-netzfactor-light">Schließen</button>
+                    <button class="modal-close btn font-bold bg-slate-200  text-slate-600 py-1.5 px-4 hover:bg-slate-300 hover:text-slate-900">Schließen</button>
                 </div>
             </div>
             </div>
