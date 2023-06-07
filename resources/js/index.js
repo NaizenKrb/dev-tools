@@ -104,23 +104,44 @@ class sideMenu extends HTMLElement {
     }
     createForm(modal) {
         let output = [];
+        //let object_output = [];
         Object.entries(modal.content).forEach(([key, value]) => {
-            console.log(key, value);
             const firstLetter = key.charAt(0).toUpperCase();
-            key = firstLetter + key.slice(1);
+            key = firstLetter + key.slice(1);     
 
-            output.push(
-                `
-                
-               <label class="card w-96 bg-base-100 my-2">
-                    <div class="card-body">
-                        <span class="card-title">${key}:</span>
-                        <textarea class="textarea textarea-bordered textarea-sm w-full max-w-xs">${value}</textarea>
+            if(typeof value === "object") {
+                Object.entries(value).forEach(([secondKey, value]) => {
+                    const firstLetter = secondKey.charAt(0).toUpperCase();
+                    secondKey = firstLetter + secondKey.slice(1);
+
+                    if(typeof value === "object") {
+                        Object.entries(value).forEach(([thirdKey, value]) => {
+                            const firstLetter = thirdKey.charAt(0).toUpperCase();
+                            thirdKey = firstLetter + thirdKey.slice(1);
+                            console.log(key, secondKey, thirdKey, value);
+                        });
+                    } 
+                    else {
+                        output.push(
+                            `
+                            <div>${key} ${secondKey} ${value}</div>
+                            `
+                        )
+                    }
+                });
+            } else {
+                output.push(
+                    `
+                <label class="collapse collapse-plus w-full bg-base-200 my-2">
+                    <input type="radio" name="my-accord-1" class="w-full" />
+                    <span class="collapse-title">${key}</span>
+                    <div class="collapse-content">
+                        <textarea class="textarea textarea-bordered textarea-sm w-full">${value}</textarea>
                     </div>
                 </label>
-                <div class="divider"></div>
-                `
-            )
+                    `
+                )
+            }
         });
         document.querySelector("#yamlForm").innerHTML = output.join("");
     }
@@ -135,14 +156,15 @@ class yamlModal extends HTMLElement {
         this.innerHTML = `
         <div class="yaml-modal opacity-0 pointer-events-none fixed w-full h-full top-0 left-0 flex items-center justify-center z-20">
             <div class="modal-overlay absolute w-full h-full bg-gray-900 opacity-50"></div>
-            <div class="modal-container w-11/12 md:max-w-md sm:max-h-[80vh] mx-auto shadow-lg z-50 overflow-y-auto scrollbar">
+            <div class="modal-container w-11/12 md:max-w-2xl sm:max-h-[80vh] mx-auto shadow-lg z-50 overflow-y-auto scrollbar">
             <div class="modal-close absolute top-0 right-0 cursor-pointer flex flex-col items-center mt-4 mr-4 text-white text-sm z-50">
                 <svg class="fill-current text-white" xmlns="http://www.w3.org/2000/svg" width="18" height="18" viewBox="0 0 18 18">
                 <path d="M14.53 4.53l-1.06-1.06L9 7.94 4.53 3.47 3.47 4.53 7.94 9l-4.47 4.47 1.06 1.06L9 10.06l4.47 4.47 1.06-1.06L10.06 9z"></path>
                 </svg>
                 <span class="text-sm">(Esc)</span>
             </div>
-            <div class="modal-content bg-white py-4 text-left px-6 border-2 border-slate-300 shadow-sm rounded-md" >
+            
+            <div class="modal-content w-100% bg-white py-4 text-left px-6 border-2 border-slate-300 shadow-sm rounded-md" >
                 <div class="flex justify-between items-center pb-4 border-b border-slate-300" >
                     <div class="flex justify-between items-center ">
                         <svg xmlns="http://www.w3.org/2000/svg" class="h-11 w-11 mr-4" fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="2">
@@ -150,8 +172,7 @@ class yamlModal extends HTMLElement {
                         </svg>
                         <p class="text-2xl text-center font-semibold">Editor</p>
                     </div>
-
-                    <div class="modal-close cursor-pointer z-50 p-1 border border-inherit border-slate-300 rounded-md hover:bg-gray-100 text-netzfactor hover:text-netzfactor-light">
+                    <div class="modal-close cursor-pointer z-50 p-1 border border-inherit border-slate-300 rounded-md hover:bg-gray-100">
                         <svg class="fill-current text-semibold" xmlns="http://www.w3.org/2000/svg" width="18" height="18" viewBox="0 0 18 18">
                         <path d="M14.53 4.53l-1.06-1.06L9 7.94 4.53 3.47 3.47 4.53 7.94 9l-4.47 4.47 1.06 1.06L9 10.06l4.47 4.47 1.06-1.06L10.06 9z"></path>
                         </svg>
