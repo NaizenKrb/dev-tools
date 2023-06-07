@@ -1,4 +1,6 @@
 import yaml from "../../node_modules/yaml/browser/index.js"
+//import SimpleMDE from "../../node_modules/simplemde/src/js/simplemde.js"
+//import TextareaMarkdown from 'textarea-markdown'
 //import yaml from 'yaml'
 class sideMenu extends HTMLElement {
     constructor() {
@@ -72,13 +74,18 @@ class sideMenu extends HTMLElement {
                 let contents = e.target.result;
 
                 var modal = document.createElement("yaml-modal");
+                console.log(yaml.parse(contents));
                 modal.content = yaml.parse(contents);
 
                 document.body.appendChild(modal);
                 modal.openModal();
-
                 this.closeSidebar();
-                this.createForm(modal);
+
+                let output = [];
+                this.createForm(modal.content, output);
+                document.querySelector("#yamlForm").innerHTML = output.join("");
+                var simplemde = new SimpleMDE({ element: document.getElementById("editor") });
+                simplemde.value(yaml.parse(contents).description);
 
             };
             reader.readAsText(file);
@@ -102,51 +109,81 @@ class sideMenu extends HTMLElement {
         panel.classList.add("translate-x-0");
         panel.classList.remove("translate-x-full");
     }
-    createForm(modal) {
-        let output = [];
-        //let object_output = [];
-        Object.entries(modal.content).forEach(([key, value]) => {
+    createForm(content, output, prefix = []) {
+        Object.entries(content).forEach(([key, value]) => {
             const firstLetter = key.charAt(0).toUpperCase();
-            key = firstLetter + key.slice(1);     
-
-            if(typeof value === "object") {
-                Object.entries(value).forEach(([secondKey, value]) => {
-                    const firstLetter = secondKey.charAt(0).toUpperCase();
-                    secondKey = firstLetter + secondKey.slice(1);
-
-                    if(typeof value === "object") {
-                        Object.entries(value).forEach(([thirdKey, value]) => {
-                            const firstLetter = thirdKey.charAt(0).toUpperCase();
-                            thirdKey = firstLetter + thirdKey.slice(1);
-                            console.log(key, secondKey, thirdKey, value);
-                        });
-                    } 
-                    else {
-                        output.push(
-                            `
-                            <div>${key} ${secondKey} ${value}</div>
-                            `
-                        )
-                    }
-                });
-            } else {
+            let label = firstLetter + key.slice(1);     
+            
+            if(typeof value === "object" && value !== null) {
+                let output_2 = [];
+                prefix.push(key);
+                this.createForm(value, output_2, prefix);
+                prefix.pop();
                 output.push(
                     `
-                <label class="collapse collapse-plus w-full bg-base-200 my-2">
-                    <input type="radio" name="my-accord-1" class="w-full" />
-                    <span class="collapse-title">${key}</span>
-                    <div class="collapse-content">
-                        <textarea class="textarea textarea-bordered textarea-sm w-full">${value}</textarea>
+                    <div class="collapse collapse-arrow w-full bg-base-200 my-2">
+                        <input type="radio" name="col-1" class="w-full" />
+                        <div class="collapse-title">
+                            ${label}
+                        </div>
+                        <div class="collapse-content">
+                            ${output_2.join("")}
+                        </div>
                     </div>
-                </label>
                     `
                 )
+            } else {
+                let temp;
+                
+                if (prefix.length > 0) {
+                    temp = prefix[0];
+                    prefix.forEach((key, index) => {
+                        if (index > 0) {
+                            temp += `[${key}]`;
+                        }
+                    });
+                    temp += `[${key}]`;
+                } 
+                else {
+                    temp = key;
+                }
+                if(temp === "description") {
+                    output.push(
+                    `
+                    <label class="collapse collapse-arrow w-full bg-base-200 my-2">
+                        <input type="radio" name="col-1" class="w-full" />
+                        <span class="collapse-title">${label}</span>
+                        <div class="collapse-content">
+                            <textarea class="textarea textarea-bordered textarea-sm w-full">${value || ""}</textarea>
+                            
+                        </div>
+                    </label>
+                    <textarea id="editor" name="${temp}" class="w-full h-auto"></textarea>
+                    `
+                    )
+                    
+                    
+                } 
+                else {
+                    output.push(
+                    `
+                    <label class="collapse collapse-arrow w-full bg-base-200 my-2">
+                        <input type="radio" name="col-1" class="w-full" />
+                        <span class="collapse-title">${label}</span>
+                        <div class="collapse-content">
+                            <textarea name="${temp}" class="textarea textarea-bordered textarea-sm w-full">${value || ""}</textarea>
+                        </div>
+                    </label>
+                    `
+                    )
+                }
             }
         });
-        document.querySelector("#yamlForm").innerHTML = output.join("");
+        
     }
 }
 customElements.define('side-menu', sideMenu);
+
 
 class yamlModal extends HTMLElement {
     constructor() {
@@ -180,13 +217,13 @@ class yamlModal extends HTMLElement {
                 </div>
                 
                 <!--Body-->
-                <form id="yamlForm" class="py-3 flex flex-col border-opacity-50">
+                <form id="yamlForm" method="post" class="py-3 flex flex-col border-opacity-50">
                 </form>
-                <!--Footer-->
                 <div class="flex justify-end border-t border-slate-300 pt-4">
-                    <button class="saveButton btn bg-indigo-500 font-bold text-slate-100 py-1.5 px-4 hover:bg-indigo-700 hover:text-slate-50 mr-2">Speichern</button>
+                    <button type="submit" class="saveButton btn bg-indigo-500 font-bold text-slate-100 py-1.5 px-4 hover:bg-indigo-700 hover:text-slate-50 mr-2">Speichern</button>
                     <button class="modal-close btn font-bold bg-slate-200  text-slate-600 py-1.5 px-4 hover:bg-slate-300 hover:text-slate-900">Schließen</button>
                 </div>
+                
             </div>
             </div>
         </div>
@@ -204,6 +241,9 @@ class yamlModal extends HTMLElement {
 
         }
         this.querySelector(".modal-overlay").addEventListener("click", this.openModal.bind(this));
+        this.querySelector(".saveButton").addEventListener("click", this.submitForm.bind(this));
+
+        
 
         document.onkeydown = (evt) => {
             evt = evt || window.event
@@ -230,17 +270,75 @@ class yamlModal extends HTMLElement {
     openModal() {
         const body = document.querySelector('body');
         const modal = document.querySelector('.yaml-modal');
-        modal.classList.toggle('opacity-0');
-        modal.classList.toggle('pointer-events-none');
+        modal.classList.remove('opacity-0', 'pointer-events-none');
         body.classList.toggle('modal-active');
         body.classList.toggle('overflow-hidden');
     }
     closeModal() {
         const body = document.querySelector('body');
         const modal = document.querySelector('yaml-modal');
-        body.classList.remove('modal-active');
-        body.classList.remove('overflow-hidden');
+        body.classList.remove('modal-active', 'overflow-hidden');
         modal.remove();
+    }
+    submitForm(event) {
+        event.preventDefault();
+        var form = document.querySelector("#yamlForm");
+
+        var data = serializeForm(form);
+        var blob = new Blob([yaml.stringify(data)], {type: "text/yaml;charset=utf-8"});
+        var url = document.createElement("a");
+        url.href = URL.createObjectURL(blob);
+        url.download = "config.yaml";
+        url.click();
     }
 } 
 customElements.define('yaml-modal', yamlModal);
+
+
+
+function update(data, keys, value) {
+  if (keys.length === 0) {
+    // Leaf node
+    return value;
+  }
+
+  let key = keys.shift();
+  if (!key) {
+    data = data || [];
+    if (Array.isArray(data)) {
+      key = data.length;
+    }
+  }
+
+  // Try converting key to a numeric value
+  let index = +key;
+  if (!isNaN(index)) {
+    // We have a numeric index, make data a numeric array
+    // This will not work if this is a associative array 
+    // with numeric keys
+    data = data || [];
+    key = index;
+  }
+  
+  // If none of the above matched, we have an associative array
+  data = data || {};
+
+  let val = update(data[key], keys, value);
+  data[key] = val;
+
+  return data;
+}
+
+function serializeForm(form) {
+  return Array.from((new FormData(form)).entries())
+    .reduce((data, [field, value]) => {
+      let [_, prefix, keys] = field.match(/^([^\[]+)((?:\[[^\]]*\])*)/);
+
+      if (keys) {
+        keys = Array.from(keys.matchAll(/\[([^\]]*)\]/g), m => m[1]);
+        value = update(data[prefix], keys, value);
+      }
+      data[prefix] = value;
+      return data;
+    }, {});
+}

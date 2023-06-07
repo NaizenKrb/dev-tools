@@ -2556,6 +2556,10 @@ details.collapse summary::-webkit-details-marker {
   height: 2rem;
 }
 
+.h-auto {
+  height: auto;
+}
+
 .w-11 {
   width: 2.75rem;
 }
