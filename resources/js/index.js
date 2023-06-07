@@ -6,39 +6,49 @@ class sideMenu extends HTMLElement {
     }
     connectedCallback() {
         this.innerHTML = `
-        <aside class="">
-            <div class="relative">
-                <button class="open-sidebar rounded-md text-blue-500 hover:text-blue-700 focus:outline-none focus:ring-2 focus:ring-white">
-                    Open Panel
+        <aside class="h-screen">
+            <div class="h-full flex justify-end">
+                <button class="open-sidebar btn btn-circle bg-base-200 self-center mr-2 text-blue-500 hover:text-blue-700 focus:outline-none focus:ring-2 focus:ring-white">
+                    <svg xmlns="http://www.w3.org/2000/svg" class="h-8 w-8" fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="2">
+                        <path stroke-linecap="round" stroke-linejoin="round" d="M11 17l-5-5m0 0l5-5m-5 5h12" />
+                    </svg>
                 </button>
             </div>
-            <div class="sidebar pointer-events-none opacity-0 relative z-50 ease-in-out duration-500 -translate-x-full;" aria-labelledby="slide-over-title " role="dialog" aria-modal="true">
+            <div class="sidebar bg-sl pointer-events-none opacity-0 relative z-50 ease-in-out duration-500 -translate-x-full;" aria-labelledby="slide-over-title " role="dialog" aria-modal="true">
                 <div class="fixed inset-0 bg-gray-500 bg-opacity-40 transition-opacity">
                 </div>
 
                 <div class="fixed inset-0 overflow-hidden">
                     <div class="absolute inset-0 overflow-hidden">
                         <div class="panel-slide pointer-events-none fixed inset-y-0 right-0 flex max-w-full pl-10 transform transition ease-in-out duration-500 translate-x-full sm:duration-700">
-                            <div class="pointer-events-auto relative w-screen max-w-md">
+                            <div class="pointer-events-auto relative w-screen max-w-md "">
                                 <div class="absolute left-0 top-0 -ml-8 flex pr-2 pt-4 sm:-ml-10 sm:pr-4">
-                                    <button type="button" class="close-sidebar rounded-md text-blue-500 hover:text-blue-700 focus:outline-none focus:ring-2 focus:ring-white">
+                                    <button type="button" class="close-sidebar rounded-md text-indigo-500 hover:text-indigo-700 focus:outline-none focus:ring-2 focus:ring-white">
                                         <span class="sr-only">Close panel</span>
                                             <svg class="h-6 w-6" fill="none" viewBox="0 0 24 24" stroke-width="2.5" stroke="currentColor" aria-hidden="true">
                                             <path stroke-linecap="round" stroke-linejoin="round" d="M6 18L18 6M6 6l12 12" />
                                         </svg>
                                     </button>
                                 </div>
-
-                                <div class="flex h-full flex-col overflow-y-scroll bg-white py-6 shadow-xl">
+                                <div class="flex h-full flex-col overflow-y-scroll bg-white py-6 shadow-xl ">
                                     <div class="px-4 sm:px-6">
-                                        <h2 class="text-2xl font-semibold leading-6 text-slate-600 text-center " id="slide-over-title">Dev Tools</h2>
+                                        <h1 class="text-3xl font-bold leading-6  text-slate-600 text-center " id="slide-over-title">Dev Tools</h1>
                                     </div>
-                                    <div class="relative mt-6 flex-1 px-4 sm:px-6">
-                                        <input type="file" class="file-input " />
-                                        <div class="m-3">
-                                            <button class="showXML btn bg-slate-400 hover:bg-slate-500 text-white font-bold py-1.5 px-4 rounded-md disabled:opacity-25" disabled>
-                                                Editieren
-                                            </button>
+                                    <div class="divider"></div>
+                                    <div class="relative px-4 sm:px-6">
+                                        <div class="collapse collapse-arrow bg-base-200">
+                                            <input type="checkbox" class="w-full"/> 
+                                            <div class="collapse-title text-xl font-medium">
+                                                YAML Editor
+                                            </div>
+                                            <div class="collapse-content flex flex-col items-center"> 
+                                                <input type="file" name="yaml-file" class="file-input yaml-input w-full self-start mb-4" />
+                                                <div class="self-end">
+                                                    <button class="showXML btn bg-indigo-500 font-bold text-slate-100 py-1.5 px-4 hover:bg-indigo-700 hover:text-slate-50 mr-2 disabled:bg-indigo-100" disabled>
+                                                        Editieren
+                                                    </button>
+                                                </div>
+                                            </div>
                                         </div>
                                     </div>
                                 </div>
@@ -50,7 +60,7 @@ class sideMenu extends HTMLElement {
         </aside>
         `;
 
-        this.querySelector("input").addEventListener("change", this.toggleShowXML.bind(this));
+        this.querySelector(".yaml-input").addEventListener("change", this.toggleShowXML.bind(this));
         this.querySelector(".showXML").addEventListener("click", this.showFile.bind(this));
         this.querySelector(".close-sidebar").addEventListener("click", this.closeSidebar.bind(this));
         this.querySelector(".open-sidebar").addEventListener("click", this.openSidebar.bind(this));
