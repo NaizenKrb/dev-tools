@@ -122,7 +122,7 @@ class sideMenu extends HTMLElement {
                 `
             )
         });
-        document.querySelector("#configForm").innerHTML = output.join("");
+        document.querySelector("#yamlForm").innerHTML = output.join("");
     }
 }
 customElements.define('side-menu', sideMenu);
@@ -159,7 +159,7 @@ class yamlModal extends HTMLElement {
                 </div>
                 
                 <!--Body-->
-                <form id="configForm" class="py-3 flex flex-col border-opacity-50">
+                <form id="yamlForm" class="py-3 flex flex-col border-opacity-50">
                 </form>
                 <!--Footer-->
                 <div class="flex justify-end border-t border-slate-300 pt-4">
