@@ -75,7 +75,7 @@ class sideMenu extends HTMLElement {
                 modal.content = yaml.parse(contents);
 
                 document.body.appendChild(modal);
-                modal.toggleModal();
+                modal.openModal();
 
                 this.closeSidebar();
                 this.createForm(modal);
@@ -174,15 +174,15 @@ class yamlModal extends HTMLElement {
         openmodal.forEach((el) => {
             el.addEventListener('click',(event) => {
                 event.preventDefault()
-                this.toggleModal()
+                this.openModal()
             })
         })
         const closemodal = this.querySelectorAll('.modal-close')
         for (let i = 0; i < closemodal.length; i++) {
-            closemodal[i].addEventListener('click', this.toggleModal.bind(this));
+            closemodal[i].addEventListener('click', this.closeModal.bind(this));
 
         }
-        this.querySelector(".modal-overlay").addEventListener("click", this.toggleModal.bind(this));
+        this.querySelector(".modal-overlay").addEventListener("click", this.openModal.bind(this));
 
         document.onkeydown = (evt) => {
             evt = evt || window.event
@@ -193,10 +193,10 @@ class yamlModal extends HTMLElement {
                 isEscape = (evt.keyCode === 27);
             }
             if (isEscape && document.body.classList.contains('modal-active')) {
-                this.toggleModal();
+                this.closeModal();
             }
             if (isEscape && document.body.classList.contains('overflow-hidden')) {
-                this.toggleModal();
+                this.closeModal();
             }
         };
     }
@@ -206,8 +206,7 @@ class yamlModal extends HTMLElement {
     set content(value) {
         this._content = value;
     }
-    toggleModal() {
-        console.log("toggleModal");
+    openModal() {
         const body = document.querySelector('body');
         const modal = document.querySelector('.yaml-modal');
         modal.classList.toggle('opacity-0');
@@ -215,5 +214,12 @@ class yamlModal extends HTMLElement {
         body.classList.toggle('modal-active');
         body.classList.toggle('overflow-hidden');
     }
-}
+    closeModal() {
+        const body = document.querySelector('body');
+        const modal = document.querySelector('yaml-modal');
+        body.classList.remove('modal-active');
+        body.classList.remove('overflow-hidden');
+        modal.remove();
+    }
+} 
 customElements.define('yaml-modal', yamlModal);
