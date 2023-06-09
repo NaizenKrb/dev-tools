@@ -1,6 +1,5 @@
 import yaml from "../../node_modules/yaml/browser/index.js"
-//import SimpleMDE from "../../node_modules/simplemde/src/js/simplemde.js"
-//import TextareaMarkdown from 'textarea-markdown'
+//import * as SimpleMDE from "../../node_modules/simplemde/src/js/simplemde.js"
 //import yaml from 'yaml'
 class sideMenu extends HTMLElement {
     constructor() {
@@ -66,6 +65,7 @@ class sideMenu extends HTMLElement {
         this.querySelector(".showXML").addEventListener("click", this.showFile.bind(this));
         this.querySelector(".close-sidebar").addEventListener("click", this.closeSidebar.bind(this));
         this.querySelector(".open-sidebar").addEventListener("click", this.openSidebar.bind(this));
+        this.simplemde;
     }
     showFile(event) {
             let file = this.querySelector('input[type="file"]').files[0];
@@ -74,19 +74,19 @@ class sideMenu extends HTMLElement {
                 let contents = e.target.result;
 
                 var modal = document.createElement("yaml-modal");
-                console.log(yaml.parse(contents));
                 modal.content = yaml.parse(contents);
-
                 document.body.appendChild(modal);
+
                 modal.openModal();
                 this.closeSidebar();
 
                 let output = [];
                 this.createForm(modal.content, output);
                 document.querySelector("#yamlForm").innerHTML = output.join("");
-                var simplemde = new SimpleMDE({ element: document.getElementById("editor") });
-                simplemde.value(yaml.parse(contents).description);
-
+                
+                this.mde = new SimpleMDE({ element: document.getElementById("description")});;
+                sideMenu.simplemde = this.mde;
+                
             };
             reader.readAsText(file);
         }
@@ -282,14 +282,24 @@ class yamlModal extends HTMLElement {
     }
     submitForm(event) {
         event.preventDefault();
-        var form = document.querySelector("#yamlForm");
 
+        var description = document.querySelector("#description");
+        if (description) {
+            sideMenu.simplemde.toTextArea();
+        }
+
+        var fileInput = document.querySelector('input[type="file"]');
+        var fileName = fileInput.files[0].name;
+
+        var form = document.querySelector("#yamlForm");
         var data = serializeForm(form);
         var blob = new Blob([yaml.stringify(data)], {type: "text/yaml;charset=utf-8"});
         var url = document.createElement("a");
         url.href = URL.createObjectURL(blob);
-        url.download = "config.yaml";
+        url.download = fileName;
         url.click();
+
+        this.closeModal();
     }
 } 
 customElements.define('yaml-modal', yamlModal);
