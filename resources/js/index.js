@@ -121,15 +121,15 @@ class sideMenu extends HTMLElement {
                 prefix.pop();
                 output.push(
                     `
-                    <div class="collapse collapse-arrow w-full bg-base-200 my-2">
-                        <input type="radio" name="col-1" class="w-full" />
+                    <label class="collapse collapse-arrow w-full bg-base-200 my-2">
+                        <input type="checkbox" class="w-full" />
                         <div class="collapse-title">
                             ${label}
                         </div>
                         <div class="collapse-content">
                             ${output_2.join("")}
                         </div>
-                    </div>
+                    </label>
                     `
                 )
             } else {
@@ -150,15 +150,13 @@ class sideMenu extends HTMLElement {
                 if(temp === "description") {
                     output.push(
                     `
-                    <label class="collapse collapse-arrow w-full bg-base-200 my-2">
-                        <input type="radio" name="col-1" class="w-full" />
-                        <span class="collapse-title">${label}</span>
-                        <div class="collapse-content">
-                            <textarea class="textarea textarea-bordered textarea-sm w-full">${value || ""}</textarea>
-                            
+                    <div class="card w-full bg-base-200 my-2">
+                        <div class="card-body">
+                            <span class="card-title">${label}</span>
+                            <textarea name="${temp}" id="description" class="w-full">${value || ""}</textarea>
                         </div>
-                    </label>
-                    <textarea id="editor" name="${temp}" class="w-full h-auto"></textarea>
+                    </div>
+                    
                     `
                     )
                     
@@ -168,7 +166,7 @@ class sideMenu extends HTMLElement {
                     output.push(
                     `
                     <label class="collapse collapse-arrow w-full bg-base-200 my-2">
-                        <input type="radio" name="col-1" class="w-full" />
+                        <input type="checkbox" class="w-full" />
                         <span class="collapse-title">${label}</span>
                         <div class="collapse-content">
                             <textarea name="${temp}" class="textarea textarea-bordered textarea-sm w-full">${value || ""}</textarea>
@@ -188,9 +186,11 @@ customElements.define('side-menu', sideMenu);
 class yamlModal extends HTMLElement {
     constructor() {
         super();
+
     }
     connectedCallback() {
-        this.innerHTML = `
+        this.innerHTML =
+        `
         <div class="yaml-modal opacity-0 pointer-events-none fixed w-full h-full top-0 left-0 flex items-center justify-center z-20">
             <div class="modal-overlay absolute w-full h-full bg-gray-900 opacity-50"></div>
             <div class="modal-container w-11/12 md:max-w-2xl sm:max-h-[80vh] mx-auto shadow-lg z-50 overflow-y-auto scrollbar">
