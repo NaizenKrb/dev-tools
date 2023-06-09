@@ -45,8 +45,8 @@ class sideMenu extends HTMLElement {
                                             <div class="collapse-content flex flex-col items-center"> 
                                                 <input type="file" name="yaml-file" class="file-input yaml-input w-full self-start mb-4" />
                                                 <div class="self-end">
-                                                    <button class="showXML btn bg-indigo-500 font-bold text-slate-100 py-1.5 px-4 hover:bg-indigo-700 hover:text-slate-50 mr-2 disabled:bg-indigo-100" disabled>
-                                                        Editieren
+                                                    <button class="showXML btn bg-indigo-500 font-bold text-slate-100 py-1.5 px-4 hover:bg-indigo-700 hover:text-slate-50 mr-1 disabled:bg-indigo-100" disabled>
+                                                        Datei bearbeiten
                                                     </button>
                                                 </div>
                                             </div>
@@ -82,7 +82,7 @@ class sideMenu extends HTMLElement {
 
                 let output = [];
                 this.createForm(modal.content, output);
-                document.querySelector("#yamlForm").innerHTML = output.join("");
+                document.querySelector("#formInput").innerHTML = output.join("");
                 
                 this.mde = new SimpleMDE({ element: document.getElementById("description")});;
                 sideMenu.simplemde = this.mde;
@@ -121,13 +121,12 @@ class sideMenu extends HTMLElement {
                 prefix.pop();
                 output.push(
                     `
-                    <label class="collapse collapse-arrow w-full bg-base-200 my-2">
-                        <input type="checkbox" class="w-full" />
-                        <div class="collapse-title">
-                            ${label}
-                        </div>
-                        <div class="collapse-content">
-                            ${output_2.join("")}
+                    <label class="card border-0 w-full bg-base-200 my-2">
+                        <div class="card-body">
+                            <div class="card-title">
+                                ${label}
+                            </div>
+                            <div class="divide-y-2 my-2 flex flex-row flex-wrap">${output_2.join("")}</div>
                         </div>
                     </label>
                     `
@@ -165,11 +164,12 @@ class sideMenu extends HTMLElement {
                 else {
                     output.push(
                     `
-                    <label class="collapse collapse-arrow w-full bg-base-200 my-2">
-                        <input type="checkbox" class="w-full" />
-                        <span class="collapse-title">${label}</span>
-                        <div class="collapse-content">
-                            <textarea name="${temp}" class="textarea textarea-bordered textarea-sm w-full">${value || ""}</textarea>
+                    <label class="card w-full bg-base-200 my-2">
+                        <div class="card-body">
+                            <span class="card-title">${label}</span>
+                            <div class="">
+                                <textarea name="${temp}" class="textarea textarea-bordered textarea-sm w-full">${value || ""}</textarea>
+                            </div>
                         </div>
                     </label>
                     `
@@ -193,7 +193,7 @@ class yamlModal extends HTMLElement {
         `
         <div class="yaml-modal opacity-0 pointer-events-none fixed w-full h-full top-0 left-0 flex items-center justify-center z-20">
             <div class="modal-overlay absolute w-full h-full bg-gray-900 opacity-50"></div>
-            <div class="modal-container w-11/12 md:max-w-2xl sm:max-h-[80vh] mx-auto shadow-lg z-50 overflow-y-auto scrollbar">
+            <div class="modal-container w-11/12 md:max-w-4xl sm:max-h-[80vh] mx-auto shadow-lg z-50 overflow-y-auto scrollbar">
             <div class="modal-close absolute top-0 right-0 cursor-pointer flex flex-col items-center mt-4 mr-4 text-white text-sm z-50">
                 <svg class="fill-current text-white" xmlns="http://www.w3.org/2000/svg" width="18" height="18" viewBox="0 0 18 18">
                 <path d="M14.53 4.53l-1.06-1.06L9 7.94 4.53 3.47 3.47 4.53 7.94 9l-4.47 4.47 1.06 1.06L9 10.06l4.47 4.47 1.06-1.06L10.06 9z"></path>
@@ -218,6 +218,8 @@ class yamlModal extends HTMLElement {
                 
                 <!--Body-->
                 <form id="yamlForm" method="post" class="py-3 flex flex-col border-opacity-50">
+                    <div id="formInput" class="flex flex-row flex-wrap items-center">
+                    </div>
                 </form>
                 <div class="flex justify-end border-t border-slate-300 pt-4">
                     <button type="submit" class="saveButton btn bg-indigo-500 font-bold text-slate-100 py-1.5 px-4 hover:bg-indigo-700 hover:text-slate-50 mr-2">Speichern</button>
