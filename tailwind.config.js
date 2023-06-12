@@ -35,7 +35,10 @@ module.exports = {
             },
             borderRadius: {
                 'navbar': '.45rem'
-            }
+            },
+            maxWidth: {
+                '1/3': '33.3%',
+            },
         },
     },
     plugins: [
