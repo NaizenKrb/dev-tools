@@ -4,10 +4,11 @@ import yaml from "../../node_modules/yaml/browser/index.js"
 class sideMenu extends HTMLElement {
     constructor() {
         super();
+        console.log("sideMenu");
     }
     connectedCallback() {
         this.innerHTML = `
-        <aside class="h-screen">
+        <aside class="h-screen w-screen">
             <div class="h-full flex ">
             
                 <button class="open-sidebar btn btn-circle bg-base-200 self-center ml-2 text-blue-500 hover:text-blue-700 focus:outline-none focus:ring-2 focus:ring-white">
@@ -204,7 +205,7 @@ class yamlModal extends HTMLElement {
             </div>
             <div class="fixed inset-0 overflow-hidden">
                 <div class="absolute inset-0 overflow-hidden">
-                    <div style="width: 33.333333%;" class="content-slide pointer-events-none fixed right-0 inset-y-0 flex w-1/3 pl-10 transform transition ease-in-out duration-500 translate-x-full sm:duration-700">
+                    <div class="content-slide pointer-events-none fixed right-0 inset-y-0 flex w-1/3 pl-10 transform transition ease-in-out duration-500 translate-x-full sm:duration-700">
                         <div class="pointer-events-auto relative w-full ">
                             <div class="absolute left-0 top-0 -ml-8 flex pl-2 pt-4 sm:-ml-10 sm:pr-4">
                                 <button type="button" class="close-contentbar rounded-md text-indigo-500 hover:text-indigo-700 focus:outline-none focus:ring-2 focus:ring-white">
