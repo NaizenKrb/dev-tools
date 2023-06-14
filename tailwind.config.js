@@ -1,7 +1,8 @@
 module.exports = {
     content: [
         "./resources/**/*.{html,htm,njk,js,css}",
-        ".{html,htm,njk,js,css}"
+        ".{html,htm,njk,js,css}",
+        "./config_content.html"
     ],
     theme: {
         fontFamily: {
@@ -39,7 +40,7 @@ module.exports = {
         },
     },
     plugins: [
-        require('@tailwindcss/forms'),
+        /*require('@tailwindcss/forms'),*/
         require('daisyui')
     ],
 }
