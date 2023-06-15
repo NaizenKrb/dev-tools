@@ -4,6 +4,7 @@
 	<meta charset="UTF-8">
 	<title>Dev Tools Testing</title>
 	<script src="./resources/js/index.js" type="module"></script>
+  <script src="./resources/js/test.js" type="module"></script>
 
 	<link rel="stylesheet" href="https://cdn.jsdelivr.net/simplemde/latest/simplemde.min.css">
 	<link rel="stylesheet" href="./dist/css/styles.css">
@@ -84,7 +85,7 @@
                           <span class="label-text">
                             true
                           </span>
-                          <input type="checkbox" class="toggle border-slate-300  toggle-primary checked:border-slate-500 checked:bg-primary-focus " checked />
+                          <input type="checkbox" class="toggle toggle-primary border-slate-300 checked:border-primary-focus checked:bg-primary-focus " checked />
                         </label>
                       </div>
                       <div class="">
@@ -454,35 +455,5 @@
 
 
 </body>
-<script>
 
-window.addEventListener("DOMContentLoaded", function(e) {
-
-    // Original JavaScript code by Chirp Internet: www.chirpinternet.eu
-    // Please acknowledge use of this code by including this header.
-
-    document.querySelectorAll("input[type=color]").forEach(function(current) {
-      var parent = current.parentElement;
-      parent.classList.add("flex");
-      
-      console.log(current.value);
-      let newEl = document.querySelector(".color-text");
-      newEl.value = current.value;
-      newEl.pattern = "#[0-9A-Fa-f]{6}";
-
-      newEl.addEventListener("input", function(e) {
-        if(e.target.validity.valid) {
-          current.value = e.target.value;
-        }
-      });
-
-      current.addEventListener("change", function(e) {
-        newEl.value = e.target.value;
-        console.log(e.target.value);
-      });
-
-    });
-  });
-
-</script>
 </html>

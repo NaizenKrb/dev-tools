@@ -1,7 +1,21 @@
-import CP from '../../node_modules/color-picker/index.mjs'
+window.addEventListener("DOMContentLoaded", function(e) {
+    document.querySelectorAll("input[type=color]").forEach(function(current) {
+      var parent = current.parentElement;
+      parent.classList.add("flex");
+      
+      let newEl = document.querySelector(".color-text");
+      newEl.value = current.value;
+      newEl.pattern = "#[0-9A-Fa-f]{6}";
 
-const picker = new CP(document.querySelector('#color-picker'))
+      newEl.addEventListener("input", function(e) {
+        if(e.target.validity.valid) {
+          current.value = e.target.value;
+        }
+      });
 
-picker.on('change', function (r,b,g,a) {
-  this.source.value = `rgba(${r},${b},${g},${a})`
-})
+      current.addEventListener("change", function(e) {
+        newEl.value = e.target.value;
+      });
+
+    });
+  });
