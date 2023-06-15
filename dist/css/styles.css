@@ -2000,6 +2000,11 @@ details.collapse summary::-webkit-details-marker {
   margin-bottom: 0.5rem;
 }
 
+.my-4 {
+  margin-top: 1rem;
+  margin-bottom: 1rem;
+}
+
 .-ml-8 {
   margin-left: -2rem;
 }
@@ -2038,6 +2043,10 @@ details.collapse summary::-webkit-details-marker {
 
 .mt-4 {
   margin-top: 1rem;
+}
+
+.mt-1 {
+  margin-top: 0.25rem;
 }
 
 .flex {
@@ -2083,6 +2092,10 @@ details.collapse summary::-webkit-details-marker {
 
 .h-screen {
   height: 100vh;
+}
+
+.h-96 {
+  height: 24rem;
 }
 
 .min-h-fit {
@@ -2175,6 +2188,10 @@ details.collapse summary::-webkit-details-marker {
   flex-wrap: wrap;
 }
 
+.content-end {
+  align-content: flex-end;
+}
+
 .items-center {
   align-items: center;
 }
@@ -2193,6 +2210,10 @@ details.collapse summary::-webkit-details-marker {
 
 .gap-2 {
   gap: 0.5rem;
+}
+
+.gap-4 {
+  gap: 1rem;
 }
 
 .divide-y-2 > :not([hidden]) ~ :not([hidden]) {
