@@ -4,7 +4,7 @@
 	<meta charset="UTF-8">
 	<title>Dev Tools Testing</title>
 	<script src="./resources/js/index.js" type="module"></script>
-	
+
 	<link rel="stylesheet" href="https://cdn.jsdelivr.net/simplemde/latest/simplemde.min.css">
 	<link rel="stylesheet" href="./dist/css/styles.css">
 	<script src="https://cdn.jsdelivr.net/simplemde/latest/simplemde.min.js"></script>
@@ -12,7 +12,7 @@
 
 <body> 
 	
-  <aside>
+  <aside data-theme="mytheme">
     <!-- opacity-0 -->
     <div class="contentbar pointer-events-none opacity-100 relative z-50 ease-in-out duration-500 -translate-x-0;" aria-labelledby="slide-over-title " role="dialog" aria-modal="true">
       <div class="fixed inset-0 bg-gray-500 bg-opacity-40 transition-opacity">
@@ -65,7 +65,7 @@
                         <span class=" font-bold text-lg mb-1">
                           Logo
                         </span>
-                        <input type="file" name="logo" class="textarea bg-base-200 rounded" />
+                        <input type="file" name="logo" class="file-input file-input-primary bg-base-100 rounded" />
                         <span>
                           /images/logo-jahrhunderthalle.png
                         </span>
@@ -84,7 +84,7 @@
                           <span class="label-text">
                             true
                           </span>
-                          <input type="checkbox" class="toggle border-slate-300  bg-indigo-300 checked:border-slate-500 checked:bg-indigo-500 " checked />
+                          <input type="checkbox" class="toggle border-slate-300  toggle-primary checked:border-slate-500 checked:bg-primary-focus " checked />
                         </label>
                       </div>
                       <div class="">
@@ -120,7 +120,7 @@
                         <span class="font-bold text-lg mb-1">
                           Pages
                         </span>
-                        <div class="grid grid-cols-2 gap-4">
+                        <div class="grid grid-cols-2 gap-2">
                           <button type="button" class="btn w-full min-h-fit h-fit justify-start p-0 capitalize text-start rounded">
                             <span class="p-2 font-bold text-base text-slate-600">
                               Dampfgebläsehaus
@@ -152,6 +152,16 @@
                             </span>
                           </button>
                         </div>
+                        <button type="button" class="flex btn btn-primary w-fit min-h-fit h-fit justify-start p-0 rounded mt-2 hover:bg-primary-focus ">
+                          <div class=" p-2 flex items-center justify-between text-slate-100">
+                            <svg xmlns="http://www.w3.org/2000/svg" class="h-4 w-4" fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="2.5">
+                              <path stroke-linecap="round" stroke-linejoin="round" d="M12 4v16m8-8H4" />
+                            </svg>
+                            <div class="font-bold ml-2 text-sm">
+                              Add Page
+                            </div>
+                          </div>
+                        </button>
                       </div>
                     </div>
                     <div class="divider"></div>
@@ -187,7 +197,7 @@
                                   <span class="text-lg font-bold mb-1">
                                     Image
                                   </span>
-                                  <input type="file" name="title" class="textarea bg-base-100 rounded" />
+                                  <input type="file" class="file-input file-input-primary bg-base-100 rounded" />
                                   <div>
                                     images/menu-preview-jahrhunderthalle-bochum.png
                                   </div>
@@ -202,7 +212,7 @@
                                   <span class="text-lg font-bold mb-1">
                                     Thumbail
                                   </span>
-                                  <input type="file" name="title" class="textarea bg-base-100 rounded" />
+                                  <input type="file" class="file-input file-input-primary bg-base-100 rounded" />
                                   <div>
                                     images/logos/jhh.svg
                                   </div>
@@ -236,7 +246,7 @@
                                   <span class="text-lg font-bold mb-1">
                                     Image
                                   </span>
-                                  <input type="file" name="title" class="file-input file-input-primary bg-base-100 rounded" />
+                                  <input type="file" class="file-input file-input-primary bg-base-100 rounded" />
                                   <div>
                                     images/menu-preview-ruhrcongress-bochum.png
                                   </div>
@@ -251,10 +261,10 @@
                                   <span class="text-lg font-bold mb-1">
                                     Thumbail
                                   </span>
-                                  <input type="file" name="title" class="textarea bg-base-100 rounded" />
+                                  <input type="file" name="title" class="file-input file-input-primary bg-base-100 rounded" />
                                   <div>
                                     images/logos/rcg.svg
-                                  </div>>
+                                  </div>
                                 </label>
                               </div>
                             </div>
@@ -269,7 +279,7 @@
                                   <span class="text-lg font-semibold mb-1">
                                     Title
                                   </span>
-                                  <input type="text" name="title" class="textarea bg-base-100 rounded" value="Freilichtbühne Wattenscheid" />
+                                  <input type="text" class="textarea bg-base-100 rounded" value="Freilichtbühne Wattenscheid" />
                                 </label>
                               </div> 
                               <div class="">
@@ -277,7 +287,7 @@
                                   <span class="text-lg font-semibold mb-1">
                                     Url
                                   </span>
-                                  <input type="url" name="title" class="textarea bg-base-100 rounded" value="https://www.freilichtbuehne-wattenscheid.de/virtual" />
+                                  <input type="url" class="textarea bg-base-100 rounded" value="https://www.freilichtbuehne-wattenscheid.de/virtual" />
                                 </label>
                               </div>
                               <div class="flex flex-col">
@@ -285,7 +295,7 @@
                                   <span class="text-lg font-bold mb-1">
                                     Image
                                   </span>
-                                  <input type="file" name="title" class="textarea bg-base-100 rounded" />
+                                  <input type="file" class="file-input file-input-primary bg-base-100 rounded" />
                                   <div>
                                     images/menu-preview-freilichtbuehne-wattenscheid.png
                                   </div>
@@ -300,7 +310,7 @@
                                   <span class="text-lg font-bold mb-1">
                                     Thumbail
                                   </span>
-                                  <input type="file" name="title" class="textarea bg-base-100 rounded" />
+                                  <input type="file" class="file-input file-input-primary bg-base-100 rounded" />
                                   <div>
                                     images/logos/flb.svg
                                   </div>
@@ -323,7 +333,7 @@
                           <span class="font-bold text-lg mb-1">
                             Path
                           </span>
-                          <input type="file" name="" id="" class="textarea bg-base-200 rounded" />
+                          <input type="file" name="" id="" class="file-input file-input-primary bg-base-100 rounded" />
                           <div>
                             objects/map.json
                           </div>
@@ -334,15 +344,21 @@
                           <span class="font-bold text-lg mb-1">
                             Active Color
                           </span>
-                          <input type="color" value="#f49100" class="textarea bg-base-200 rounded" />
+                          <div class="flex h-fit w-fit textarea bg-base-200 p-0 items-center rounded">
+                            <input type="text" value="" class="color-text textarea bg-base-200 rounded h-full p-2 focus:ring-1">
+                            <div class="p-2">
+                              <input type="color" id="#color-picker" value="#f49100" class="rounded overflow-hidden colorpick color-input h-8 w-8" />
+                            </div>
+                          </div>
+                          
                         </label>
                       </div>
-                      <div class=" rounded overflow-hidden ">
+                      <div class="">
                         <label class="flex flex-col">
                           <span class="font-bold text-lg mb-1">
                             Interactables
                           </span>
-                          <div class="divide-y-2">
+                          <div class="divide-y-2 rounded overflow-hidden">
                             <details class="collapse collapse-arrow bg-base-200 rounded-none ">
                               <summary class="collapse-title text-xl font-medium">
                                 Halle_1
@@ -406,6 +422,16 @@
                               </div>
                             </details>
                           </div>
+                          <button type="button" class="flex btn btn-primary w-fit min-h-fit h-fit justify-start p-0 rounded mt-2 ">
+                          <div class=" p-2 flex items-center justify-between text-slate-100">
+                            <svg xmlns="http://www.w3.org/2000/svg" class="h-4 w-4" fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="2.5">
+                              <path stroke-linecap="round" stroke-linejoin="round" d="M12 4v16m8-8H4" />
+                            </svg>
+                            <div class="font-bold ml-2 text-sm">
+                              Add Interactable
+                            </div>
+                          </div>
+                        </button>
                         </label>
                       </div>
                     </div>
@@ -413,7 +439,7 @@
                 </form>
                 <!-- CONTENT END -->
                 <div class="flex justify-end border-slate-300 sticky bottom-0 mt-4 w-full">
-                  <button type="submit" class="saveButton w-full text-xl font-bold bg-indigo-500 text-slate-100 p-2 border-0 rounded-tl-xl hover:bg-indigo-700 hover:text-slate-50">SPEICHERN</button>
+                  <button type="submit" class="saveButton w-full text-xl font-bold bg-primary text-slate-100 p-2 border-0 rounded-tl-xl hover:bg-primary-focus hover:text-slate-50">SPEICHERN</button>
                   <button class="modal-close w-full text-xl font-bold bg-slate-200  text-slate-600 p-2 border-0 rounded-tr-xl hover:bg-slate-300 hover:text-slate-900">SCHLIESSEN</button>
                 </div>
               </div>
@@ -428,6 +454,35 @@
 
 
 </body>
+<script>
 
+window.addEventListener("DOMContentLoaded", function(e) {
 
+    // Original JavaScript code by Chirp Internet: www.chirpinternet.eu
+    // Please acknowledge use of this code by including this header.
+
+    document.querySelectorAll("input[type=color]").forEach(function(current) {
+      var parent = current.parentElement;
+      parent.classList.add("flex");
+      
+      console.log(current.value);
+      let newEl = document.querySelector(".color-text");
+      newEl.value = current.value;
+      newEl.pattern = "#[0-9A-Fa-f]{6}";
+
+      newEl.addEventListener("input", function(e) {
+        if(e.target.validity.valid) {
+          current.value = e.target.value;
+        }
+      });
+
+      current.addEventListener("change", function(e) {
+        newEl.value = e.target.value;
+        console.log(e.target.value);
+      });
+
+    });
+  });
+
+</script>
 </html>

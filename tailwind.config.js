@@ -2,7 +2,9 @@ module.exports = {
     content: [
         "./resources/**/*.{html,htm,njk,js,css}",
         ".{html,htm,njk,js,css}",
-        "./config_content.html"
+        "./config_content.html",
+        "./page_editor.html",
+        "./points.html",
     ],
     theme: {
         fontFamily: {
@@ -44,12 +46,21 @@ module.exports = {
         require('daisyui')
     ],
     daisyui: {
-        themes: [
+      themes: [
         {
-            light: {
-            primary: "#6366f1",
-            },
+          mytheme: {
+            "primary": "#5497ff", 
+            "primary-focus": "#2d6dff",
+            "secondary": "#f000b8", 
+            "accent": "#1dcdbc",   
+            "neutral": "#2b3440",  
+            "base-100": "#ffffff",  
+            "info": "#3abff8",   
+            "success": "#36d399",  
+            "warning": "#fbbd23",
+            "error": "#f87272",
+          },
         },
-        ],
+      ],
     },
 }

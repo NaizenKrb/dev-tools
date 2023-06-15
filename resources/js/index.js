@@ -4,7 +4,6 @@ import yaml from "../../node_modules/yaml/browser/index.js"
 class sideMenu extends HTMLElement {
     constructor() {
         super();
-        console.log("sideMenu");
     }
     connectedCallback() {
         this.innerHTML = `
@@ -20,7 +19,6 @@ class sideMenu extends HTMLElement {
             <div class="sidebar pointer-events-none opacity-0 relative z-50 ease-in-out duration-500 -translate-x-full;" aria-labelledby="slide-over-title " role="dialog" aria-modal="true">
                 <div class="fixed inset-0 bg-gray-500 bg-opacity-40 transition-opacity">
                 </div>
-
                 <div class="fixed inset-0 overflow-hidden">
                     <div class="absolute inset-0 overflow-hidden">
                         <div class="panel-slide pointer-events-none fixed inset-y-0 flex max-w-full pr-10 transform transition ease-in-out duration-500 -translate-x-full sm:duration-700">
@@ -75,27 +73,18 @@ class sideMenu extends HTMLElement {
             reader.onload = (e) => {
                 let contents = e.target.result;
 
-                //var modal = document.createElement("yaml-modal");
                 var contentBar = document.createElement("yaml-modal");
-
-                //modal.content = yaml.parse(contents);
                 contentBar.content = yaml.parse(contents);
-
-                //document.body.appendChild(modal);
                 document.body.appendChild(contentBar);
-
-                //modal.openModal();
                 contentBar.openContent();
                 this.closeSidebar();
 
                 let output = [];
-                //this.createForm(modal.content, output);
                 this.createForm(contentBar.content, output);
                 document.querySelector("#formInput").innerHTML = output.join("");
                 
                 this.mde = new SimpleMDE({ element: document.getElementById("description")});;
-                sideMenu.simplemde = this.mde;
-                
+                sideMenu.simplemde = this.mde;  
             };
             reader.readAsText(file);
         }
@@ -166,9 +155,7 @@ class sideMenu extends HTMLElement {
                     </div>
                     
                     `
-                    )
-                    
-                    
+                    )   
                 } 
                 else {
                     output.push(
@@ -195,8 +182,8 @@ customElements.define('side-menu', sideMenu);
 class yamlModal extends HTMLElement {
     constructor() {
         super();
-
     }
+
     connectedCallback() {
         this.innerHTML =
         `
@@ -228,7 +215,7 @@ class yamlModal extends HTMLElement {
                                 <div class="divider"></div>
                                 <div class="flex justify-end border-slate-300 pt-4">
                                     <button type="submit" class="saveButton btn bg-indigo-500 font-bold text-slate-100 py-1.5 px-4 hover:bg-indigo-700 hover:text-slate-50 mr-2">Speichern</button>
-                                    <button class="modal-close btn font-bold bg-slate-200  text-slate-600 py-1.5 px-4 hover:bg-slate-300 hover:text-slate-900">Schließen</button>
+                                    <button class="form-close btn font-bold bg-slate-200  text-slate-600 py-1.5 px-4 hover:bg-slate-300 hover:text-slate-900">Schließen</button>
                                 </div>
                             </div>
                         </div>
@@ -236,45 +223,31 @@ class yamlModal extends HTMLElement {
                 </div>
             </div>
 	    </div>
-        
         `; 
         let openmodal = document.querySelectorAll('.showXML')
         openmodal.forEach((el) => {
             el.addEventListener('click',(event) => {
                 event.preventDefault()
-                this.openModal()
+                this.openContent()
             })
         })
-        const closemodal = this.querySelectorAll('.modal-close')
+        const closemodal = this.querySelectorAll('.form-close')
         for (let i = 0; i < closemodal.length; i++) {
-            closemodal[i].addEventListener('click', this.closeModal.bind(this));
-
+            closemodal[i].addEventListener('click', this.closeContent.bind(this));
         }
+
         this.querySelector(".saveButton").addEventListener("click", this.submitForm.bind(this));
-
-        
-
-        document.onkeydown = (evt) => {
-            evt = evt || window.event
-            let isEscape = false
-            if ("key" in evt) {
-                isEscape = (evt.key === "Escape" || evt.key === "Esc");
-            } else {
-                isEscape = (evt.keyCode === 27);
-            }
-            if (isEscape && document.body.classList.contains('modal-active')) {
-                this.closeModal();
-            }
-            if (isEscape && document.body.classList.contains('overflow-hidden')) {
-                this.closeModal();
-            }
-        };
     }
+
     get content() {
         return this._content;
     }
     set content(value) {
         this._content = value;
+    }
+    createSidebar() {
+        const sideBar = document.createElement("side-menu");
+        document.body.appendChild(sideBar);
     }
     openContent() {
         const contentBar = document.querySelector(".contentbar");
@@ -293,21 +266,6 @@ class yamlModal extends HTMLElement {
         contentpanel.classList.add("translate-x-full");
         contentpanel.classList.remove("-translate-x-0");
         contentBar.remove();
-    }
-
-
-    animate() {
-        const body = document.querySelector('body');
-        const modal = document.querySelector('.yaml-modal');
-        modal.classList.remove('opacity-0', 'pointer-events-none');
-        body.classList.toggle('modal-active');
-        body.classList.toggle('overflow-hidden');
-    }
-    closeModal() {
-        const body = document.querySelector('body');
-        const modal = document.querySelector('yaml-modal');
-        body.classList.remove('modal-active', 'overflow-hidden');
-        modal.remove();
     }
     submitForm(event) {
         event.preventDefault();
@@ -329,19 +287,15 @@ class yamlModal extends HTMLElement {
         url.click();
 
         this.closeContent();
-        this.closeModal();
     }
 } 
 customElements.define('yaml-modal', yamlModal);
-
-
 
 function update(data, keys, value) {
   if (keys.length === 0) {
     // Leaf node
     return value;
   }
-
   let key = keys.shift();
   if (!key) {
     data = data || [];
@@ -349,7 +303,6 @@ function update(data, keys, value) {
       key = data.length;
     }
   }
-
   // Try converting key to a numeric value
   let index = +key;
   if (!isNaN(index)) {
@@ -359,7 +312,6 @@ function update(data, keys, value) {
     data = data || [];
     key = index;
   }
-  
   // If none of the above matched, we have an associative array
   data = data || {};
 
