@@ -149,12 +149,16 @@ class sideMenu extends HTMLElement {
           if(temp === "description") {
               output.push(
               `
-              <div class="card w-full bg-base-200 my-2">
-                  <div class="card-body">
-                      <span class="card-title">${label}</span>
-                      <textarea name="${temp}" id="description" class="w-full">${value || ""}</textarea>
-                  </div>
+              <div class="">
+                <label class="flex flex-col">
+                  <span class="font-bold text-lg mb-1">
+                    ${label}
+                  </span>
+                  <input type="text" name="${temp}" id="description" class="textarea bg-base-200 rounded" value="${value || ""}" />
+                </label>
               </div>
+              <div class="divider"></div>
+
               
               `
               )   
@@ -162,14 +166,15 @@ class sideMenu extends HTMLElement {
           else {
               output.push(
               `
-              <label class="card w-full bg-base-200 my-2">
-                  <div class="card-body">
-                      <span class="card-title">${label}</span>
-                      <div class="">
-                          <textarea name="${temp}" class="textarea textarea-bordered textarea-sm w-full">${value || ""}</textarea>
-                      </div>
-                  </div>
-              </label>
+              <div class="">
+                <label class="flex flex-col">
+                  <span class="font-bold text-lg mb-1">
+                    ${label}
+                  </span>
+                  <input type="text" name="${temp}" class="textarea bg-base-200 rounded" value="${value || ""}" />
+                </label>
+              </div>
+              <div class="divider"></div>
               `
               )
           }
@@ -216,9 +221,13 @@ class yamlModal extends HTMLElement {
                       <div id="formInput" class="flex flex-col px-4 text-slate-600">
                       </div>
                     </form>
-                    <div class="flex justify-end border-slate-300 sticky bottom-0 mt-4 w-full">
-                      <button type="submit" class="saveButton w-full text-xl font-bold bg-primary text-slate-100 p-2 border-0 rounded-tl-xl hover:bg-primary-focus hover:text-slate-50">SPEICHERN</button>
-                      <button type="button" class="form-close w-full text-xl font-bold bg-slate-200  text-slate-600 p-2 border-0 rounded-tr-xl hover:bg-slate-300 hover:text-slate-900">SCHLIESSEN</button>
+                    <div class="flex place-content-center border-slate-300 sticky bottom-0 mt-4 w-full z-40 bg-white p-4">
+                      <div class="justify-between w-full">
+                        <button type="button" class="form-close text-lg font-bold bg-slate-200  text-slate-600 px-4 py-2 border-0 rounded-full hover:bg-slate-300 hover:text-slate-900">SCHLIESSEN</button>
+                        <button type="submit" class="saveButton text-lg font-bold bg-primary text-slate-100 px-4 py-2 border-0 rounded-full hover:bg-primary-focus hover:text-slate-50">SPEICHERN</button>
+                      
+                      </div>
+
                     </div>
                   </div>
                 </div>
