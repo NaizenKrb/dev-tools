@@ -107,30 +107,49 @@ class sideMenu extends HTMLElement {
         panel.classList.add("translate-x-0");
         panel.classList.remove("-translate-x-full");
     }
-    createForm(content, output, prefix = []) {
+    createForm(content, output, prefix = [], color) {
       Object.entries(content).forEach(([key, value]) => {
         const firstLetter = key.charAt(0).toUpperCase();
-        let label = firstLetter + key.slice(1);     
+        let label = firstLetter + key.slice(1); 
+        let divider = true;
+        if(color === undefined){
+          color = "base-200";  
+        }
       
-        if(typeof value === "object" && value !== null) {
-          let output_2 = [];
-          prefix.push(key);
-          this.createForm(value, output_2, prefix);
-          prefix.pop();
+        if(typeof value === "object" && key === "matterport"){
+          let color = "base-200"
+          divider = false;
+          output.push(this.createMultiInput(label, value, key, color, divider));
+        }
+        else if(typeof value === "object" && key === "locations"){
+          let num = 0;
           output.push(
             `
-            <label class="card border-0 w-full bg-base-200 my-2">
-              <div class="card-body">
-                <div class="card-title">
+            <div class="w-full">
+              <label class="flex flex-col">
+                <span class="font-bold text-lg mb-1 capitalize">
                   ${label}
+                </span>
+                <div class="rounded overflow-hidden divide-y-2 text-slate-600">
+                  ${Object.entries(value).map(([key, value]) => {
+                    return this.createDetail(key, value, key, color, num);
+                  }).join("")
+                  }
                 </div>
-                <div class="divide-y-2 my-2 flex flex-row flex-wrap">
-                  ${output_2.join("")}
-                </div>
-              </div>
-            </label>
-            `
-          )
+              </label>
+            </div>
+            <div class="divider"></div>
+            `);
+          num++;
+        }
+
+        else if(typeof value === "object" && value !== null) {
+          let output_2 = [];
+          let color = "base-200"
+          prefix.push(key);
+          this.createForm(value, output_2, prefix, color);
+          prefix.pop();
+          output.push(this.createMultiInput(label, value, key, color, divider));
         } 
         else {
           let temp;
@@ -149,7 +168,7 @@ class sideMenu extends HTMLElement {
           if(temp === "description") {
               output.push(
               `
-              <div class="">
+              <div class="w-full">
                 <label class="flex flex-col">
                   <span class="font-bold text-lg mb-1">
                     ${label}
@@ -158,28 +177,56 @@ class sideMenu extends HTMLElement {
                 </label>
               </div>
               <div class="divider"></div>
-
               
               `
               )   
           } 
           else {
-              output.push(
-              `
-              <div class="">
-                <label class="flex flex-col">
-                  <span class="font-bold text-lg mb-1">
-                    ${label}
-                  </span>
-                  <input type="text" name="${temp}" class="textarea bg-base-200 rounded" value="${value || ""}" />
-                </label>
-              </div>
-              <div class="divider"></div>
-              `
-              )
+              output.push(this.createSoloInput(label, value, temp, color, divider));
           }
         }
       });   
+    }
+    createSoloInput(label, value, labelKey, color, divider) {
+      return `
+        <div class="w-full">
+          <label class="flex flex-col">
+            <span class="font-bold text-lg mb-1 capitalize">
+              ${label}
+            </span>
+            <input type="text" name="${labelKey}" class="textarea bg-${color} rounded" value="${value || ""}" />
+          </label>
+        </div>
+        ${divider === true ? `<div class="divider"></div>` : "" }
+      `;
+    }
+    createMultiInput(label, value, labelKey, color , prefix = []) {
+      return `
+        <div class="w-full">
+          <h1 class="text-lg font-bold mb-0.5">${label}
+          </h1>
+          ${
+            Object.entries(value).map(([key, value]) => {
+              return this.createSoloInput(key, value, `${(prefix, key)}`, color);
+            }).join("")
+          }
+        </div>
+        <div class="divider"></div>
+        `
+    }
+    createDetail(label, value, labelKey, color, num) {
+      color = "base-100"
+      return `
+        <details class="collapse collapse-arrow bg-base-200 rounded-none">
+          <summary class="collapse-title text-xl font-medium">
+            ${Object.values(value)[0]}
+          </summary>
+          <div class="collapse-content">
+            ${Object.entries(value).map(([key, value]) => {
+              return this.createSoloInput(key, value, `${(key)}`, color);
+            }).join("")}
+        </details>
+        `
     }
 }
 customElements.define('side-menu', sideMenu);
@@ -218,16 +265,15 @@ class yamlModal extends HTMLElement {
                       </button>
                     </div>
                     <form id="yamlForm" class="pt-4">
-                      <div id="formInput" class="flex flex-col px-4 text-slate-600">
+                      <div id="formInput" class="flex flex-col px-4 text-slate-600 overflow-scroll">
                       </div>
                     </form>
-                    <div class="flex place-content-center border-slate-300 sticky bottom-0 mt-4 w-full z-40 bg-white p-4">
-                      <div class="justify-between w-full">
-                        <button type="button" class="form-close text-lg font-bold bg-slate-200  text-slate-600 px-4 py-2 border-0 rounded-full hover:bg-slate-300 hover:text-slate-900">SCHLIESSEN</button>
-                        <button type="submit" class="saveButton text-lg font-bold bg-primary text-slate-100 px-4 py-2 border-0 rounded-full hover:bg-primary-focus hover:text-slate-50">SPEICHERN</button>
-                      
+                    <div class="sticky bottom-0 mt-4 z-40 bg-white">
+                      <div class="divider m-0 p-0 h-0"></div>
+                      <div class="flex justify-around border-slate-300 w-full p-4">
+                        <button type="button" class="form-close text-lg capitalize font-bold bg-slate-200  text-slate-600 px-4 py-2 border-0 rounded-full hover:bg-slate-300 hover:text-slate-900">schließen</button>
+                        <button type="submit" class="saveButton text-lg capitalize font-bold bg-primary text-slate-100 px-4 py-2 border-0 rounded-full hover:bg-primary-focus hover:text-slate-50">Speichern</button>
                       </div>
-
                     </div>
                   </div>
                 </div>
