@@ -1,3 +1,6 @@
+import "./components/color-picker.js";
+import "./components/page-button.js";
+import "./components/markdown-description.js";
 import yaml from "../../node_modules/yaml/browser/index.js"
 //import * as SimpleMDE from "../../node_modules/simplemde/src/js/simplemde.js"
 //import yaml from 'yaml'
@@ -81,7 +84,6 @@ class sideMenu extends HTMLElement {
                 let output = [];
                 this.createForm(contentBar.content, output);
                 document.querySelector("#formInput").innerHTML = output.join("");
-                this.colorPicker();
                 
                 this.mde = new SimpleMDE({ element: document.getElementById("description")});;
                 sideMenu.simplemde = this.mde;  
@@ -113,6 +115,7 @@ class sideMenu extends HTMLElement {
         let label = firstLetter + key.slice(1); 
         let divider_inner = false;
         let divider_section = true;
+
         if(color === undefined){
           color = "base-200";  
         }
@@ -132,7 +135,6 @@ class sideMenu extends HTMLElement {
         else if(key==="SiteMap"){
           color = "base-100"
           output.push(this.MultiInput(label, value, key, color, divider_inner, divider_section));
-          this.colorPicker();
         }
         else if(key==="meta" || key==="alternatives" || key==="points"){
           output.push(
@@ -159,40 +161,22 @@ class sideMenu extends HTMLElement {
           output.push(this.createMultiInput(label, value, key, color, divider_inner, divider_section));
         } 
         else {
-          let temp;
-          if (prefix.length > 0) {
-            temp = prefix[0];
-            prefix.forEach((key, index) => {
-              if (index > 0) {
-                temp += `[${key}]`;
-              }
-            });
-          temp += `[${key}]`;
-          } 
-          else {
-              temp = key;
-          }
-          if(temp === "description") {
+          if(key === "description") {
               output.push(
                 `
-                <div class="w-full">
-                  <label class="flex flex-col">
-                    <span class="font-bold text-lg mb-1">
-                      ${label}
-                    </span>
-                    <input type="text" name="${temp}" id="description" class="textarea bg-base-200 rounded" value="${value || ""}" />
-                  </label>
-                </div>
+                <markdown-description name="${label}" value="${value}" class=""></markdown-description>
                 <div class="divider"></div>
                 `
               )   
           } 
           else {
-              output.push(this.createSoloInput(label, value, temp, color, divider_section));
+              output.push(this.createSoloInput(label, value, key, color, divider_section));
+              
           }
         }
       });   
     }
+
     createSoloInput(label, value, labelKey, color, divider) {
       let inputType = "text";
       let classList = "textarea";
@@ -217,12 +201,7 @@ class sideMenu extends HTMLElement {
               <span class="font-bold text-lg mb-1 capitalize">
                 ${label}
               </span>
-              <div class="flex h-fit w-fit textarea bg-base-200 p-0 items-center rounded">
-                <input type="text" value="" class="color-text textarea bg-base-200 rounded h-full p-2 focus:ring-1" pattern="#[0-9A-Fa-f]{6}">
-                <div class="p-2 flex">
-                  <input type="color" id="color-picker" name="${label}" value="${cut}" class="rounded overflow-hidden colorpick color-input h-8 w-8">
-                </div>
-              </div>
+              <color-picker value="${cut}" class="" name="${label}"></color-picker>
             </label>
           `
         )
@@ -311,7 +290,7 @@ class sideMenu extends HTMLElement {
             <div class="grid grid-cols-2 gap-2">
               ${
                 Object.entries(value).map(([key, value]) => {
-                  return this.createButton(key, value, `${(key)}`, color);
+                  return `<page-button name="${key}" value="${value}"></page-button> ` ;
                 }).join("")
               }
             </div>
@@ -362,27 +341,6 @@ class sideMenu extends HTMLElement {
           </div>
           <div class="divider"></div>
         `
-    }
-    colorPicker(){
-      document.querySelectorAll("input[type=color]").forEach(function(current) {
-        var parent = current.parentElement;
-        parent.classList.add("flex");
-        
-        let newEl = document.querySelector(".color-text");
-        newEl.value = current.value;
-        newEl.pattern = "#[0-9A-Fa-f]{6}";
-
-        newEl.addEventListener("input", function(e) {
-          if(e.target.validity.valid) {
-            current.value = e.target.value;
-          }
-        });
-
-        current.addEventListener("input", function(e) {
-          newEl.value = e.target.value;
-        });
-
-      });
     }
 }
 customElements.define('side-menu', sideMenu);
@@ -565,7 +523,3 @@ function serializeForm(form) {
       return data;
     }, {});
 }
-
-window.addEventListener("DOMContentLoaded", function(e) {
-    
-  });

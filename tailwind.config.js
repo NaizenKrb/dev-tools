@@ -1,6 +1,7 @@
 module.exports = {
     content: [
         "./resources/**/*.{html,htm,njk,js,css}",
+        "./resources/**/**/components/*.{html,htm,njk,js,css}",
         ".{html,htm,njk,js,css}",
         "./config_content.html",
         "./page_editor.html",
