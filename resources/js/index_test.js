@@ -7,7 +7,7 @@ class sideMenu extends HTMLElement {
     }
     connectedCallback() {
         this.innerHTML = `
-        <aside class="h-screen w-screen">
+        <aside class="h-full w-full">
             <div class="h-full flex ">
             
                 <button class="open-sidebar btn btn-circle bg-base-200 self-center ml-2 text-primary hover:text-primary-focus focus:outline-none focus:ring-2 focus:ring-white">
@@ -60,7 +60,6 @@ class sideMenu extends HTMLElement {
             </div>
         </aside>
         `;
-
         this.querySelector(".yaml-input").addEventListener("change", this.toggleShowXML.bind(this));
         this.querySelector(".showXML").addEventListener("click", this.showFile.bind(this));
         this.querySelector(".close-sidebar").addEventListener("click", this.closeSidebar.bind(this));
@@ -82,6 +81,7 @@ class sideMenu extends HTMLElement {
                 let output = [];
                 this.createForm(contentBar.content, output);
                 document.querySelector("#formInput").innerHTML = output.join("");
+                this.colorPicker();
                 
                 this.mde = new SimpleMDE({ element: document.getElementById("description")});;
                 sideMenu.simplemde = this.mde;  
@@ -111,45 +111,52 @@ class sideMenu extends HTMLElement {
       Object.entries(content).forEach(([key, value]) => {
         const firstLetter = key.charAt(0).toUpperCase();
         let label = firstLetter + key.slice(1); 
-        let divider = true;
+        let divider_inner = false;
+        let divider_section = true;
         if(color === undefined){
           color = "base-200";  
         }
-      
-        if(typeof value === "object" && key === "matterport"){
+        if(key === "matterport"){
           let color = "base-200"
-          divider = false;
-          output.push(this.createMultiInput(label, value, key, color, divider));
+          output.push(this.createMultiInput(label, value, key, color, divider_inner, divider_section));
         }
-        else if(typeof value === "object" && key === "locations"){
-          let num = 0;
+        else if(key === "locations"){
+          color = "base-200"
+          output.push(this.createLocations(label, value, key, color)
+          );
+        }
+        else if(key === "pages"){
+          color = "base-100"
+          output.push(this.createMultiButtons(label, value, key, color, divider_inner, divider_section));
+        }
+        else if(key==="SiteMap"){
+          color = "base-100"
+          output.push(this.MultiInput(label, value, key, color, divider_inner, divider_section));
+          this.colorPicker();
+        }
+        else if(key==="meta" || key==="alternatives" || key==="points"){
           output.push(
             `
             <div class="w-full">
-              <label class="flex flex-col">
-                <span class="font-bold text-lg mb-1 capitalize">
-                  ${label}
-                </span>
-                <div class="rounded overflow-hidden divide-y-2 text-slate-600">
-                  ${Object.entries(value).map(([key, value]) => {
-                    return this.createDetail(key, value, key, color, num);
-                  }).join("")
-                  }
-                </div>
-              </label>
+              <h1 class="text-lg font-bold mb-0.5">${label}
+              </h1>
+              ${
+                Object.entries(value).map(([key, value]) => {
+                  return this.createMultiInput(key, value, `${(prefix, key)}`, color, divider_inner, divider_section);
+                }).join("")
+              }
             </div>
             <div class="divider"></div>
-            `);
-          num++;
+            `
+          )
         }
-
         else if(typeof value === "object" && value !== null) {
           let output_2 = [];
           let color = "base-200"
           prefix.push(key);
-          this.createForm(value, output_2, prefix, color);
+          
           prefix.pop();
-          output.push(this.createMultiInput(label, value, key, color, divider));
+          output.push(this.createMultiInput(label, value, key, color, divider_inner, divider_section));
         } 
         else {
           let temp;
@@ -167,54 +174,163 @@ class sideMenu extends HTMLElement {
           }
           if(temp === "description") {
               output.push(
-              `
-              <div class="w-full">
-                <label class="flex flex-col">
-                  <span class="font-bold text-lg mb-1">
-                    ${label}
-                  </span>
-                  <input type="text" name="${temp}" id="description" class="textarea bg-base-200 rounded" value="${value || ""}" />
-                </label>
-              </div>
-              <div class="divider"></div>
-              
-              `
+                `
+                <div class="w-full">
+                  <label class="flex flex-col">
+                    <span class="font-bold text-lg mb-1">
+                      ${label}
+                    </span>
+                    <input type="text" name="${temp}" id="description" class="textarea bg-base-200 rounded" value="${value || ""}" />
+                  </label>
+                </div>
+                <div class="divider"></div>
+                `
               )   
           } 
           else {
-              output.push(this.createSoloInput(label, value, temp, color, divider));
+              output.push(this.createSoloInput(label, value, temp, color, divider_section));
           }
         }
       });   
     }
     createSoloInput(label, value, labelKey, color, divider) {
-      return `
-        <div class="w-full">
+      let inputType = "text";
+      let classList = "textarea";
+      label = label.toLowerCase();
+      let output = [];
+      if (label === "url" || label === "website") {
+        inputType = "url";
+      }
+      else if (label === "image" || label === "logo" || label === "thumbnail" || label === "path") {
+        inputType = "file";
+        classList = "file-input file-input-primary file-textcolor";
+      }
+      else if(label === "order"){
+        inputType = "number";
+      }
+      if(label ==="activecolor"){
+        let cut = value.slice(2);
+        cut = "#" + cut;
+        output.push(
+          `
+            <label class="flex flex-col">
+              <span class="font-bold text-lg mb-1 capitalize">
+                ${label}
+              </span>
+              <div class="flex h-fit w-fit textarea bg-base-200 p-0 items-center rounded">
+                <input type="text" value="" class="color-text textarea bg-base-200 rounded h-full p-2 focus:ring-1" pattern="#[0-9A-Fa-f]{6}">
+                <div class="p-2 flex">
+                  <input type="color" id="color-picker" name="${label}" value="${cut}" class="rounded overflow-hidden colorpick color-input h-8 w-8">
+                </div>
+              </div>
+            </label>
+          `
+        )
+      }
+      else if(label ==="interactables"){
+        output.push(
+          `
           <label class="flex flex-col">
-            <span class="font-bold text-lg mb-1 capitalize">
-              ${label}
+            <span class="font-bold text-lg mb-1">
+              Interactables
             </span>
-            <input type="text" name="${labelKey}" class="textarea bg-${color} rounded" value="${value || ""}" />
+            <div class="divide-y-2 rounded overflow-hidden">
+              ${Object.entries(value).map(([key, value]) => {
+                return this.createDetail(key, value, key, color);
+              }).join("")}
+  
+            </div>
+            <button type="button" class="addInteractable flex btn btn-primary w-fit min-h-fit h-fit justify-start p-0 rounded mt-2 hover:bg-primary-focus ">
+              <div class=" p-2 flex items-center justify-between text-slate-100">
+                <svg xmlns="http://www.w3.org/2000/svg" class="h-4 w-4" fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="2.5">
+                  <path stroke-linecap="round" stroke-linejoin="round" d="M12 4v16m8-8H4"></path>
+                </svg>
+                <div class="font-bold ml-2 text-sm">
+                  Add Interactable
+                </div>
+              </div>
+            </button>
           </label>
-        </div>
+          `
+        )
+      }
+      else{
+        output.push(
+          `
+            <label class="flex flex-col">
+              <span class="font-bold text-lg mb-1 capitalize">
+                ${label}
+              </span>
+              <input type="${inputType}" name="${labelKey}" class="${classList} bg-${color} rounded" value="${value || ""}" />
+            </label>
+          `
+        )
+      }
+      return `
+        ${output.join("")}
         ${divider === true ? `<div class="divider"></div>` : "" }
-      `;
-    }
-    createMultiInput(label, value, labelKey, color , prefix = []) {
+      `
+    }        
+    createMultiInput(label, value, labelKey, color , divider_inner, divider_section) {
       return `
         <div class="w-full">
-          <h1 class="text-lg font-bold mb-0.5">${label}
+  
+          ${label === "0" || label === "1" || label === "2" 
+          ? "" 
+          : `
+          <h1 class="text-lg font-bold mb-0.5">
+            ${label}
           </h1>
+          `
+          }
           ${
             Object.entries(value).map(([key, value]) => {
-              return this.createSoloInput(key, value, `${(prefix, key)}`, color);
+              return this.createSoloInput(key, value, `${key}`, color, divider_inner);
             }).join("")
           }
         </div>
-        <div class="divider"></div>
-        `
+        ${divider_section === true ? `<div class="divider"></div>` : "" }
+      `
     }
-    createDetail(label, value, labelKey, color, num) {
+    createButton(label, value, labelKey, color) {
+      return `
+        <button type="button" class="btn w-full min-h-fit h-fit justify-start p-0 capitalize text-start rounded">
+          <span class="p-2 font-bold text-base text-slate-600">
+            ${label}
+          </span>
+        </button>
+      `
+    }
+    createMultiButtons(label, value, labelKey, color, divider_inner, divider_section) {
+      return `
+        <div class="w-full">
+          <div class="flex flex-col">
+            <span class="font-bold text-lg mb-1 capitalize">
+              ${label}
+            </span>
+            <div class="grid grid-cols-2 gap-2">
+              ${
+                Object.entries(value).map(([key, value]) => {
+                  return this.createButton(key, value, `${(key)}`, color);
+                }).join("")
+              }
+            </div>
+          </div>
+          <button type="button" class="addPage flex btn btn-primary w-fit min-h-fit h-fit justify-start p-0 rounded mt-2 hover:bg-primary-focus ">
+            <div class=" p-2 flex items-center justify-between text-slate-100">
+              <svg xmlns="http://www.w3.org/2000/svg" class="h-4 w-4" fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="2.5">
+                <path stroke-linecap="round" stroke-linejoin="round" d="M12 4v16m8-8H4"></path>
+              </svg>
+              <div class="font-bold ml-2 text-sm">
+                Add Page
+              </div>
+            </div>
+          </button>
+        </div>
+        <div class="divider"></div>
+      `
+    }
+    createDetail(label, value, labelKey, color) {
       color = "base-100"
       return `
         <details class="collapse collapse-arrow bg-base-200 rounded-none">
@@ -226,7 +342,47 @@ class sideMenu extends HTMLElement {
               return this.createSoloInput(key, value, `${(key)}`, color);
             }).join("")}
         </details>
+      `
+    }
+    createLocations(label, value, labelKey, color) {
+      let output = [];
+      return `
+          <div class="w-full">
+            <label class="flex flex-col">
+              <span class="font-bold text-lg mb-1 capitalize">
+                ${label}
+              </span>
+              <div class="rounded overflow-hidden divide-y-2 text-slate-600">
+                ${Object.entries(value).map(([key, value]) => {
+                  return this.createDetail(key, value, key, color);
+                }).join("")
+                }
+              </div>
+            </label>
+          </div>
+          <div class="divider"></div>
         `
+    }
+    colorPicker(){
+      document.querySelectorAll("input[type=color]").forEach(function(current) {
+        var parent = current.parentElement;
+        parent.classList.add("flex");
+        
+        let newEl = document.querySelector(".color-text");
+        newEl.value = current.value;
+        newEl.pattern = "#[0-9A-Fa-f]{6}";
+
+        newEl.addEventListener("input", function(e) {
+          if(e.target.validity.valid) {
+            current.value = e.target.value;
+          }
+        });
+
+        current.addEventListener("input", function(e) {
+          newEl.value = e.target.value;
+        });
+
+      });
     }
 }
 customElements.define('side-menu', sideMenu);
@@ -240,39 +396,48 @@ class yamlModal extends HTMLElement {
     connectedCallback() {
         this.innerHTML =
         `
-        <div class="contentbar pointer-events-none opacity-100 relative z-50 ease-in-out duration-500 -translate-x-0;" aria-labelledby="slide-over-title " role="dialog" aria-modal="true">
-          <div class="fixed inset-0 bg-gray-500 bg-opacity-40 transition-opacity">
+        <div class="h-full w-full self-center">
+          <div class="flex h-full">
+            <button class="open-contentbar btn btn-circle bg-base-200 self-center mr-2 text-primary hover:text-primary-focus focus:outline-none focus:ring-2 focus:ring-white">
+              <svg xmlns="http://www.w3.org/2000/svg" class="h-8 w-8" fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="2">
+                <path stroke-linecap="round" stroke-linejoin="round" d="M11 17l-5-5m0 0l5-5m-5 5h12" />
+              </svg>
+            </button>
           </div>
-          <div class="fixed inset-0 overflow-hidden">
-            <div class="absolute inset-0 overflow-hidden">
-              <!-- translate-x-full -->
-              <div class="content-slide  pointer-events-none fixed right-0 inset-y-0 flex w-1/3 pl-10 transform transition ease-in-out duration-500 sm:duration-700">
-                <div class="pointer-events-auto relative w-full ">
-                  <div class="flex h-full flex-col overflow-y-scroll bg-white">
-                    <!-- HEADER -->
-                    <div class="p-4 sticky top-0 z-40 bg-white flex items-center justify-between border-b-2">
-                      <button type="button" class="flex items-center gap-2 text-slate-600 hover:text-slate-800 "> 
-                        <svg xmlns="http://www.w3.org/2000/svg" class="h-6 w-6" fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="2">
-                          <path stroke-linecap="round" stroke-linejoin="round" d="M15 19l-7-7 7-7" />
-                        </svg>
-                        <span class="text-xl font-semibold text-center leading-6" id="slide-over-title">YAML EDITOR</span>
-                      </button>
-                      <button type="button" class="close-contentbar rounded-md text-slate-600 hover:text-slate-800 focus:outline-none focus:ring-2 focus:ring-white">
-                        <span class="sr-only">Close panel</span>
-                          <svg class="h-6 w-6" fill="none" viewBox="0 0 24 24" stroke-width="2.5" stroke="currentColor" aria-hidden="true">
-                          <path stroke-linecap="round" stroke-linejoin="round" d="M6 18L18 6M6 6l12 12" />
-                        </svg>
-                      </button>
-                    </div>
-                    <form id="yamlForm" class="pt-4">
-                      <div id="formInput" class="flex flex-col px-4 text-slate-600 overflow-scroll">
+          <div class="contentbar pointer-events-none opacity-100 relative z-50 ease-in-out duration-500 -translate-x-0;" aria-labelledby="slide-over-title " role="dialog" aria-modal="true">
+            <div class="fixed inset-0 bg-gray-500 bg-opacity-40 transition-opacity">
+            </div>
+            <div class="fixed inset-0 overflow-hidden">
+              <div class="absolute inset-0 overflow-hidden">
+                <!-- translate-x-full -->
+                <div class="content-slide  pointer-events-none fixed right-0 inset-y-0 flex w-1/3 pl-10 transform transition ease-in-out duration-500 sm:duration-700">
+                  <div class="pointer-events-auto relative w-full ">
+                    <div class="flex h-full flex-col overflow-y-scroll bg-white">
+                      <!-- HEADER -->
+                      <div class="p-4 sticky top-0 z-40 bg-white flex items-center justify-between border-b-2">
+                        <button type="button" class="flex items-center gap-2 text-slate-600 hover:text-slate-800 "> 
+                          <svg xmlns="http://www.w3.org/2000/svg" class="h-6 w-6" fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="2">
+                            <path stroke-linecap="round" stroke-linejoin="round" d="M15 19l-7-7 7-7" />
+                          </svg>
+                          <span class="text-xl font-semibold text-center leading-6" id="slide-over-title">YAML EDITOR</span>
+                        </button>
+                        <button type="button" class="close-contentbar rounded-md text-slate-600 hover:text-slate-800 focus:outline-none focus:ring-2 focus:ring-white">
+                          <span class="sr-only">Close panel</span>
+                            <svg class="h-6 w-6" fill="none" viewBox="0 0 24 24" stroke-width="2.5" stroke="currentColor" aria-hidden="true">
+                            <path stroke-linecap="round" stroke-linejoin="round" d="M6 18L18 6M6 6l12 12" />
+                          </svg>
+                        </button>
                       </div>
-                    </form>
-                    <div class="sticky bottom-0 mt-4 z-40 bg-white">
-                      <div class="divider m-0 p-0 h-0"></div>
-                      <div class="flex justify-around border-slate-300 w-full p-4">
-                        <button type="button" class="form-close text-lg capitalize font-bold bg-slate-200  text-slate-600 px-4 py-2 border-0 rounded-full hover:bg-slate-300 hover:text-slate-900">schließen</button>
-                        <button type="submit" class="saveButton text-lg capitalize font-bold bg-primary text-slate-100 px-4 py-2 border-0 rounded-full hover:bg-primary-focus hover:text-slate-50">Speichern</button>
+                      <form id="yamlForm" class="pt-4">
+                        <div id="formInput" class="flex flex-col px-4 text-slate-600">
+                        </div>
+                      </form>
+                      <div class="sticky bottom-0 mt-4 z-40 bg-white">
+                        <div class="divider m-0 p-0 h-0"></div>
+                        <div class="flex justify-around border-slate-300 w-full p-4">
+                          <button type="button" class="exitForm text-lg capitalize font-bold bg-slate-200  text-slate-600 px-4 py-2 border-0 rounded-full hover:bg-slate-300 hover:text-slate-900">schließen</button>
+                          <button type="submit" class="saveButton text-lg capitalize font-bold bg-primary text-slate-100 px-4 py-2 border-0 rounded-full hover:bg-primary-focus hover:text-slate-50">Speichern</button>
+                        </div>
                       </div>
                     </div>
                   </div>
@@ -289,12 +454,13 @@ class yamlModal extends HTMLElement {
                 this.openContent()
             })
         })
-        const closemodal = this.querySelectorAll('.form-close')
-        for (let i = 0; i < closemodal.length; i++) {
-            closemodal[i].addEventListener('click', this.closeContent.bind(this));
+        const closeContent = this.querySelectorAll('.close-contentbar')
+        for (let i = 0; i < closeContent.length; i++) {
+            closeContent[i].addEventListener('click', this.closeContent.bind(this));
         }
-
         this.querySelector(".saveButton").addEventListener("click", this.submitForm.bind(this));
+        this.querySelector(".exitForm").addEventListener("click", this.exitContent.bind(this));
+        this.querySelector(".open-contentbar").addEventListener("click", this.openContent.bind(this));
     }
 
     get content() {
@@ -315,6 +481,14 @@ class yamlModal extends HTMLElement {
         contentpanel.classList.add("-translate-x-0");
         contentpanel.classList.remove("translate-x-full");
     }
+    exitContent() {
+      this.closeContent();
+      setTimeout(() => {
+        document.querySelector("yaml-modal").remove();
+      }, 500);
+
+      
+    }
 
     closeContent() {
         const contentBar = document.querySelector(".contentbar");
@@ -323,7 +497,6 @@ class yamlModal extends HTMLElement {
         contentBar.classList.remove("opacity-100");
         contentpanel.classList.add("translate-x-full");
         contentpanel.classList.remove("-translate-x-0");
-        contentBar.remove();
     }
     submitForm(event) {
         event.preventDefault();
@@ -392,3 +565,7 @@ function serializeForm(form) {
       return data;
     }, {});
 }
+
+window.addEventListener("DOMContentLoaded", function(e) {
+    
+  });
