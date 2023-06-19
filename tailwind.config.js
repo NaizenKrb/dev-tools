@@ -5,6 +5,7 @@ module.exports = {
         "./config_content.html",
         "./page_editor.html",
         "./points.html",
+        "./step.html",
     ],
     theme: {
         fontFamily: {
