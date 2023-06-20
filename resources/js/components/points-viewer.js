@@ -107,41 +107,39 @@ class PointsViewer extends HTMLElement
         label.appendChild(span);
         
         let contentDiv = document.createElement('DIV');
-        contentDiv.className = 'divide-y-2 rounded overflow-hidden';
+        contentDiv.className = 'flex flex-col';
         label.appendChild(contentDiv);
 
         Object.entries(this.points).forEach(([key, value]) => {
-          let label = document.createElement('LABEL');
-          label.className = 'flex flex-col';
 
-          let span = document.createElement('SPAN');
-          span.className = 'font-bold text-lg mb-1 capitalize';
-          span.innerText = key;
-          label.appendChild(span);
 
-          let input = document.createElement('INPUT-FIELD');
-          input.className = 'w-full textarea rounded';
-          input.color = "bg-base-200";
+            let input = document.createElement('INPUT-FIELD');
+            input.className = 'w-full textarea rounded mb-2';
+            input.color = "bg-base-200";
 
-          input.label = key;
-          input.name = this.name + `[${key}][title]`;
-          input.value = value.title;
-          label.appendChild(input);
+            input.label = key;
+            input.name = this.name + `[${key}][title]`;
+            input.value = value.title;
+            label.appendChild(input);
+            contentDiv.appendChild(input);
+            let innerDiv = document.createElement('DIV');
+            innerDiv.className = 'divide-y-2 rounded overflow-hidden my-4';
+            contentDiv.appendChild(innerDiv);
+    
+            value.children.forEach((data, idx) => {
+                let details = document.createElement('DETAILS');
+                details.className = 'collapse collapse-arrow bg-base-200 rounded-none';
+                innerDiv.appendChild(details);
 
-          value.children.forEach((data, idx) => {
-            let details = document.createElement('DETAILS');
-            details.className = 'collapse collapse-arrow bg-base-200 rounded-none';
-            contentDiv.appendChild(details);
-  
-            let summary = document.createElement('SUMMARY');
-            summary.className = 'collapse-title text-xl font-medium';
-            summary.innerText = data.title || 'Undefined';
-            details.appendChild(summary);
-  
-            let content = document.createElement('DIV');
-            content.className = 'collapse-content';
-            content.append(...this.callback(data, [], [this.name, key, "children", idx], false, this.color));
-            details.appendChild(content);
+                let summary = document.createElement('SUMMARY');
+                summary.className = 'collapse-title text-xl font-medium';
+                summary.innerText = data.title || 'Undefined';
+                details.appendChild(summary);
+
+                let content = document.createElement('DIV');
+                content.className = 'collapse-content';
+                content.append(...this.callback(data, [], [this.name, key, "children", idx], false, this.color));
+                details.appendChild(content);
           });
         });
         let button = document.createElement('BUTTON');
@@ -158,8 +156,40 @@ class PointsViewer extends HTMLElement
                 </div>
             </div>
             `
+
+        button.addEventListener('click', (event) => {
+            let label = document.createElement('LABEL');
+            label.className = 'flex flex-col';
+
+            let span = document.createElement('SPAN');
+            span.className = 'font-bold text-lg mb-1 capitalize';
+            span.innerText = "New Point";
+            label.appendChild(span);
+
+            let details = document.createElement('DETAILS');
+            details.className = 'collapse collapse-arrow bg-base-200 rounded-none';
+            label.appendChild(details);
+
+            let summary = document.createElement('SUMMARY');
+            summary.className = 'collapse-title text-xl font-medium';
+            summary.innerText = "New Point";
+            details.appendChild(summary);
+
+            let content = document.createElement('DIV');
+            content.className = 'collapse-content';
+            content.append(...this.callback({}, [], [this.name, "new", "children", 0], true, this.color));
+            details.appendChild(content);
+
+            this.appendChild(label);
+
+
+        });
+
+        
         label.appendChild(button);
         this.appendChild(label);
+
+
             
     }
     onClick(event){

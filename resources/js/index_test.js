@@ -80,7 +80,7 @@ class sideMenu extends HTMLElement {
             reader.onload = (e) => {
                 let contents = e.target.result;
 
-                var contentBar = document.createElement("YAML-MODAL");
+                var contentBar = document.createElement("YAML-EDITOR");
                 contentBar.content = yaml.parse(contents);
                 document.body.appendChild(contentBar);
                 contentBar.openContent();
@@ -302,7 +302,7 @@ class sideMenu extends HTMLElement {
 customElements.define('side-menu', sideMenu);
 
 
-class yamlModal extends HTMLElement {
+class yamlEditor extends HTMLElement {
     constructor() {
         super();
     }
@@ -398,7 +398,7 @@ class yamlModal extends HTMLElement {
     exitContent() {
       this.closeContent();
       setTimeout(() => {
-        document.querySelector("yaml-modal").remove();
+        document.querySelector("YAML-EDITOR").remove();
       }, 500);
 
       
@@ -434,7 +434,7 @@ class yamlModal extends HTMLElement {
         this.closeContent();
     }
 } 
-customElements.define('yaml-modal', yamlModal);
+customElements.define('yaml-editor', yamlEditor);
 
 function update(data, keys, value) {
   if (keys.length === 0) {
