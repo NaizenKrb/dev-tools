@@ -1,6 +1,11 @@
 import "./components/color-picker.js";
 import "./components/page-button.js";
 import "./components/markdown-description.js";
+import "./components/input-field.js";
+import "./components/multi-buttons.js";
+import "./components/details-group.js";
+import "./components/points-viewer.js";
+import "./components/rotation-group.js";
 import yaml from "../../node_modules/yaml/browser/index.js"
 //import * as SimpleMDE from "../../node_modules/simplemde/src/js/simplemde.js"
 //import yaml from 'yaml'
@@ -75,15 +80,15 @@ class sideMenu extends HTMLElement {
             reader.onload = (e) => {
                 let contents = e.target.result;
 
-                var contentBar = document.createElement("yaml-modal");
+                var contentBar = document.createElement("YAML-MODAL");
                 contentBar.content = yaml.parse(contents);
                 document.body.appendChild(contentBar);
                 contentBar.openContent();
                 this.closeSidebar();
 
                 let output = [];
-                this.createForm(contentBar.content, output);
-                document.querySelector("#formInput").innerHTML = output.join("");
+                this.createForm(contentBar.content, output, [], true);
+                document.querySelector("#formInput").append(...output);
                 
                 this.mde = new SimpleMDE({ element: document.getElementById("description")});;
                 sideMenu.simplemde = this.mde;  
@@ -109,240 +114,191 @@ class sideMenu extends HTMLElement {
         panel.classList.add("translate-x-0");
         panel.classList.remove("-translate-x-full");
     }
-    createForm(content, output, prefix = [], color) {
-      Object.entries(content).forEach(([key, value]) => {
-        const firstLetter = key.charAt(0).toUpperCase();
-        let label = firstLetter + key.slice(1); 
-        let divider_inner = false;
-        let divider_section = true;
+    
+    /**
+     * Loop Generator
+     * @param data 
+     * @param prefix 
+     */
+    *loop(data, excludes, prefix = []) {
+        let context = {...data};
+        for (const [key, value] of Object.entries(context)) {
+            let name = key;
+            if (prefix.length > 0) {
+                prefix.forEach((item, idx) => {
+                    if (idx === 0) {
+                        name = item;
+                    } else {
+                        name += `[${item}]`;
+                    }
+                });
+                name += `[${key}]`;
+            }
 
-        if(color === undefined){
-          color = "base-200";  
-        }
-        if(key === "matterport"){
-          let color = "base-200"
-          output.push(this.createMultiInput(label, value, key, color, divider_inner, divider_section));
-        }
-        else if(key === "locations"){
-          color = "base-200"
-          output.push(this.createLocations(label, value, key, color)
-          );
-        }
-        else if(key === "pages"){
-          color = "base-100"
-          output.push(this.createMultiButtons(label, value, key, color, divider_inner, divider_section));
-        }
-        else if(key==="SiteMap"){
-          color = "base-100"
-          output.push(this.MultiInput(label, value, key, color, divider_inner, divider_section));
-        }
-        else if(key==="meta" || key==="alternatives" || key==="points"){
-          output.push(
-            `
-            <div class="w-full">
-              <h1 class="text-lg font-bold mb-0.5">${label}
-              </h1>
-              ${
-                Object.entries(value).map(([key, value]) => {
-                  return this.createMultiInput(key, value, `${(prefix, key)}`, color, divider_inner, divider_section);
-                }).join("")
-              }
-            </div>
-            <div class="divider"></div>
-            `
-          )
-        }
-        else if(typeof value === "object" && value !== null) {
-          let output_2 = [];
-          let color = "base-200"
-          prefix.push(key);
-          
-          prefix.pop();
-          output.push(this.createMultiInput(label, value, key, color, divider_inner, divider_section));
-        } 
-        else {
-          if(key === "description") {
-              output.push(
-                `
-                <markdown-description name="${label}" value="${value}" class=""></markdown-description>
-                <div class="divider"></div>
-                `
-              )   
-          } 
-          else {
-              output.push(this.createSoloInput(label, value, key, color, divider_section));
-              
-          }
-        }
-      });   
-    }
-
-    createSoloInput(label, value, labelKey, color, divider) {
-      let inputType = "text";
-      let classList = "textarea";
-      label = label.toLowerCase();
-      let output = [];
-      if (label === "url" || label === "website") {
-        inputType = "url";
-      }
-      else if (label === "image" || label === "logo" || label === "thumbnail" || label === "path") {
-        inputType = "file";
-        classList = "file-input file-input-primary file-textcolor";
-      }
-      else if(label === "order"){
-        inputType = "number";
-      }
-      if(label ==="activecolor"){
-        let cut = value.slice(2);
-        cut = "#" + cut;
-        output.push(
-          `
-            <label class="flex flex-col">
-              <span class="font-bold text-lg mb-1 capitalize">
-                ${label}
-              </span>
-              <color-picker value="${cut}" class="" name="${label}"></color-picker>
-            </label>
-          `
-        )
-      }
-      else if(label ==="interactables"){
-        output.push(
-          `
-          <label class="flex flex-col">
-            <span class="font-bold text-lg mb-1">
-              Interactables
-            </span>
-            <div class="divide-y-2 rounded overflow-hidden">
-              ${Object.entries(value).map(([key, value]) => {
-                return this.createDetail(key, value, key, color);
-              }).join("")}
-  
-            </div>
-            <button type="button" class="addInteractable flex btn btn-primary w-fit min-h-fit h-fit justify-start p-0 rounded mt-2 hover:bg-primary-focus ">
-              <div class=" p-2 flex items-center justify-between text-slate-100">
-                <svg xmlns="http://www.w3.org/2000/svg" class="h-4 w-4" fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="2.5">
-                  <path stroke-linecap="round" stroke-linejoin="round" d="M12 4v16m8-8H4"></path>
-                </svg>
-                <div class="font-bold ml-2 text-sm">
-                  Add Interactable
-                </div>
-              </div>
-            </button>
-          </label>
-          `
-        )
-      }
-      else{
-        output.push(
-          `
-            <label class="flex flex-col">
-              <span class="font-bold text-lg mb-1 capitalize">
-                ${label}
-              </span>
-              <input type="${inputType}" name="${labelKey}" class="${classList} bg-${color} rounded" value="${value || ""}" />
-            </label>
-          `
-        )
-      }
-      return `
-        ${output.join("")}
-        ${divider === true ? `<div class="divider"></div>` : "" }
-      `
-    }        
-    createMultiInput(label, value, labelKey, color , divider_inner, divider_section) {
-      return `
-        <div class="w-full">
-  
-          ${label === "0" || label === "1" || label === "2" 
-          ? "" 
-          : `
-          <h1 class="text-lg font-bold mb-0.5">
-            ${label}
-          </h1>
-          `
-          }
-          ${
-            Object.entries(value).map(([key, value]) => {
-              return this.createSoloInput(key, value, `${key}`, color, divider_inner);
-            }).join("")
-          }
-        </div>
-        ${divider_section === true ? `<div class="divider"></div>` : "" }
-      `
-    }
-    createButton(label, value, labelKey, color) {
-      return `
-        <button type="button" class="btn w-full min-h-fit h-fit justify-start p-0 capitalize text-start rounded">
-          <span class="p-2 font-bold text-base text-slate-600">
-            ${label}
-          </span>
-        </button>
-      `
-    }
-    createMultiButtons(label, value, labelKey, color, divider_inner, divider_section) {
-      return `
-        <div class="w-full">
-          <div class="flex flex-col">
-            <span class="font-bold text-lg mb-1 capitalize">
-              ${label}
-            </span>
-            <div class="grid grid-cols-2 gap-2">
-              ${
-                Object.entries(value).map(([key, value]) => {
-                  return `<page-button name="${key}" value="${value}"></page-button> ` ;
-                }).join("")
-              }
-            </div>
-          </div>
-          <button type="button" class="addPage flex btn btn-primary w-fit min-h-fit h-fit justify-start p-0 rounded mt-2 hover:bg-primary-focus ">
-            <div class=" p-2 flex items-center justify-between text-slate-100">
-              <svg xmlns="http://www.w3.org/2000/svg" class="h-4 w-4" fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="2.5">
-                <path stroke-linecap="round" stroke-linejoin="round" d="M12 4v16m8-8H4"></path>
-              </svg>
-              <div class="font-bold ml-2 text-sm">
-                Add Page
-              </div>
-            </div>
-          </button>
-        </div>
-        <div class="divider"></div>
-      `
-    }
-    createDetail(label, value, labelKey, color) {
-      color = "base-100"
-      return `
-        <details class="collapse collapse-arrow bg-base-200 rounded-none">
-          <summary class="collapse-title text-xl font-medium">
-            ${Object.values(value)[0]}
-          </summary>
-          <div class="collapse-content">
-            ${Object.entries(value).map(([key, value]) => {
-              return this.createSoloInput(key, value, `${(key)}`, color);
-            }).join("")}
-        </details>
-      `
-    }
-    createLocations(label, value, labelKey, color) {
-      let output = [];
-      return `
-          <div class="w-full">
-            <label class="flex flex-col">
-              <span class="font-bold text-lg mb-1 capitalize">
-                ${label}
-              </span>
-              <div class="rounded overflow-hidden divide-y-2 text-slate-600">
-                ${Object.entries(value).map(([key, value]) => {
-                  return this.createDetail(key, value, key, color);
-                }).join("")
+            if (typeof value === 'object' && value && !excludes.includes(key)) {
+                prefix.push(key);
+                for (const temp of this.loop(value, excludes, prefix)) {
+                    yield temp;
                 }
-              </div>
-            </label>
-          </div>
-          <div class="divider"></div>
-        `
+                prefix.pop();
+            } else {
+                yield [key, name, value];
+            }
+        }
+    }
+
+    /**
+     * Build Field Elements
+     */
+    createForm(content, output, prefix = [], divider = false, color = "bg-base-200") {
+      let excludes = ["pages", "siteMap", "meta", "alternatives", "points", "matterport", "locations", "interactables", "rotation"]
+        for (const [key, name, value] of this.loop(content, excludes, prefix)) {
+            let inputType = "text";
+
+            if(key === "activeColor"){
+              let label = document.createElement('LABEL');
+              label.innerHTML = `
+                  <span class="font-bold text-lg mb-1 capitalize">
+                    ${key}
+                  </span>
+                  <color-picker value="${value}" name="${name}"></color-picker>
+                  `
+
+              output.push(label);
+            }
+            else if(key === "interactables" || key === "alternatives" || key === "meta" || key === "locations"){
+              color = "bg-base-100"
+              let labelKey = null;
+              if (key === "interactables") {
+                labelKey = 'object';
+              } else if (key === "alternatives") {
+                labelKey = 'title';
+              } else if (key === "meta") {
+                labelKey = 'label';
+              } else if (key === "locations") {
+                labelKey = 'title';
+                value.forEach((data, idx) => {
+                  if(!data.current)
+                    data.current = false;
+                });
+              }
+              let detailsGroup = document.createElement('DETAILS-GROUP');
+              detailsGroup.label = key;
+              detailsGroup.name = name;
+              detailsGroup.color = color;
+              detailsGroup.details = value;
+              detailsGroup.detailsLabelKey = labelKey;
+              detailsGroup.callback = this.createForm.bind(this);
+
+              output.push(detailsGroup);
+            }
+
+            else if(key === "points"){
+              let detailsGroup = document.createElement('POINTS-VIEWER');
+              detailsGroup.label = key;
+              detailsGroup.name = name;
+              detailsGroup.color = color;
+              detailsGroup.points = value;
+              detailsGroup.callback = this.createForm.bind(this);
+
+              output.push(detailsGroup);
+            }
+            else if(key === "rotation"){
+              let rotationGroup = document.createElement('ROTATION-GROUP');
+              rotationGroup.className = "w-full";
+              rotationGroup.label = key;
+              rotationGroup.name = name;
+              rotationGroup.color = color;
+              rotationGroup.x = value[0];
+              rotationGroup.y = value[1];
+
+              output.push(rotationGroup);
+            }
+            else if(key === "pages"){
+              let element = document.createElement('MULTI-BUTTONS');
+              element.buttons = value;
+              element.name = name;
+
+              output.push(element);
+            }
+            else if(key === "description") {
+              let markdownDescription = document.createElement('MARKDOWN-DESCRIPTION');
+              markdownDescription.name = name;
+              markdownDescription.value = value;
+              output.push(markdownDescription);
+            }
+            else if(key === "matterport"){ 
+              let element = document.createElement('DIV')
+              element.className = `w-full`;
+
+              let heading = document.createElement('SPAN')
+              heading.className = `text-lg font-bold mb-0.5 capitalize`;
+              heading.innerText = key;
+              element.appendChild(heading);
+
+              let temp = [];
+              this.createForm(value, temp, [name]);
+              element.append(...temp);
+
+              output.push(element);
+            }
+            else if(key === "siteMap"){
+              let element = document.createElement('DIV')
+              element.className = `w-full`;
+
+              let heading = document.createElement('SPAN')
+              heading.className = `text-lg font-bold mb-0.5 capitalize`;
+              heading.innerText = key;
+              element.appendChild(heading);
+
+              let temp = [];
+              this.createForm(value, temp, [name]);
+              element.append(...temp);
+
+              output.push(element);
+            }
+            else{
+              let classList = "textarea"
+              let inputField = document.createElement('INPUT-FIELD');
+
+              if(key==="url" || key==="website"){
+                inputType = "url";
+              }
+              else if(key==="image" || key==="logo" || key==="thumbnail" || key==="path"){
+                inputType = "file";
+                classList = "file-input file-input-primary file-textcolor";
+                color = "bg-base-100"
+              }
+              else if(key==="order"){
+                inputType = "number";
+              }
+              else if(key === "defaultPage"){
+                color = "bg-base-200"
+              }
+              
+              inputField.name = name;
+              inputField.value = value;
+              inputField.className = classList;
+              inputField.label = key;
+              inputField.inputType = inputType;
+              inputField.color = color;
+              output.push(inputField);
+         
+         }
+         if(divider){
+          output.push(this.createDivider());
+         }
+        }
+      return output
+    }
+
+    createDivider() {
+      let divider = document.createElement('DIV');
+      divider.className = 'divider';
+      return divider;
     }
 }
+
 customElements.define('side-menu', sideMenu);
 
 
@@ -428,7 +384,7 @@ class yamlModal extends HTMLElement {
         this._content = value;
     }
     createSidebar() {
-        const sideBar = document.createElement("side-menu");
+        const sideBar = document.createElement("SIDE-MENU");
         document.body.appendChild(sideBar);
     }
     openContent() {
@@ -470,7 +426,7 @@ class yamlModal extends HTMLElement {
         var form = document.querySelector("#yamlForm");
         var data = serializeForm(form);
         var blob = new Blob([yaml.stringify(data)], {type: "text/yaml;charset=utf-8"});
-        var url = document.createElement("a");
+        var url = document.createElement("A");
         url.href = URL.createObjectURL(blob);
         url.download = fileName;
         url.click();

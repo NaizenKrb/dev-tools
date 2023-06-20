@@ -83,7 +83,7 @@ class MarkdownDescription extends HTMLElement
       label.className = 'flex flex-col';
 
       let span = document.createElement('span');
-      span.className = 'font-bold text-lg mb-1';
+      span.className = 'font-bold text-lg mb-1 capitalize';
       span.innerText = this.name;
 
       let input = document.createElement('input');

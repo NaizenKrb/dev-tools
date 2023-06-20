@@ -26,10 +26,24 @@ class ColorPicker extends HTMLElement
         if (!value || value === false || value === null) {
             this.removeAttribute('value');
         } else {
+            if(value.startsWith('0x')) {
+                value = value.slice(2);
+                value = '#' + value;
+            
+            }
             this.setAttribute('value', value);
         }
     }
-
+    get name() {
+        return this.getAttribute('name');
+    }
+    set name(value) {
+        if (!value || value === false || value === null) {
+            this.removeAttribute('name');
+        } else {
+            this.setAttribute('name', value);
+        }
+    }
     /**
      * Magic Getter / Setter
      */
@@ -57,11 +71,12 @@ class ColorPicker extends HTMLElement
         }
 
         if (property === 'value') {
+            this.value = newValue;
           if (typeof this.inputText !== 'undefined') {
-            this.inputText.value = newValue;
+            this.inputText.value = this.value;
           }
           if (typeof this.inputText !== 'undefined') {
-            this.inputColor.value = newValue;
+            this.inputColor.value = this.value;
           }
         }
     }
@@ -92,17 +107,19 @@ class ColorPicker extends HTMLElement
         inputText.type = 'text';
         inputText.pattern = "#[0-9A-Fa-f]{6}";
         inputText.value = this.value;
+        inputText.name = this.name;
         inputText.className= 'color-text textarea bg-base-200 rounded h-full p-2 focus:ring-1';
         inputText.addEventListener('input', this.onChange.bind(this));
         inputGroup.appendChild(inputText);
         
         let div = document.createElement('DIV');
         div.className = 'p-2 flex';
-
+        
         let inputColor = this.inputColor = document.createElement('INPUT');
         inputColor.type = 'color';
+        inputColor.id = 'color-picker';
+        
         inputColor.value = this.value;
-        inputColor.id = '#color-picker';
         inputColor.className = 'rounded overflow-hidden colorpick color-input h-8 w-8';
         inputColor.addEventListener('input', this.onChange.bind(this));
         div.appendChild(inputColor)
