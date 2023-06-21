@@ -98,7 +98,9 @@ class MultiButtons extends HTMLElement
         button.type = 'button';
         button.name = key;
         button.value = value;
-
+        button.onClick = (() => {
+            this.closest('yaml-editor').switchPage(value, key);
+        });
         buttonElement.appendChild(button);
       });
 
@@ -114,6 +116,7 @@ class MultiButtons extends HTMLElement
                 Add Page
               </div>
             </div>`
+        
       element.appendChild(addButton);
 
       this.appendChild(element);

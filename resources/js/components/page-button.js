@@ -80,6 +80,8 @@ class PageButton extends HTMLElement
         let button = document.createElement('BUTTON');
         button.type = 'button';
         button.className = `btn w-full min-h-fit h-fit justify-start p-0 capitalize text-start rounded`;
+        button.addEventListener('click', this.onClick.bind(this));
+        button.value = this.value;
 
         let span = document.createElement('SPAN');
         span.className = `p-2 font-bold text-base text-slate-600`;
@@ -89,9 +91,6 @@ class PageButton extends HTMLElement
        
 
         this.appendChild(button);
-    }
-    onClick(event){
-
     }
 }
 

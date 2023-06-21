@@ -6,6 +6,7 @@ import "./components/multi-buttons.js";
 import "./components/details-group.js";
 import "./components/points-viewer.js";
 import "./components/rotation-group.js";
+import "./components/yaml-editor.js";
 import yaml from "../../node_modules/yaml/browser/index.js"
 //import * as SimpleMDE from "../../node_modules/simplemde/src/js/simplemde.js"
 //import yaml from 'yaml'
@@ -51,9 +52,9 @@ class sideMenu extends HTMLElement {
                                                 YAML Editor
                                             </div>
                                             <div class="collapse-content flex flex-col items-center"> 
-                                                <input type="file" name="yaml-file" class="yaml-input file-input file-input-primary file-textcolor w-full rounded self-start mb-4" />
+                                                <!-- <input type="file" name="yaml-file" class="yaml-input file-input file-input-primary file-textcolor w-full rounded self-start mb-4" />-->
                                                 <div class="self-end">
-                                                    <button class="showXML btn btn-primary text-slate-100 hover:text-slate-50 font-bold py-1.5 px-4" disabled>
+                                                    <button name="" class="showXML btn btn-primary text-slate-100 hover:text-slate-50 font-bold py-1.5 px-4" >
                                                         Datei bearbeiten
                                                     </button>
                                                 </div>
@@ -68,51 +69,77 @@ class sideMenu extends HTMLElement {
             </div>
         </aside>
         `;
-        this.querySelector(".yaml-input").addEventListener("change", this.toggleShowXML.bind(this));
+        
         this.querySelector(".showXML").addEventListener("click", this.showFile.bind(this));
         this.querySelector(".close-sidebar").addEventListener("click", this.closeSidebar.bind(this));
         this.querySelector(".open-sidebar").addEventListener("click", this.openSidebar.bind(this));
         this.simplemde;
     }
-    showFile(event) {
-            let file = this.querySelector('input[type="file"]').files[0];
-            let reader = new FileReader();
-            reader.onload = (e) => {
-                let contents = e.target.result;
 
-                var contentBar = document.createElement("YAML-EDITOR");
-                contentBar.content = yaml.parse(contents);
-                document.body.appendChild(contentBar);
-                contentBar.openContent();
-                this.closeSidebar();
+    async showFile(event) {
+      const dirHandle = await window.showDirectoryPicker({
+        mode: "readwrite",
 
-                let output = [];
-                this.createForm(contentBar.content, output, [], true);
-                document.querySelector("#formInput").append(...output);
-                
-                this.mde = new SimpleMDE({ element: document.getElementById("description")});;
-                sideMenu.simplemde = this.mde;  
-            };
-            reader.readAsText(file);
-        }
+      });
+      var contentBar = document.createElement("YAML-EDITOR");
+      contentBar.callback = this.createForm.bind(this);
+
+      for await (const [key, value] of dirHandle.entries()) {
+        console.log({ key, value });
+        const fileData = await value.getFile();
+        const file = await fileData.text();
+        
+
+        contentBar.createPage(yaml.parse(file), key);
+      
+
+      }
+      document.body.appendChild(contentBar);
+      contentBar.openContent();
+      this.closeSidebar();
+
+      return;
+      let file = this.querySelector('input[name="yaml-file"]').files[0];
+      let reader = new FileReader();
+      reader.onload = (e) => {
+        let contents = e.target.result;
+
+        var contentBar = document.createElement("YAML-EDITOR");
+        contentBar.content = yaml.parse(contents);
+        document.body.appendChild(contentBar);
+        contentBar.openContent();
+        this.closeSidebar();
+
+        
+
+        let output = [];
+        this.createForm(contentBar.content, output, [], true);
+        document.querySelector("#formInput").append(...output);
+        
+        this.mde = new SimpleMDE({ element: document.getElementById("description")});;
+        sideMenu.simplemde = this.mde;  
+      };
+      reader.readAsText(file);
+    }
     toggleShowXML(event) {
-        this.querySelector(".showXML").disabled = event.target.files.length === 0;
+      this.querySelector(".showXML").disabled = event.target.files.length === 0;
+
     }
     closeSidebar(event) {
-        const panel = this.querySelector(".panel-slide");
-        const sideBar = this.querySelector(".sidebar");
-        sideBar.classList.add("opacity-0");
-        sideBar.classList.remove("opacity-100");
-        panel.classList.add("-translate-x-full");
-        panel.classList.remove("translate-x-0");
+      const panel = this.querySelector(".panel-slide");
+      const sideBar = this.querySelector(".sidebar");
+      sideBar.classList.add("opacity-0");
+      sideBar.classList.remove("opacity-100");
+      panel.classList.add("-translate-x-full");
+      panel.classList.remove("translate-x-0");
     }
     openSidebar(event) {
-        const sideBar = this.querySelector(".sidebar");
-        const panel = this.querySelector(".panel-slide");
-        sideBar.classList.add("opacity-100");
-        sideBar.classList.remove("opacity-0");
-        panel.classList.add("translate-x-0");
-        panel.classList.remove("-translate-x-full");
+      const sideBar = this.querySelector(".sidebar");
+      const panel = this.querySelector(".panel-slide");
+      sideBar.classList.add("opacity-100");
+      sideBar.classList.remove("opacity-0");
+      panel.classList.add("translate-x-0");
+      panel.classList.remove("-translate-x-full");
     }
     
     /**
@@ -300,141 +327,6 @@ class sideMenu extends HTMLElement {
 }
 
 customElements.define('side-menu', sideMenu);
-
-
-class yamlEditor extends HTMLElement {
-    constructor() {
-        super();
-    }
-
-    connectedCallback() {
-        this.innerHTML =
-        `
-        <div class="h-full w-full self-center">
-          <div class="flex h-full">
-            <button class="open-contentbar btn btn-circle bg-base-200 self-center mr-2 text-primary hover:text-primary-focus focus:outline-none focus:ring-2 focus:ring-white">
-              <svg xmlns="http://www.w3.org/2000/svg" class="h-8 w-8" fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="2">
-                <path stroke-linecap="round" stroke-linejoin="round" d="M11 17l-5-5m0 0l5-5m-5 5h12" />
-              </svg>
-            </button>
-          </div>
-          <div class="contentbar pointer-events-none opacity-100 relative z-50 ease-in-out duration-500 -translate-x-0;" aria-labelledby="slide-over-title " role="dialog" aria-modal="true">
-            <div class="fixed inset-0 bg-gray-500 bg-opacity-40 transition-opacity">
-            </div>
-            <div class="fixed inset-0 overflow-hidden">
-              <div class="absolute inset-0 overflow-hidden">
-                <!-- translate-x-full -->
-                <div class="content-slide  pointer-events-none fixed right-0 inset-y-0 flex w-1/3 pl-10 transform transition ease-in-out duration-500 sm:duration-700">
-                  <div class="pointer-events-auto relative w-full ">
-                    <div class="flex h-full flex-col overflow-y-scroll bg-white">
-                      <!-- HEADER -->
-                      <div class="p-4 sticky top-0 z-40 bg-white flex items-center justify-between border-b-2">
-                        <button type="button" class="flex items-center gap-2 text-slate-600 hover:text-slate-800 "> 
-                          <svg xmlns="http://www.w3.org/2000/svg" class="h-6 w-6" fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="2">
-                            <path stroke-linecap="round" stroke-linejoin="round" d="M15 19l-7-7 7-7" />
-                          </svg>
-                          <span class="text-xl font-semibold text-center leading-6" id="slide-over-title">YAML EDITOR</span>
-                        </button>
-                        <button type="button" class="close-contentbar rounded-md text-slate-600 hover:text-slate-800 focus:outline-none focus:ring-2 focus:ring-white">
-                          <span class="sr-only">Close panel</span>
-                            <svg class="h-6 w-6" fill="none" viewBox="0 0 24 24" stroke-width="2.5" stroke="currentColor" aria-hidden="true">
-                            <path stroke-linecap="round" stroke-linejoin="round" d="M6 18L18 6M6 6l12 12" />
-                          </svg>
-                        </button>
-                      </div>
-                      <form id="yamlForm" class="pt-4">
-                        <div id="formInput" class="flex flex-col px-4 text-slate-600">
-                        </div>
-                      </form>
-                      <div class="sticky bottom-0 mt-4 z-40 bg-white">
-                        <div class="divider m-0 p-0 h-0"></div>
-                        <div class="flex justify-around border-slate-300 w-full p-4">
-                          <button type="button" class="exitForm text-lg capitalize font-bold bg-slate-200  text-slate-600 px-4 py-2 border-0 rounded-full hover:bg-slate-300 hover:text-slate-900">schließen</button>
-                          <button type="submit" class="saveButton text-lg capitalize font-bold bg-primary text-slate-100 px-4 py-2 border-0 rounded-full hover:bg-primary-focus hover:text-slate-50">Speichern</button>
-                        </div>
-                      </div>
-                    </div>
-                  </div>
-                </div>
-              </div>
-            </div>
-          </div>
-        </div>
-        `; 
-        let openmodal = document.querySelectorAll('.showXML')
-        openmodal.forEach((el) => {
-            el.addEventListener('click',(event) => {
-                event.preventDefault()
-                this.openContent()
-            })
-        })
-        const closeContent = this.querySelectorAll('.close-contentbar')
-        for (let i = 0; i < closeContent.length; i++) {
-            closeContent[i].addEventListener('click', this.closeContent.bind(this));
-        }
-        this.querySelector(".saveButton").addEventListener("click", this.submitForm.bind(this));
-        this.querySelector(".exitForm").addEventListener("click", this.exitContent.bind(this));
-        this.querySelector(".open-contentbar").addEventListener("click", this.openContent.bind(this));
-    }
-
-    get content() {
-        return this._content;
-    }
-    set content(value) {
-        this._content = value;
-    }
-    createSidebar() {
-        const sideBar = document.createElement("SIDE-MENU");
-        document.body.appendChild(sideBar);
-    }
-    openContent() {
-        const contentBar = document.querySelector(".contentbar");
-        const contentpanel = document.querySelector(".content-slide");
-        contentBar.classList.add("opacity-100");
-        contentBar.classList.remove("opacity-0");
-        contentpanel.classList.add("-translate-x-0");
-        contentpanel.classList.remove("translate-x-full");
-    }
-    exitContent() {
-      this.closeContent();
-      setTimeout(() => {
-        document.querySelector("YAML-EDITOR").remove();
-      }, 500);
-
-      
-    }
-
-    closeContent() {
-        const contentBar = document.querySelector(".contentbar");
-        const contentpanel = document.querySelector(".content-slide");
-        contentBar.classList.add("opacity-0");
-        contentBar.classList.remove("opacity-100");
-        contentpanel.classList.add("translate-x-full");
-        contentpanel.classList.remove("-translate-x-0");
-    }
-    submitForm(event) {
-        event.preventDefault();
-
-        var description = document.querySelector("#description");
-        if (description) {
-            sideMenu.simplemde.toTextArea();
-        }
-
-        var fileInput = document.querySelector('input[type="file"]');
-        var fileName = fileInput.files[0].name;
-
-        var form = document.querySelector("#yamlForm");
-        var data = serializeForm(form);
-        var blob = new Blob([yaml.stringify(data)], {type: "text/yaml;charset=utf-8"});
-        var url = document.createElement("A");
-        url.href = URL.createObjectURL(blob);
-        url.download = fileName;
-        url.click();
-
-        this.closeContent();
-    }
-} 
-customElements.define('yaml-editor', yamlEditor);
 
 function update(data, keys, value) {
   if (keys.length === 0) {

@@ -21,5 +21,25 @@
     -moz-appearance: none;
     appearance: none;
     border: none;
-  }        
+
+  }
+  .slide-page{
+    height: 100%;
+    width: 100%;
+  }
+  .active{
+    transform: translate(0px);
+    opacity: 100%;
+  }       
+  .inactive{
+    transform: translate(100%);
+    opacity: 0%;
+    position: absolute;
+  }
+  .leftInactive{
+    transform: translate(-100%);
+    opacity: 0%;
+    position: absolute;
+  }
 }
+
