@@ -120,6 +120,47 @@ class DetailsGroup extends HTMLElement
             </div>
             `
         label.appendChild(button);
+
+        let dialog = document.createElement('DIALOG');
+        dialog.className = 'modal h-screen w-screen z-50 rounded-none';
+        dialog.dataset.name = this.dataset.name;
+
+        let dialogBox = document.createElement('DIV');
+        dialogBox.className = 'modal-box p-5 max-w-3xl';
+        dialog.appendChild(dialogBox);
+
+        let head = document.createElement('H3');
+        head.className = 'text-lg font-bold';
+        head.innerText = `Add ${this.label}`;
+        dialogBox.appendChild(head);
+
+        let content = document.createElement('P');
+        content.className = 'py-4';
+        content.innerText = `Add ${this.label} to the list`;
+        dialogBox.appendChild(content);
+
+        let actions = document.createElement('DIV');
+        actions.className = 'modal-action';
+        dialogBox.appendChild(actions);
+
+        let cancelButton = document.createElement('BUTTON');
+        cancelButton.className = 'btn rounded-full';
+        cancelButton.type = 'button';
+        cancelButton.innerText = 'Cancel';
+        cancelButton.addEventListener('click', (event) => {
+            event.preventDefault();
+            dialog.close();
+        });
+        actions.appendChild(cancelButton);
+
+        button.addEventListener('click', (event) => {
+            event.preventDefault();
+            dialog.showModal();
+        });
+
+        label.appendChild(dialog);
+
+
         this.appendChild(label);
             
     }
