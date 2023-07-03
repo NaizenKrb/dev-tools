@@ -927,7 +927,11 @@ input[type="color"]::-webkit-color-swatch-wrapper {
     background-color: hsl(var(--pf) / var(--tw-bg-opacity));
   }
 
+<<<<<<< Updated upstream
   :where(.menu li:not(.menu-title):not(.disabled) > *:not(ul):not(details):not(.menu-title)):not(.active):hover, :where(.menu li:not(.menu-title):not(.disabled) > details > summary:not(.menu-title)):not(.active):hover {
+=======
+  .menu :where(li:not(.menu-title):not(.disabled) > *:not(ul):not(details):not(.menu-title)):not(.active):hover, .menu :where(li:not(.menu-title):not(.disabled) > details > summary:not(.menu-title)):not(.active):hover {
+>>>>>>> Stashed changes
     cursor: pointer;
     background-color: hsl(var(--bc) / 0.1);
     --tw-text-opacity: 1;
@@ -1793,6 +1797,7 @@ details.collapse summary::-webkit-details-marker {
   color: hsl(var(--nc) / var(--tw-text-opacity));
 }
 
+<<<<<<< Updated upstream
 .modal:not(dialog:not(.modal-open)),
   .modal::backdrop {
   background-color: rgba(0, 0, 0, 0.3);
@@ -1815,6 +1820,8 @@ details.collapse summary::-webkit-details-marker {
   margin-left: calc(0.5rem * calc(1 - var(--tw-space-x-reverse)));
 }
 
+=======
+>>>>>>> Stashed changes
 @keyframes modal-pop {
   0% {
     opacity: 0;
