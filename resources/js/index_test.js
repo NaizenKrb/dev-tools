@@ -7,6 +7,7 @@ import "./components/details-group.js";
 import "./components/points-viewer.js";
 import "./components/rotation-group.js";
 import "./components/yaml-editor.js";
+import "./components/option-picker.js";
 import yaml from "../../node_modules/yaml/browser/index.js"
 //import * as SimpleMDE from "../../node_modules/simplemde/src/js/simplemde.js"
 //import yaml from 'yaml'
@@ -17,56 +18,49 @@ class sideMenu extends HTMLElement {
     connectedCallback() {
         this.innerHTML = `
         <aside class="h-full w-full">
-            <div class="h-full flex ">
-            
-                <button class="open-sidebar btn btn-circle bg-base-200 self-center ml-2 text-primary hover:text-primary-focus focus:outline-none focus:ring-2 focus:ring-white">
-                    <svg xmlns="http://www.w3.org/2000/svg" class="h-8 w-8" fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="2">
-                        <path stroke-linecap="round" stroke-linejoin="round" d="M13 7l5 5m0 0l-5 5m5-5H6" />
-                    </svg>
-                </button>
+          <div class="h-full flex ">
+            <button class="open-sidebar btn btn-circle bg-base-200 self-center ml-2 text-primary hover:text-primary-focus focus:outline-none focus:ring-2 focus:ring-white">
+                <svg xmlns="http://www.w3.org/2000/svg" class="h-8 w-8" fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="2">
+                    <path stroke-linecap="round" stroke-linejoin="round" d="M13 7l5 5m0 0l-5 5m5-5H6" />
+                </svg>
+            </button>
+          </div>
+          <div class="sidebar pointer-events-none opacity-0 relative z-50 ease-in-out duration-500 -translate-x-full;" aria-labelledby="slide-over-title " role="dialog" aria-modal="true">
+            <div class="fixed inset-0 bg-gray-500 bg-opacity-40 transition-opacity">
             </div>
-            <div class="sidebar pointer-events-none opacity-0 relative z-50 ease-in-out duration-500 -translate-x-full;" aria-labelledby="slide-over-title " role="dialog" aria-modal="true">
-                <div class="fixed inset-0 bg-gray-500 bg-opacity-40 transition-opacity">
-                </div>
-                <div class="fixed inset-0 overflow-hidden">
-                    <div class="absolute inset-0 overflow-hidden">
-                        <div class="panel-slide pointer-events-none fixed inset-y-0 flex max-w-full pr-10 transform transition ease-in-out duration-500 -translate-x-full sm:duration-700">
-                            <div class="pointer-events-auto relative w-screen max-w-md">
-                                <div class="absolute right-0 top-0 -mr-8 flex pl-2 pt-4 sm:-mr-10 sm:pl-4">
-                                    <button type="button" class="close-sidebar rounded text-primary hover:text-primary-focus focus:outline-none focus:ring-2 focus:ring-white">
-                                        <span class="sr-only">Close panel</span>
-                                            <svg class="h-6 w-6" fill="none" viewBox="0 0 24 24" stroke-width="2.5" stroke="currentColor" aria-hidden="true">
-                                            <path stroke-linecap="round" stroke-linejoin="round" d="M6 18L18 6M6 6l12 12" />
-                                        </svg>
-                                    </button>
-                                </div>
-                                <div class="flex h-full flex-col overflow-y-scroll bg-white py-6 shadow-xl ">
-                                    <div class="px-4 sm:px-6">
-                                        <h1 class="text-3xl font-bold leading-6  text-slate-600 text-center " id="slide-over-title">Dev Tools</h1>
-                                    </div>
-                                    <div class="divider"></div>
-                                    <div class="relative px-4 sm:px-6">
-                                        <div class="collapse collapse-arrow bg-base-200 rounded">
-                                            <input type="checkbox" class="w-full"/> 
-                                            <div class="collapse-title text-xl font-medium">
-                                                YAML Editor
-                                            </div>
-                                            <div class="collapse-content flex flex-col items-center"> 
-                                                <!-- <input type="file" name="yaml-file" class="yaml-input file-input file-input-primary file-textcolor w-full rounded self-start mb-4" />-->
-                                                <div class="self-end">
-                                                    <button name="" class="showXML btn btn-primary text-slate-100 hover:text-slate-50 font-bold py-1.5 px-4" >
-                                                        Datei bearbeiten
-                                                    </button>
-                                                </div>
-                                            </div>
-                                        </div>
-                                    </div>
-                                </div>
-                            </div>
-                        </div>
+            <div class="fixed inset-0 overflow-hidden">
+              <div class="absolute inset-0 overflow-hidden">
+                <div class="panel-slide pointer-events-none fixed inset-y-0 flex max-w-full pr-10 transform transition ease-in-out duration-500 -translate-x-full sm:duration-700">
+                  <div class="pointer-events-auto relative w-screen max-w-md">
+                    <div class="absolute right-0 top-0 -mr-8 flex pl-2 pt-4 sm:-mr-10 sm:pl-4">
+                      <button type="button" class="close-sidebar rounded-none text-primary hover:text-primary-focus focus:outline-none focus:ring-2 focus:ring-white">
+                        <span class="sr-only">Close panel</span>
+                          <svg class="h-6 w-6" fill="none" viewBox="0 0 24 24" stroke-width="2.5" stroke="currentColor" aria-hidden="true">
+                          <path stroke-linecap="round" stroke-linejoin="round" d="M6 18L18 6M6 6l12 12" />
+                        </svg>
+                      </button>
                     </div>
+                    <div class="flex h-full flex-col overflow-y-scroll bg-white py-6 shadow-xl ">
+                      <div class="px-4 sm:px-6">
+                        <h1 class="text-3xl font-bold leading-6  text-slate-600 text-center " id="slide-over-title">Dev Tools</h1>
+                      </div>
+                      <div class="divider"></div>
+                      <div class="flex flex-col relative px-4 sm:px-6 bg-slate-100 mx-4 rounded-none p-4">
+                        <div class="text-xl font-medium border-b-2 text-center">
+                          YAML Editor
+                        </div>
+                        <div class="self-end mt-2 w-full">
+                          <button name="" class="showXML btn btn-primary rounded-none w-full text-slate-100 hover:text-slate-50 font-bold py-1.5 px-4" >
+                            Dateien bearbeiten
+                          </button>
+                        </div>
+                      </div>
+                    </div>
+                  </div>
                 </div>
+              </div>
             </div>
+          </div>
         </aside>
         `;
         
@@ -74,26 +68,27 @@ class sideMenu extends HTMLElement {
         this.querySelector(".close-sidebar").addEventListener("click", this.closeSidebar.bind(this));
         this.querySelector(".open-sidebar").addEventListener("click", this.openSidebar.bind(this));
         this.simplemde;
+
     }
 
     async showFile(event) {
-      const dirHandle = await window.showDirectoryPicker({
+      this.dirHandle = await window.showDirectoryPicker({
         mode: "readwrite",
-
       });
+
+      
       var contentBar = document.createElement("YAML-EDITOR");
       contentBar.callback = this.createForm.bind(this);
+      contentBar.dirHandle = this.dirHandle;
 
-      for await (const [key, value] of dirHandle.entries()) {
-        console.log({ key, value });
+      for await (const [key, value] of this.dirHandle.entries()) {
         const fileData = await value.getFile();
         const file = await fileData.text();
-        
-
+        console.log(file, yaml.parse(file));
         contentBar.createPage(yaml.parse(file), key);
       
-
       }
+
       document.body.appendChild(contentBar);
       contentBar.openContent();
       this.closeSidebar();
@@ -110,14 +105,10 @@ class sideMenu extends HTMLElement {
         contentBar.openContent();
         this.closeSidebar();
 
-        
-
         let output = [];
         this.createForm(contentBar.content, output, [], true);
         document.querySelector("#formInput").append(...output);
         
-        this.mde = new SimpleMDE({ element: document.getElementById("description")});;
-        sideMenu.simplemde = this.mde;  
       };
       reader.readAsText(file);
     }
@@ -178,10 +169,9 @@ class sideMenu extends HTMLElement {
      * Build Field Elements
      */
     createForm(content, output, prefix = [], divider = false, color = "bg-base-200") {
-      let excludes = ["pages", "siteMap", "meta", "alternatives", "points", "matterport", "locations", "interactables", "rotation"]
+      let excludes = ["pages", "siteMap", "meta", "alternatives", "points", "matterport", "locations", "interactables", "rotation", "defaultPage"]
         for (const [key, name, value] of this.loop(content, excludes, prefix)) {
             let inputType = "text";
-
             if(key === "activeColor"){
               let label = document.createElement('LABEL');
               label.innerHTML = `
@@ -190,7 +180,6 @@ class sideMenu extends HTMLElement {
                   </span>
                   <color-picker value="${value}" name="${name}"></color-picker>
                   `
-
               output.push(label);
             }
             else if(key === "interactables" || key === "alternatives" || key === "meta" || key === "locations"){
@@ -211,46 +200,51 @@ class sideMenu extends HTMLElement {
               }
               let detailsGroup = document.createElement('DETAILS-GROUP');
               detailsGroup.label = key;
-              detailsGroup.name = name;
+              detailsGroup.dataset.name = name;
               detailsGroup.color = color;
               detailsGroup.details = value;
               detailsGroup.detailsLabelKey = labelKey;
               detailsGroup.callback = this.createForm.bind(this);
-
               output.push(detailsGroup);
             }
-
             else if(key === "points"){
               let detailsGroup = document.createElement('POINTS-VIEWER');
               detailsGroup.label = key;
-              detailsGroup.name = name;
+              detailsGroup.dataset.name = name;
               detailsGroup.color = color;
               detailsGroup.points = value;
               detailsGroup.callback = this.createForm.bind(this);
-
               output.push(detailsGroup);
+            }
+            else if(key === "defaultPage"){
+              color = "bg-base-200"
+              let element = document.createElement('OPTION-PICKER');
+              element.label = key;
+              element.dataset.name = name;
+              element.dataset.value = value;
+              element.pages = content.pages;
+              element.color = color;
+              output.push(element);
             }
             else if(key === "rotation"){
               let rotationGroup = document.createElement('ROTATION-GROUP');
               rotationGroup.className = "w-full";
               rotationGroup.label = key;
-              rotationGroup.name = name;
+              rotationGroup.dataset.name = name;
               rotationGroup.color = color;
               rotationGroup.x = value[0];
               rotationGroup.y = value[1];
-
               output.push(rotationGroup);
             }
             else if(key === "pages"){
               let element = document.createElement('MULTI-BUTTONS');
               element.buttons = value;
-              element.name = name;
-
+              element.dataset.name = name;
               output.push(element);
             }
             else if(key === "description") {
               let markdownDescription = document.createElement('MARKDOWN-DESCRIPTION');
-              markdownDescription.name = name;
+              markdownDescription.name = name
               markdownDescription.value = value;
               output.push(markdownDescription);
             }
@@ -266,7 +260,6 @@ class sideMenu extends HTMLElement {
               let temp = [];
               this.createForm(value, temp, [name]);
               element.append(...temp);
-
               output.push(element);
             }
             else if(key === "siteMap"){
@@ -281,7 +274,6 @@ class sideMenu extends HTMLElement {
               let temp = [];
               this.createForm(value, temp, [name]);
               element.append(...temp);
-
               output.push(element);
             }
             else{
@@ -299,10 +291,10 @@ class sideMenu extends HTMLElement {
               else if(key==="order"){
                 inputType = "number";
               }
-              else if(key === "defaultPage"){
-                color = "bg-base-200"
+              else if(key === "visible" || key === "current"){
+                inputType = "checkbox";
+                classList = "toggle";
               }
-              
               inputField.name = name;
               inputField.value = value;
               inputField.className = classList;
@@ -310,7 +302,6 @@ class sideMenu extends HTMLElement {
               inputField.inputType = inputType;
               inputField.color = color;
               output.push(inputField);
-         
          }
          if(divider){
           output.push(this.createDivider());
@@ -318,56 +309,10 @@ class sideMenu extends HTMLElement {
         }
       return output
     }
-
     createDivider() {
       let divider = document.createElement('DIV');
       divider.className = 'divider';
       return divider;
     }
 }
-
 customElements.define('side-menu', sideMenu);
-
-function update(data, keys, value) {
-  if (keys.length === 0) {
-    // Leaf node
-    return value;
-  }
-  let key = keys.shift();
-  if (!key) {
-    data = data || [];
-    if (Array.isArray(data)) {
-      key = data.length;
-    }
-  }
-  // Try converting key to a numeric value
-  let index = +key;
-  if (!isNaN(index)) {
-    // We have a numeric index, make data a numeric array
-    // This will not work if this is a associative array 
-    // with numeric keys
-    data = data || [];
-    key = index;
-  }
-  // If none of the above matched, we have an associative array
-  data = data || {};
-
-  let val = update(data[key], keys, value);
-  data[key] = val;
-
-  return data;
-}
-
-function serializeForm(form) {
-  return Array.from((new FormData(form)).entries())
-    .reduce((data, [field, value]) => {
-      let [_, prefix, keys] = field.match(/^([^\[]+)((?:\[[^\]]*\])*)/);
-
-      if (keys) {
-        keys = Array.from(keys.matchAll(/\[([^\]]*)\]/g), m => m[1]);
-        value = update(data[prefix], keys, value);
-      }
-      data[prefix] = value;
-      return data;
-    }, {});
-}

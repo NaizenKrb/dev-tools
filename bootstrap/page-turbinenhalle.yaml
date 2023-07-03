@@ -1,42 +1,41 @@
-
 id: turbinenhalle
 key: U21JbxBgnWa
 order: 6
 visible: true
-
 title: Turbinenhalle
-description:
-
+description: ""
 config:
-    runtime:
-        hide_unknown: false
-
+  runtime:
+    hide_unknown: ""
 alternatives:
   - id: steampunk
     title: Steampunk
-    thumbnail: "icons/steampunk-flavor.jpg"
+    thumbnail: icons/steampunk-flavor.jpg
   - id: weinmesse
     title: Weinmesse
-    thumbnail: "icons/weinmesse-flavor.png"
+    thumbnail: icons/weinmesse-flavor.png
   - id: sonepar
     title: Sonepar
-    thumbnail: "icons/sonepar.jpg"
-
+    thumbnail: icons/sonepar.jpg
 points:
-    overview:
-        title: Raumübersicht
-        children:
-            - title: Eingang
-              sweep: e7dbb97e372c43ffbf0e046b97ce4385
-              rotation: [-6.20, -88.91]
-              thumbnail: "icons/turbinenhalle_eingang.jpg"
-
-            - title: Ansicht Turbinen
-              sweep: 756b654923b14114997ee5a8d971cfd8
-              rotation: [-7.98, -90.32]
-              thumbnail: "icons/turbinenhalle_ansicht_turbinen.jpg"
-
-            - title: Zwischen den Turbinen
-              sweep: fc517c26521045cab854730525a61002
-              rotation: [-11.00, 21.60]
-              thumbnail: "icons/turbinenhalle_zwischen_den_turbinen.jpg"
+  overview:
+    title: Raumübersicht
+    children:
+      - title: Eingang
+        sweep: e7dbb97e372c43ffbf0e046b97ce4385
+        rotation:
+          - -6.2
+          - -88.91
+        thumbnail: icons/turbinenhalle_eingang.jpg
+      - title: Ansicht Turbinen
+        sweep: 756b654923b14114997ee5a8d971cfd8
+        rotation:
+          - -7.98
+          - -90.32
+        thumbnail: icons/turbinenhalle_ansicht_turbinen.jpg
+      - title: Zwischen den Turbinen
+        sweep: fc517c26521045cab854730525a61002
+        rotation:
+          - -11
+          - 21.6
+        thumbnail: icons/turbinenhalle_zwischen_den_turbinen.jpg

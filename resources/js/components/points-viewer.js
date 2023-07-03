@@ -19,30 +19,6 @@ class PointsViewer extends HTMLElement
     /**
      * Magic Getter / Setter
      */
-    get value() {
-        return this.getAttribute('value');
-    }
-    set value(value) {
-        if (!value || value === false || value === null) {
-            this.removeAttribute('value');
-        } else {
-            this.setAttribute('value', value);
-        }
-    }
-
-    /**
-     * Magic Getter / Setter
-     */
-    get name() {
-        return this.getAttribute('name');
-    }
-    set name(value) {
-        if (!value || value === false || value === null) {
-            this.removeAttribute('name');
-        } else {
-            this.setAttribute('name', value);
-        }
-    }
     get label() {
         return this.getAttribute('label');
     }
@@ -114,16 +90,16 @@ class PointsViewer extends HTMLElement
 
 
             let input = document.createElement('INPUT-FIELD');
-            input.className = 'w-full textarea rounded mb-2';
+            input.className = 'w-full textarea rounded-none mb-2';
             input.color = "bg-base-200";
 
             input.label = key;
-            input.name = this.name + `[${key}][title]`;
+            input.name = this.dataset.name + `[${key}][title]`;
             input.value = value.title;
             label.appendChild(input);
             contentDiv.appendChild(input);
             let innerDiv = document.createElement('DIV');
-            innerDiv.className = 'divide-y-2 rounded overflow-hidden my-4';
+            innerDiv.className = 'divide-y-2 rounded-none overflow-hidden my-4';
             contentDiv.appendChild(innerDiv);
     
             value.children.forEach((data, idx) => {
@@ -138,13 +114,14 @@ class PointsViewer extends HTMLElement
 
                 let content = document.createElement('DIV');
                 content.className = 'collapse-content';
-                content.append(...this.callback(data, [], [this.name, key, "children", idx], false, this.color));
+                content.append(...this.callback(data, [], [this.dataset.name, key, "children", idx], false, this.color));
                 details.appendChild(content);
           });
         });
         let button = document.createElement('BUTTON');
-        button.className = 'addPoints flex btn btn-primary w-fit min-h-fit h-fit justify-start p-0 rounded mt-2 hover:bg-primary-focus';
+        button.className = 'addPoints flex btn btn-primary w-fit min-h-fit h-fit justify-start p-0 rounded-none mt-2 hover:bg-primary-focus';
         button.type = 'button';
+        button.dataset.name = this.dataset.name;
         button.innerHTML = 
             `
             <div class=" p-2 flex items-center justify-between text-slate-100">
@@ -155,37 +132,49 @@ class PointsViewer extends HTMLElement
                     Add ${this.label}
                 </div>
             </div>
-            `
+            `;
+
+        let dialog = document.createElement('DIALOG');
+        dialog.className = 'modal h-screen w-screen z-50 rounded-none';
+        dialog.dataset.name = this.dataset.name;
+
+        let dialogBox = document.createElement('DIV');
+        dialogBox.className = 'modal-box p-5 max-w-3xl';
+        dialog.appendChild(dialogBox);
+
+        let head = document.createElement('H3');
+        head.className = 'text-lg font-bold';
+        head.innerText = `Add ${this.label}`;
+        dialogBox.appendChild(head);
+
+        let content = document.createElement('P');
+        content.className = 'py-4';
+        content.innerText = `Add ${this.label} to the list`;
+        dialogBox.appendChild(content);
+
+        let actions = document.createElement('DIV');
+        actions.className = 'modal-action';
+        dialogBox.appendChild(actions);
+
+        let cancelButton = document.createElement('BUTTON');
+        cancelButton.className = 'btn rounded-full';
+        cancelButton.type = 'button';
+        cancelButton.innerText = 'Cancel';
+        cancelButton.addEventListener('click', (event) => {
+            event.preventDefault();
+            dialog.close();
+        });
+        actions.appendChild(cancelButton);
+
+
+        label.appendChild(dialog);
+
 
         button.addEventListener('click', (event) => {
-            let label = document.createElement('LABEL');
-            label.className = 'flex flex-col';
-
-            let span = document.createElement('SPAN');
-            span.className = 'font-bold text-lg mb-1 capitalize';
-            span.innerText = "New Point";
-            label.appendChild(span);
-
-            let details = document.createElement('DETAILS');
-            details.className = 'collapse collapse-arrow bg-base-200 rounded-none';
-            label.appendChild(details);
-
-            let summary = document.createElement('SUMMARY');
-            summary.className = 'collapse-title text-xl font-medium';
-            summary.innerText = "New Point";
-            details.appendChild(summary);
-
-            let content = document.createElement('DIV');
-            content.className = 'collapse-content';
-            content.append(...this.callback({}, [], [this.name, "new", "children", 0], true, this.color));
-            details.appendChild(content);
-
-            this.appendChild(label);
-
-
+            event.preventDefault();
+            dialog.showModal();
         });
 
-        
         label.appendChild(button);
         this.appendChild(label);
 

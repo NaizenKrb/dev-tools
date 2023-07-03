@@ -1,43 +1,48 @@
-
 id: halle4
 key: Y6Jxa3dvywL
 order: 5
 visible: true
-
 title: Halle 4
-description: |
-    Halle 4 verfügt über eine Zuschauertribüne mit bis zu 800 Sitzplätzen in Reihe, eine fest installierte Grundbühne, zusätzliche mobile Bühnenelemente sowie eine ortsfeste Obermaschinerie.
-    Mit einer Grundfläche von circa 1.750 Quadratmetern ist die Halle 4 die kleinste Halle der KulturKathedrale Jahrhunderthalle Bochum.
-    Näher als hier kann das Ereignis dem Zuschauer kaum kommen. Konzerte, Shows und Comedy sind dem Besucher hautnah.
+description: >
+  Halle 4 verfügt über eine Zuschauertribüne mit bis zu 800 Sitzplätzen in
+  Reihe, eine fest installierte Grundbühne, zusätzliche mobile Bühnenelemente
+  sowie eine ortsfeste Obermaschinerie.
 
+  Mit einer Grundfläche von circa 1.750 Quadratmetern ist die Halle 4 die kleinste Halle der KulturKathedrale Jahrhunderthalle Bochum.
+
+  Näher als hier kann das Ereignis dem Zuschauer kaum kommen. Konzerte, Shows und Comedy sind dem Besucher hautnah.
 alternatives:
   - id: steampunk
     title: Steampunk
-    thumbnail: "icons/steampunk-flavor.jpg"
+    thumbnail: icons/steampunk-flavor.jpg
   - id: weinmesse
     title: Weinmesse
-    thumbnail: "icons/weinmesse-flavor.png"
-
+    thumbnail: icons/weinmesse-flavor.png
 points:
-    overview:
-        title: Raumübersicht
-        children:
-            - title: Queransicht Ost
-              sweep: 9b460e2cb89a439b93fdb4e91a26c920
-              rotation: [1.95, 133.85]
-              thumbnail: "icons/halle_4_queransicht_ost.jpg"
-
-            - title: Längsansicht Nord
-              sweep: d7d925b7e6c94aab805239c2320c22f6
-              rotation: [2.40, -68.64]
-              thumbnail: "icons/halle_4_längsansicht_nord.jpg"
-
-            - title: Längsansicht Süd
-              sweep: 11a01d8c7c0842808afae71d31f9fed2
-              rotation: [0.04, 147.82]
-              thumbnail: "icons/halle_4_längsansicht_süd.jpg"
-
-            - title: Queransicht West
-              sweep: 9fbba430978c45d8a2396084a8bec76a
-              rotation: [-1.62, -101.46]
-              thumbnail: "icons/halle_4_queransicht_west.jpg"
+  overview:
+    title: Raumübersicht
+    children:
+      - title: Queransicht Ost
+        sweep: 9b460e2cb89a439b93fdb4e91a26c920
+        rotation:
+          - 1.95
+          - 133.85
+        thumbnail: icons/halle_4_queransicht_ost.jpg
+      - title: Längsansicht Nord
+        sweep: d7d925b7e6c94aab805239c2320c22f6
+        rotation:
+          - 2.4
+          - -68.64
+        thumbnail: icons/halle_4_längsansicht_nord.jpg
+      - title: Längsansicht Süd
+        sweep: 11a01d8c7c0842808afae71d31f9fed2
+        rotation:
+          - 0.04
+          - 147.82
+        thumbnail: icons/halle_4_längsansicht_süd.jpg
+      - title: Queransicht West
+        sweep: 9fbba430978c45d8a2396084a8bec76a
+        rotation:
+          - -1.62
+          - -101.46
+        thumbnail: icons/halle_4_queransicht_west.jpg

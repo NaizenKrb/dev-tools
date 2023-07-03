@@ -1,76 +1,62 @@
-
 title: Jahrhunderthalle Bochum
 website: https://www.jahrhunderthalle-bochum.de
-logo: "/images/logo-jahrhunderthalle.png"
-
-matterport: 
-    key: 6nkm88gsxm7raddnhnwnsdm5c
-    url: https://www.jahrhunderthalle-bochum.de/virtual/
-
+logo: /images/logo-jahrhunderthalle.png
+matterport:
+  key: 6nkm88gsxm7raddnhnwnsdm5c
+  url: https://www.jahrhunderthalle-bochum.de/virtual/
 meta:
-    - label: Impressum
-      url: https://www.bochum-veranstaltungen.de/impressum
-    - label: Datenschutz
-      url: https://www.bochum-veranstaltungen.de/datenschutz
-
+  - label: Impressum
+    url: https://www.bochum-veranstaltungen.de/impressum
+  - label: Datenschutz
+    url: https://www.bochum-veranstaltungen.de/datenschutz
 defaultPage: foyer
 pages:
-    dampfgeblaesehaus: page-dampfgeblaesehaus.yaml
-    foyer: page-foyer.yaml
-    halle-1: page-halle1.yaml
-    halle-3: page-halle3.yaml
-    halle-4: page-halle4.yaml
-    turbinenhalle: page-turbinenhalle.yaml
-    unterwelt: page-unterwelt.yaml
-    steampunk: page-steampunk.yaml
-    weinmesse: page-weinmesse.yaml
-    sonepar: page-sonepar.yaml
-
+  dampfgeblaesehaus: page-dampfgeblaesehaus.yaml
+  foyer: page-foyer.yaml
+  halle-1: page-halle1.yaml
+  halle-3: page-halle3.yaml
+  halle-4: page-halle4.yaml
+  turbinenhalle: page-turbinenhalle.yaml
+  unterwelt: page-unterwelt.yaml
+  steampunk: page-steampunk.yaml
+  weinmesse: page-weinmesse.yaml
+  sonepar: page-sonepar.yaml
 locations:
-    - title: Jahrhunderthalle Bochum
-      url: https://www.jahrhunderthalle-bochum.de/virtual
-      image: "images/menu-preview-jahrhunderthalle-bochum.png"
-      logo: "images/logos/jhh.svg"
-      current: true
-
-    - title: RuhrCongress Bochum
-      url: https://www.ruhrcongress-bochum.de/virtual
-      image: "images/menu-preview-ruhrcongress-bochum.png"
-      logo: "images/logos/rcg.svg"
-
-    - title: Freilichtbühne Wattenscheid
-      url: https://www.freilichtbuehne-wattenscheid.de/virtual
-      image: "images/menu-preview-freilichtbuehne-wattenscheid.png"
-      logo: "images/logos/flb.svg"
-
+  - title: Jahrhunderthalle Bochum
+    url: https://www.jahrhunderthalle-bochum.de/virtual
+    image: images/menu-preview-jahrhunderthalle-bochum.png
+    logo: images/logos/jhh.svg
+    current: true
+  - title: RuhrCongress Bochum
+    url: https://www.ruhrcongress-bochum.de/virtual
+    image: images/menu-preview-ruhrcongress-bochum.png
+    logo: images/logos/rcg.svg
+  - title: Freilichtbühne Wattenscheid
+    url: https://www.freilichtbuehne-wattenscheid.de/virtual
+    image: images/menu-preview-freilichtbuehne-wattenscheid.png
+    logo: images/logos/flb.svg
 siteMap:
-  path: "objects/map.json"
-  activeColor: "0xf49100"
+  path: objects/map.json
+  activeColor: "#f49100"
   interactables:
-    - object: "Halle_1"
+    - object: Halle_1
       animationName: halle1_hover
       link: halle-1/
-
-    - object: "Halle_3"
+    - object: Halle_3
       animationName: halle3_hover
       link: halle-3/
-
-    - object: "Halle_4"
+    - object: Halle_4
       animationName: halle4_hover
       link: halle-4/
-
     - object: Foyer
       animationName: foyer_hover
       link: foyer/
-
     - object: Turbinenhalle
       animationName: turbinenhalle_hover
       link: turbinenhalle/
-
     - object: Dampfgebläsehaus
       animationName: dampfgeblaesehaus_hover
       link: dampfgeblaesehaus/
-
     - object: Cube1
       animationName: cube1_hover
       link: unterwelt/

@@ -16,23 +16,6 @@ class InputField extends HTMLElement
         super();
     }
 
-    /**
-     * Magic Getter / Setter
-     */
-    get value() {
-        return this.getAttribute('value');
-    }
-    set value(value) {
-        if (!value || value === false || value === null) {
-            this.removeAttribute('value');
-        } else {
-            this.setAttribute('value', value);
-        }
-    }
-
-    /**
-     * Magic Getter / Setter
-     */
     get name() {
         return this.getAttribute('name');
     }
@@ -43,6 +26,36 @@ class InputField extends HTMLElement
             this.setAttribute('name', value);
         }
     }
+
+    /**
+     * Magic Getter / Setter
+     */
+    get value() {
+        if (this.inputType !== 'file' || !this.querySelector('input')) {
+            return this.getAttribute('value');
+        } else {
+            let value = this.querySelector('input').value;
+            if (value instanceof File && value.size > 0) {
+                return value;
+            } else {
+                return this.querySelector('input').dataset.oldValue;
+            }
+        }
+    }
+    set value(value) {
+        if (!value || value === false || value === null) {
+            this.removeAttribute('value');
+        } else {
+            this.setAttribute('value', value);
+        }
+        if (this.querySelector('input')) {
+            this.querySelector('input').value = (value || '');
+        }
+    }
+
+    /**
+     * Magic Getter / Setter
+     */
     get label() {
         return this.getAttribute('label');
     }
@@ -116,33 +129,56 @@ class InputField extends HTMLElement
      * Render Component
      */
     render() {
-      let label = document.createElement('LABEL');
-      label.className = 'flex flex-col';
+        let label = document.createElement('LABEL');
+        label.className = 'flex flex-col';
 
-      let span = document.createElement('SPAN');
-      span.className = 'text-lg font-semibold mb-1 capitalize';
-      span.innerText = this.label;
+        let span = document.createElement('SPAN');
+        span.className = 'text-lg font-semibold mb-1 capitalize';
+        span.innerText = this.label;
 
 
-      let input = document.createElement('INPUT');
-      input.name = this.name;
-      input.type = this.inputType || 'text';
+        let input = document.createElement('INPUT');
+        input.name = this.name;
+        input.type = this.inputType || 'text';
 
-      if(this.inputType == 'file'){
-        this.value = '';
-      }
-      input.value = this.value || '';
-      input.className = this.className + ' ' + this.color + ' rounded';
+        if(this.inputType == 'file'){
+            let hidden = document.createElement('INPUT');
+            hidden.name = this.name;
+            hidden.type = 'hidden';
+            hidden.value = this.value || '';
+            label.appendChild(hidden);
+            input.dataset.oldValue = this.value;
+        }
+        else if(this.inputType == 'checkbox'){;
+            if(this.value == 'true'){
+                input.checked = true;
+            }
+            else{
+                input.checked = false;
+                input.dataset.oldValue = false;
+            }
+        }
 
-      label.appendChild(span);
-      label.appendChild(input);
+        if(this.inputType !== 'file'){
+            input.value = this.value || '';
+        }
 
-      this.appendChild(label);
+        if(this.inputType == 'checkbox'){
+            input.className = this.className;
+        }
+        else{
+            input.className = this.className + ' ' + this.color + ' ' + 'rounded-none';
+        }
+            
+
+        label.appendChild(span);
+        label.appendChild(input);
+
+        this.appendChild(label);
     }
     onClick(event){
 
     }
 }
-
 
 window.customElements.define('input-field', InputField);

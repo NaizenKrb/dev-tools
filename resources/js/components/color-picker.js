@@ -101,14 +101,14 @@ class ColorPicker extends HTMLElement
      */
     render() {
         let inputGroup = document.createElement('DIV');
-        inputGroup.className = `flex h-fit w-fit textarea bg-base-200 p-0 items-center rounded ${this.classNames}`;
+        inputGroup.className = `flex h-fit w-fit textarea bg-base-200 p-0 items-center rounded-none ${this.classNames}`;
 
         let inputText = this.inputText = document.createElement('INPUT');
         inputText.type = 'text';
         inputText.pattern = "#[0-9A-Fa-f]{6}";
         inputText.value = this.value;
         inputText.name = this.name;
-        inputText.className= 'color-text textarea bg-base-200 rounded h-full p-2 focus:ring-1';
+        inputText.className= 'color-text textarea bg-base-200 rounded-none h-full p-2 focus:ring-1';
         inputText.addEventListener('input', this.onChange.bind(this));
         inputGroup.appendChild(inputText);
         
@@ -120,7 +120,7 @@ class ColorPicker extends HTMLElement
         inputColor.id = 'color-picker';
         
         inputColor.value = this.value;
-        inputColor.className = 'rounded overflow-hidden colorpick color-input h-8 w-8';
+        inputColor.className = 'rounded-none overflow-hidden colorpick color-input h-8 w-8';
         inputColor.addEventListener('input', this.onChange.bind(this));
         div.appendChild(inputColor)
         inputGroup.appendChild(div);

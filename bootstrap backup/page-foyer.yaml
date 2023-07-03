@@ -1,0 +1,90 @@
+
+id: foyer
+key: m7HTUc7bsDW
+order: 2
+visible: true
+
+title: Foyer
+description: |
+    Hell. Klar. Freundlich. Das Foyer der Jahrhunderthalle Bochum bietet Ihnen und Ihren Gästen Platz für Empfänge und (After-Show-) Partys.
+    Die Anordnung der zwei Bars sowie der Info- und Kassentheken verleiht dem Foyer im Erdgeschoss eine vollkommene Symmetrie.
+    Jeweils zwei Freitreppen und Aufzüge erschließen eine luftige Galerieebene im Obergeschoss. Hier steht der Gast buchstäblich über der Betriebsamkeit.
+    Dazu farblich wechselndes Licht, das durch ein Lichtband am Boden auf Wand- und Deckenflächen projiziert wird. Ein Raum für jede (Farb)Stimmung.
+
+    - **Grundfläche Erdgeschoss:** 1.024,5 qm
+    - **Grundfläche Obergeschoss:** 936,8 qm
+    - **Deckenhöhe Erdgeschoss:** 7,10 m
+    - **Deckenhöhe Obergeschoss:** 4,43 m
+
+alternatives:
+  - id: steampunk
+    title: Steampunk
+    thumbnail: "icons/steampunk-flavor.jpg"
+  - id: weinmesse
+    title: Weinmesse
+    thumbnail: "icons/weinmesse-flavor.png"
+
+points:
+  entry:
+    title: Eingangsebene
+    children:
+      - title: Eingangsebene Empfang
+        sweep: bad5e1976e644d33904d1caa6f52e698
+        rotation: [-3.06, -131.57]
+        thumbnail: "icons/foyer_eingangsebene_empfang.jpg"
+
+      - title: Eingangsebene Mitte
+        sweep: a86e36623ff141ac8d8d248b32dfc06a
+        rotation: [-4.56, -176.00]
+        thumbnail: "icons/foyer_eingangsebene_mitte.jpg"
+
+      - title: Längsansicht West
+        sweep: b2ec27f0ce7c4f8fbee43c4217d8d168
+        rotation: [-2.63, -106.00]
+        thumbnail: "icons/foyer_längsansicht_west.jpg"
+
+      - title: Längsansicht Ost
+        sweep: eb2d39785f7c4586a5123e94e1fc1353
+        rotation: [-0.39, -102.32]
+        thumbnail: "icons/foyer_längsansicht_ost.jpg"
+
+  foyer:
+    title: Foyer
+    children:
+      - title: Foyer Obergeschoss
+        sweep: 09304d637af14d05ab84c0ce0b72c581
+        rotation: [-5.79, -15540]
+        thumbnail: "icons/foyer_obergeschoss.jpg"
+
+      - title: Foyer OG Aufenthalt
+        sweep: f6173a2f256d4cfba427d93fbbac4e31
+        rotation: [-1.90, -697.00]
+        thumbnail: "icons/foyer_og_aufenthalt.jpg"
+
+      - title: Foyer OG Terasse
+        sweep: 6281872d6f5643af975ae36d84399973
+        rotation: [-3.28, -65.18]
+        thumbnail: "icons/foyer_og_terasse.jpg"
+
+      - title: Foyer OG Theke
+        sweep: ac800d6a12e1480a8de971f929dae46a
+        rotation: [-7.44, -61.650]
+        thumbnail: "icons/foyer_og_theke.jpg"
+
+  overview:
+    title: Garderobe
+    children:
+      - title: Garderobe
+        sweep: 3371b71c8a4d49718ecdabb885fec5aa
+        rotation: [-0.84, -9.70]
+        thumbnail: "icons/foyer_garderobe.jpg"
+
+      - title: Garderobe Längsansicht Ost
+        sweep: d44a98f8171a476c8018c687fe072aba
+        rotation: [-2.39, 75.00]
+        thumbnail: "icons/foyer_garderobe_längsansicht_ost.jpg"
+
+      - title: Garderobe Längsansicht West
+        sweep: b592cf4d3d28408fbbc1a275fe2a9cb5
+        rotation: [-1.45, -92.52]
+        thumbnail: "icons/foyer_garderobe_längsansicht_west.jpg"

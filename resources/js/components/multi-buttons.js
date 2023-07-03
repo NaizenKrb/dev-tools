@@ -15,35 +15,6 @@ class MultiButtons extends HTMLElement
     constructor() {
         super();
     }
-
-    /**
-     * Magic Getter / Setter
-     */
-    get value() {
-        return this.getAttribute('value');
-    }
-    set value(value) {
-        if (!value || value === false || value === null) {
-            this.removeAttribute('value');
-        } else {
-            this.setAttribute('value', value);
-        }
-    }
-
-    /**
-     * Magic Getter / Setter
-     */
-    get name() {
-        return this.getAttribute('name');
-    }
-    set name(value) {
-        if (!value || value === false || value === null) {
-            this.removeAttribute('name');
-        } else {
-            this.setAttribute('name', value);
-        }
-    }
-
     /**
      * Attribute Changed Callback
      * @param {*} property 
@@ -86,7 +57,7 @@ class MultiButtons extends HTMLElement
 
       let span = document.createElement('SPAN');
       span.className = `font-bold text-lg mb-1 capitalize`;
-      span.innerText = this.name;
+      span.innerText = this.dataset.name;
       innerElement.appendChild(span);
       
       let buttonElement = document.createElement('DIV');
@@ -95,18 +66,25 @@ class MultiButtons extends HTMLElement
 
       Object.entries(this.buttons).forEach(([key, value]) => {
         let button = document.createElement('PAGE-BUTTON');
+        let hidden = document.createElement('INPUT');
+        hidden.type = 'hidden';
+        hidden.name = this.dataset.name + `[${key}]`;
+        hidden.value = value;
+        buttonElement.appendChild(hidden);
+
         button.type = 'button';
-        button.name = key;
-        button.value = value;
+        button.dataset.name = key;
+        button.dataset.value = value;
         button.onClick = (() => {
-            this.closest('yaml-editor').switchPage(value, key);
+            const editor = this.closest('yaml-editor');
+            editor.switchPage.call(editor, value, key);
         });
         buttonElement.appendChild(button);
       });
 
       let addButton = document.createElement('BUTTON');
       addButton.type = 'button';
-      addButton.className = `addPage flex btn btn-primary w-fit min-h-fit h-fit justify-start p-0 rounded mt-2 hover:bg-primary-focus`;
+      addButton.className = `addPage flex btn btn-primary w-fit min-h-fit h-fit justify-start p-0 rounded-none mt-2 hover:bg-primary-focus`;
       addButton.innerHTML = `
             <div class=" p-2 flex items-center justify-between text-slate-100">
               <svg xmlns="http://www.w3.org/2000/svg" class="h-4 w-4" fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="2.5">

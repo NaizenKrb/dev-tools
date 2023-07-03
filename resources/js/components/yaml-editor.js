@@ -1,10 +1,12 @@
-class yamlEditor extends HTMLElement {
+import yaml from "../../../node_modules/yaml/browser/index.js"
+
+class YamlEditor extends HTMLElement {
     constructor() {
         super();
 
         this.formInput = document.createElement('DIV');
         this.formInput.id = "formInput";
-        this.formInput.className = "flex flex-col px-4 text-slate-600 transition-all relative h-full w-full overflow-hidden";
+        this.formInput.className = "flex flex-row flex-nowrap text-slate-600 transition-all relative h-full w-full overflow-hidden";
 
         this.headerButton = document.createElement('BUTTON');
         this.headerButton.type = 'button';
@@ -18,7 +20,7 @@ class yamlEditor extends HTMLElement {
 
         this.closeContentButton = document.createElement('BUTTON');
         this.closeContentButton.type = 'button';
-        this.closeContentButton.className = "close-contentbar rounded-md text-slate-600 hover:text-slate-800 focus:outline-none focus:ring-2 focus:ring-white";
+        this.closeContentButton.className = "close-contentbar rounded-none text-slate-600 hover:text-slate-800 focus:outline-none focus:ring-2 focus:ring-white";
         this.closeContentButton.innerHTML = `
           <span class="sr-only">Close panel</span>
             <svg class="h-6 w-6" fill="none" viewBox="0 0 24 24" stroke-width="2.5" stroke="currentColor" aria-hidden="true">
@@ -47,17 +49,17 @@ class yamlEditor extends HTMLElement {
                 <!-- translate-x-full -->
                 <div class="content-slide  pointer-events-none fixed right-0 inset-y-0 flex w-1/3 pl-10 transform transition ease-in-out duration-500 sm:duration-700">
                   <div class="pointer-events-auto relative w-full ">
-                    <div class="flex h-full flex-col overflow-y-scroll bg-white">
+                    <div class="scroller flex h-full flex-col overflow-y-scroll bg-white">
                       <!-- HEADER -->
                       <header class="p-4 sticky top-0 z-40 bg-white flex items-center justify-between border-b-2">
                       </header>
-                      <div id="yamlForm" class="pt-4">
+                      <div id="yamlForm" class="flex flex-nowrap flex-row">
                       </div>
                       <div class="sticky bottom-0 mt-4 z-40 bg-white">
                         <div class="divider m-0 p-0 h-0"></div>
                         <div class="flex justify-around border-slate-300 w-full p-4">
-                          <button type="button" class="exitForm btn text-lg capitalize font-bold bg-slate-200  text-slate-600 px-4 py-2 border-0 rounded-full hover:bg-slate-300 hover:text-slate-900">schließen</button>
-                          <button type="submit" class="saveButton btn text-lg capitalize font-bold bg-primary text-slate-100 px-4 py-2 border-0 rounded-full hover:bg-primary-focus hover:text-slate-50">Speichern</button>
+                          <button type="button" class="exitForm btn text-lg capitalize font-bold bg-slate-200  text-slate-600 px-4 py-2 border-0 rounded hover:bg-slate-300 hover:text-slate-900">schließen</button>
+                          <button type="submit" class="saveButton btn text-lg capitalize font-bold bg-primary text-slate-100 px-4 py-2 border-0 rounded hover:bg-primary-focus hover:text-slate-50">Speichern</button>
                         </div>
                       </div>
                     </div>
@@ -73,144 +75,259 @@ class yamlEditor extends HTMLElement {
         this.querySelector('header').append(this.closeContentButton);
       
         let openmodal = document.querySelectorAll('.showXML')
-        console.log("1")
         openmodal.forEach((el) => {
-            el.addEventListener('click',(event) => {
-                event.preventDefault()
-                this.openContent()
-            })
+          el.addEventListener('click',(event) => {
+            event.preventDefault()
+            this.openContent()
+          })
         })
         const closeContent = this.querySelectorAll('.close-contentbar')
         for (let i = 0; i < closeContent.length; i++) {
-            closeContent[i].addEventListener('click', this.closeContent.bind(this));
+          closeContent[i].addEventListener('click', this.closeContent.bind(this));
         }
         this.querySelector(".saveButton").addEventListener("click", this.submitForm.bind(this));
         this.querySelector(".exitForm").addEventListener("click", this.exitContent.bind(this));
         this.querySelector(".open-contentbar").addEventListener("click", this.openContent.bind(this));
-    }
+
+      }
 
     get content() {
-        return this._content;
+      return this._content;
     }
     set content(value) {
-        this._content = value;
+      this._content = value;
     }
     createPage(content, key) {
       const form = this.callback(content, []);
-      let active = false
       
+      const page = document.createElement("FORM");
+      page.dataset.page = key;
+      page.className = "slide-page hidden transition-all duration-500 p-4 basis-full min-w-full";
 
       if(key.startsWith("page-")) {
         let points = form.pop();
         const subPage = document.createElement("DIV");
-        subPage.id = key + "-points";
-        subPage.className = "slide-page inactive transition-all duration-500"
+        subPage.dataset.page = key + "-points";
+        subPage.className = "slide-page hidden transition-all duration-500 p-4 basis-full min-w-full"
         subPage.append(points);
+
+        const pointsButton = document.createElement("BUTTON");
+        pointsButton.type = "button";
+        pointsButton.className = `flex btn w-fit min-h-fit h-fit justify-start p-0 rounded-none mt-2 hover:bg-primary-focus";`
+        pointsButton.innerHTML = `
+          <div class="p-2 flex  items-center justify-between text-slate-600">
+            <span class="font-bold mr-2 text-sm ">Points</span>
+            <svg xmlns="http://www.w3.org/2000/svg" class="h-5 w-5" fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="2">
+              <path stroke-linecap="round" stroke-linejoin="round" d="M9 5l7 7-7 7" />
+            </svg>
+          </div>
+
+        `;
+        pointsButton.dataset.goTo = key + "-points";
+        pointsButton.addEventListener("click", () => {
+          this.switchPage(pointsButton.dataset.goTo, key);
+        });
+        form.push(pointsButton);
+        
+        page.append(...form);
+        this.formInput.append(page);
         this.formInput.append(subPage);
       }
       else if(key.startsWith("config")) {
-        active = true
+        page.classList.remove('hidden');
+        page.dataset.depth = 0;
+        page.append(...form);
+        this.formInput.append(page);
+
+        this.currentPage = page;
       }
-      const page = document.createElement("FORM");
-      page.id = key;
-      page.className = "slide-page transition-all duration-500 " + (active ? "active" : "inactive") + " ";
-      page.append(...form);
-      this.formInput.append(page);
-      console.log("2");
 
       this.headerButton.querySelector("span").innerText = "YAML EDITOR";
       this.headerButton.value = "config.yaml";
+      this.headerButton.addEventListener('click', () => {
+        this.switchPage(this.headerButton.value);
+      });
+
     }
-    switchPage(to, key) {
-      if(to.startsWith("page-")) {
-        console.log("3");
-        this.headerButton.value = to;
-        this.headerButton.querySelector("span").innerText = "PAGE EDITOR";
-        this.headerButton.setAttribute("last-value", to);
+    async switchPage(to, key) {
+      const depth = to === 'config.yaml' ? 0 : (to.endsWith('-points') ? 2 : 1);
+      const scrollDiv = document.querySelector('.scroller');
+      const startPage = this.querySelector('[data-page="config.yaml"]');
 
-        this.headerButton.addEventListener("click", () => {
-          this.switchPage(this.headerButton.value, this.headerButton.getAttribute("last-value"));
-        });
+      const page = this.querySelector(`[data-page="${to}"]`);
+      page.classList.remove('hidden');
 
-        const page = document.getElementById(to);
-        const points = document.querySelector("#" + key + "-points");
+      //let lastPage;
+      startPage.dataset.depth = depth;
+      startPage.style.marginLeft = `-${depth * 100}%`;
+      await new Promise(resolve => setTimeout(resolve, 500));
 
-        page.classList.remove("inactive");
-        page.classList.add("active");
-        
-        let configPage = document.getElementById("config.yaml");
-        configPage.classList.add("leftInactive");
-        configPage.classList.remove("active");
-
-        return;
+      scrollDiv.scrollTo({ top: 0, behavior: 'smooth' });
+      this.headerButton.value = this.currentPage.dataset.page;
+      if (depth < 1 && this.currentPage.dataset.page.startsWith("page-")) {
+          this.currentPage.classList.add('hidden');
+      } else if (depth < 2 && this.currentPage.dataset.page.endsWith("-points")) {
+          this.currentPage.classList.add('hidden');
       }
-      else if(to.startsWith("config")) {
-        console.log("4");
-        this.headerButton.value = "config.yaml";
-        this.headerButton.querySelector("span").innerText = "YAML EDITOR";
-      
-        const page = document.getElementById(lastTo);
-
-        page.classList.remove("inactive");
-        page.classList.add("active");
-
-        let conifgPage = document.getElementById(to);
-        conifgPage.classList.remove("leftInactive");
-        conifgPage.classList.add("active");
-
-        return;
+      this.currentPage = page;
+      if (depth === 1) {
+        this.headerButton.value = 'config.yaml';
       }
-      console.log(to, key)
+
+
+      return;
     }
+
+    getFormContent(key) {
+      const formContainer = document.querySelector(`[data-page="${key}"]`);
+      const dataPoints = document.querySelector(`[data-page="${key}-points"]`);
+
+      const form = document.createElement('FORM');
+      form.append(...Array.from(formContainer.children, (el) => el.cloneNode(true)));
+
+      if(key.startsWith("page-") ) {
+        let temp = dataPoints.cloneNode(true);
+
+        form.appendChild(temp);
+      }
+
+
+      var data = new FormData(form);
+      var object = {};
+
+      [...data.entries()].forEach(([key, value]) => {
+        if (value instanceof File) {
+          if (value.size > 0) {
+            object[key] = value.name;
+          }
+        } else {
+          if (value === "true") {
+            value = true;
+          } 
+          else if (value === "false") {
+            value = false;
+          }
+          else if (value === "null") {
+            value = null;
+          }  
+          else if(/^\-?[0-9.]+$/.test(value)) {
+            if (value.includes(".")) {
+              if(!isNaN(parseFloat(value))){
+                value = parseFloat(value);
+              }
+            } 
+            else if(!isNaN(parseInt(value))) {
+              value = parseInt(value);
+            }
+          } 
+          object[key] = value;
+        }
+      });
+      return serializeForm(object);
+    }
+
+
     createSidebar() {
-        const sideBar = document.createElement("SIDE-MENU");
-        document.body.appendChild(sideBar);
+      const sideBar = document.createElement("SIDE-MENU");
+      document.body.appendChild(sideBar);
     }
     openContent() {
-        const contentBar = document.querySelector(".contentbar");
-        const contentpanel = document.querySelector(".content-slide");
-        contentBar.classList.add("opacity-100");
-        contentBar.classList.remove("opacity-0");
-        contentpanel.classList.add("-translate-x-0");
-        contentpanel.classList.remove("translate-x-full");
+      const contentBar = document.querySelector(".contentbar");
+      const contentpanel = document.querySelector(".content-slide");
+      contentBar.classList.add("opacity-100");
+      contentBar.classList.remove("opacity-0");
+      contentpanel.classList.add("-translate-x-0");
+      contentpanel.classList.remove("translate-x-full");
     }
     exitContent() {
       this.closeContent();
       setTimeout(() => {
         document.querySelector("YAML-EDITOR").remove();
       }, 500);
+    }
+    closeContent() {
+      const contentBar = document.querySelector(".contentbar");
+      const contentpanel = document.querySelector(".content-slide");
+      contentBar.classList.add("opacity-0");
+      contentBar.classList.remove("opacity-100");
+      contentpanel.classList.add("translate-x-full");
+      contentpanel.classList.remove("-translate-x-0");
+    }
+    async submitForm(event) {
+      event.preventDefault();
+
+      let keys = [];
+      let pages = document.querySelectorAll('[data-page]');
+      
+      pages.forEach((page) => {
+        if(!page.dataset.page.includes("-points")) {
+          keys.push(page.dataset.page);
+        }
+        }
+      );
+
+ 
+
+      keys.forEach(async (key) => {
+        
+        let data = this.getFormContent(key);
+        let stringData = yaml.stringify(data);
+        
+        const fileHandle = await this.dirHandle.getFileHandle(key, { create: true });
+        const stream = await fileHandle.createWritable();
+        await stream.write(stringData);
+        await stream.close();
+      });
 
       
-    }
-
-    closeContent() {
-        const contentBar = document.querySelector(".contentbar");
-        const contentpanel = document.querySelector(".content-slide");
-        contentBar.classList.add("opacity-0");
-        contentBar.classList.remove("opacity-100");
-        contentpanel.classList.add("translate-x-full");
-        contentpanel.classList.remove("-translate-x-0");
-    }
-    submitForm(event) {
-        event.preventDefault();
-
-        var description = document.querySelector("#description");
-        if (description) {
-            sideMenu.simplemde.toTextArea();
-        }
-
-        var fileInput = document.querySelector('input[name="yaml-file"]');
-        var fileName = fileInput.files[0].name;
-
-        var form = document.querySelector("#yamlForm");
-        var data = serializeForm(form);
-        var blob = new Blob([yaml.stringify(data)], {type: "text/yaml;charset=utf-8"});
-        var url = document.createElement("A");
-        url.href = URL.createObjectURL(blob);
-        url.download = fileName;
-        url.click();
-
-        this.closeContent();
+      //getFormContent(key)
+      return;
+      
     }
 } 
-customElements.define('yaml-editor', yamlEditor);
+customElements.define('yaml-editor', YamlEditor);
+
+
+function update(data, keys, value) {
+  if (keys.length === 0) {
+    // Leaf node
+    return value;
+  }
+  let key = keys.shift();
+  if (!key) {
+    data = data || [];
+    if (Array.isArray(data)) {
+      key = data.length;
+    }
+  }
+  // Try converting key to a numeric value
+  let index = +key;
+  if (!isNaN(index)) {
+    // We have a numeric index, make data a numeric array
+    // This will not work if this is a associative array 
+    // with numeric keys
+    data = data || [];
+    key = index;
+  }
+  // If none of the above matched, we have an associative array
+  data = data || {};
+
+  let val = update(data[key], keys, value);
+  data[key] = val;
+
+  return data;
+}
+
+function serializeForm(form) {
+  return Array.from(Object.entries(form))
+    .reduce((data, [field, value]) => {
+      let [_, prefix, keys] = field.match(/^([^\[]+)((?:\[[^\]]*\])*)/);
+
+      if (keys) {
+        keys = Array.from(keys.matchAll(/\[([^\]]*)\]/g), m => m[1]);
+        value = update(data[prefix], keys, value);
+      }
+      data[prefix] = value;
+      return data;
+    }, {});
+}

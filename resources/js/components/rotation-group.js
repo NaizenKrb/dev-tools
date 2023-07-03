@@ -19,30 +19,6 @@ class RotationGroup extends HTMLElement
     /**
      * Magic Getter / Setter
      */
-    get value() {
-        return this.getAttribute('value');
-    }
-    set value(value) {
-        if (!value || value === false || value === null) {
-            this.removeAttribute('value');
-        } else {
-            this.setAttribute('value', value);
-        }
-    }
-
-    /**
-     * Magic Getter / Setter
-     */
-    get name() {
-        return this.getAttribute('name');
-    }
-    set name(value) {
-        if (!value || value === false || value === null) {
-            this.removeAttribute('name');
-        } else {
-            this.setAttribute('name', value);
-        }
-    }
     get label() {
         return this.getAttribute('label');
     }
@@ -57,7 +33,7 @@ class RotationGroup extends HTMLElement
         return this.getAttribute('x');
     }
     set x(value) {
-        if (!value || value === false || value === null) {
+        if (value === false) {
             this.removeAttribute('x');
         } else {
             this.setAttribute('x', value);
@@ -67,7 +43,7 @@ class RotationGroup extends HTMLElement
         return this.getAttribute('y');
     }
     set y(value) {
-        if (!value || value === false || value === null) {
+        if (value === false) {
             this.removeAttribute('y');
         } else {
             this.setAttribute('y', value);
@@ -121,15 +97,15 @@ class RotationGroup extends HTMLElement
       let inputX = document.createElement('INPUT');
       inputX.type = 'text'
       inputX.value = this.x
-      inputX.name = this.name + `[0]`
-      inputX.className = 'textarea rounded '
+      inputX.name = this.dataset.name + `[0]`
+      inputX.className = 'textarea rounded-none'
       group.appendChild(inputX);
 
       let inputY = document.createElement('INPUT');
       inputY.type = 'text'
       inputY.value = this.y
-      inputY.name = this.name + `[1]`
-      inputY.className = 'textarea rounded '
+      inputY.name = this.dataset.name + `[1]`
+      inputY.className = 'textarea rounded-none'
       group.appendChild(inputY);
       
       label.appendChild(group);

@@ -19,30 +19,10 @@ class DetailsGroup extends HTMLElement
     /**
      * Magic Getter / Setter
      */
-    get value() {
-        return this.getAttribute('value');
-    }
-    set value(value) {
-        if (!value || value === false || value === null) {
-            this.removeAttribute('value');
-        } else {
-            this.setAttribute('value', value);
-        }
-    }
 
     /**
      * Magic Getter / Setter
      */
-    get name() {
-        return this.getAttribute('name');
-    }
-    set name(value) {
-        if (!value || value === false || value === null) {
-            this.removeAttribute('name');
-        } else {
-            this.setAttribute('name', value);
-        }
-    }
     get label() {
         return this.getAttribute('label');
     }
@@ -107,7 +87,7 @@ class DetailsGroup extends HTMLElement
         label.appendChild(span);
         
         let contentDiv = document.createElement('DIV');
-        contentDiv.className = 'divide-y-2 rounded overflow-hidden';
+        contentDiv.className = 'divide-y-2 rounded-none overflow-hidden';
         label.appendChild(contentDiv);
 
         this.details.forEach((data, idx) => {
@@ -122,11 +102,11 @@ class DetailsGroup extends HTMLElement
 
             let content = document.createElement('DIV');
             content.className = 'collapse-content';
-            content.append(...this.callback(data, [], [this.name, idx], false, "bg-base-100"));
+            content.append(...this.callback(data, [], [this.dataset.name, idx], false, "bg-base-100"));
             details.appendChild(content);
         });
         let button = document.createElement('BUTTON');
-        button.className = 'addInteractable flex btn btn-primary w-fit min-h-fit h-fit justify-start p-0 rounded mt-2 hover:bg-primary-focus';
+        button.className = 'addInteractable flex btn btn-primary w-fit min-h-fit h-fit justify-start p-0 rounded-none mt-2 hover:bg-primary-focus';
         button.type = 'button';
         button.innerHTML = 
             `

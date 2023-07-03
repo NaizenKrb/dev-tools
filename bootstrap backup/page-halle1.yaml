@@ -1,0 +1,92 @@
+
+id: halle1
+key: TKMugNAEVwE
+order: 3
+visible: true
+
+title: Halle 1
+description: |
+    Länger als ein Fußballfeld, nämlich imposante 130 Meter, misst die Halle 1.
+    Sie ist auf einer Grundfläche von 3.336 Quadratmetern flexibel bespielbar.
+    Alle Zuschauer- und Szenenflächen können frei angeordnet werden, sämtliche Bestuhlungsvarianten sind möglich.
+    Modernste Veranstaltungstechnik sorgt dafür, dass Beschallung und Bühnenbeleuchtung allerhöchsten Ansprüchen genügen.
+
+alternatives:
+  - id: steampunk
+    title: Steampunk
+    thumbnail: "icons/steampunk-flavor.jpg"
+  - id: weinmesse
+    title: Weinmesse
+    thumbnail: "icons/weinmesse-flavor.png"
+
+points:
+    overview:
+        title: Raumübersicht
+        children:
+            - title: Längsansicht West
+              sweep: b171eda72ef946eb99cd8766b533948d
+              rotation: [2.53, -70.03]
+              thumbnail: "icons/längsansicht_west.jpg"
+
+            - title: Queransicht Süd
+              sweep: d7ed3f1bc2744804a504c485f2a5912c
+              rotation: [-1.13, -126.06]
+              thumbnail: "icons/queransicht_süd.jpg"
+
+            - title: Kranansicht
+              sweep: 735644d4b8a64a078ea9040e9a3a67b4
+              rotation: [2.53, -112.36]
+              thumbnail: "icons/kranansicht.jpg"
+
+            - title: Längsansicht West 2
+              sweep: f2c8644905d64734b09b30759976478a
+              rotation: [3.69, 60.61]
+              thumbnail: "icons/längsansicht_west_2.jpg"
+
+            - title: Queransicht Nord
+              sweep: 8326c3c0045b40a2baf4b58bf62cbda4
+              rotation: [0, 0]
+              thumbnail: "icons/queransicht_nord.jpg"
+
+    congress:
+        title: Kongress mit Begleitausstellung
+        children:
+            - title: Empore
+              sweep: 4e7031124270484685882929137f7ceb
+              rotation: [-12.81, -92.55]
+              thumbnail: "icons/empore.jpg"
+
+            - title: Sitzreihen
+              sweep: d4b09adbe0d54fc1b37da9853b915447
+              rotation: [-0.37, -10.57]
+              thumbnail: "icons/sitzreihen.jpg"
+
+            - title: Bühne
+              sweep: c2c35c5abba1497a9455eb85c36204ea
+              rotation: [-11.08, 116.01]
+              thumbnail: "icons/bühne.jpg"
+
+            - title: Aussteller 1
+              sweep: 402202d96ee5451c8c897bb0bf457ba9
+              rotation: [-10.25, -92.31]
+              thumbnail: "icons/aussteller_1.jpg"
+
+            - title: Aussteller 2
+              sweep: df6a295e033b49afab33f4067751c5e0
+              rotation: [-5.79, -49.43]
+              thumbnail: "icons/aussteller_2.jpg"
+
+            - title: Aussteller 3
+              sweep: 6d60e49df57d4c0dbc2ac7d905f51d2e
+              rotation: [-8.91, -36.55]
+              thumbnail: "icons/aussteller_3.jpg"
+
+            - title: Aussteller 4
+              sweep: 0068fedfb7c54bef9aeb8d661a268448
+              rotation: [-6.14, 20.79]
+              thumbnail: "icons/aussteller_4.jpg"
+
+            - title: Aussteller 5
+              sweep: a84444de3dc04bc3bc44535ad4b3697d
+              rotation: [-3.27, -17.22]
+              thumbnail: "icons/aussteller_5.jpg"

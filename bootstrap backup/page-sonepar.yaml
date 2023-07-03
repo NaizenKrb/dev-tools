@@ -1,10 +1,14 @@
+
 id: sonepar
 key: 7YzS7VLPJPM
 order: 7
+visible: false
+
 title: Sonepar in der Turbinenhalle
 description: |
-  Sonepar Event Beschreibung
+    Sonepar Event Beschreibung
+
 alternatives:
   - id: turbinenhalle
     title: Normal
-    thumbnail: icons/turbinenhalle_eingang.jpg
+    thumbnail: "icons/turbinenhalle_eingang.jpg"
