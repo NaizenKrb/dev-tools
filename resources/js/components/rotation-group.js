@@ -1,21 +1,16 @@
-
-class RotationGroup extends HTMLElement
-{
-
+class RotationGroup extends HTMLElement{
     /**
      * Observed Attributes
      */
     static get observedAttributes() {
         return ['value'];
     }
-
     /**
      * Create a new ColorPicker HTMLElement
      */
     constructor() {
         super();
     }
-
     /**
      * Magic Getter / Setter
      */
@@ -49,8 +44,6 @@ class RotationGroup extends HTMLElement
             this.setAttribute('y', value);
         }
     }
-
-
     /**
      * Attribute Changed Callback
      * @param {*} property 
@@ -63,7 +56,6 @@ class RotationGroup extends HTMLElement
             return
         }
     }
-
     /**
      * Connected Callback
      */
@@ -71,14 +63,12 @@ class RotationGroup extends HTMLElement
 
         this.render();
     }
-
     /**
      * Disconnected Callback
      */
     disconnectedCallback() {
         
     }
-
     /**
      * Render Component
      */
@@ -112,9 +102,6 @@ class RotationGroup extends HTMLElement
       this.appendChild(label);
     }
     onClick(event){
-
     }
 }
-
-
 window.customElements.define('rotation-group', RotationGroup);

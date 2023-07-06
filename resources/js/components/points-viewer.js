@@ -1,21 +1,16 @@
-
-class PointsViewer extends HTMLElement
-{
-
+class PointsViewer extends HTMLElement{
     /**
      * Observed Attributes
      */
     static get observedAttributes() {
         return ['value'];
     }
-
     /**
      * Create a new ColorPicker HTMLElement
      */
     constructor() {
         super();
     }
-
     /**
      * Magic Getter / Setter
      */
@@ -39,8 +34,6 @@ class PointsViewer extends HTMLElement
             this.setAttribute('color', value);
         }
     }
-
-
     /**
      * Attribute Changed Callback
      * @param {*} property 
@@ -53,7 +46,6 @@ class PointsViewer extends HTMLElement
             return
         }
     }
-
     /**
      * Connected Callback
      */
@@ -61,19 +53,16 @@ class PointsViewer extends HTMLElement
 
         this.render();
     }
-
     /**
      * Disconnected Callback
      */
-    disconnectedCallback() {
-        
+    disconnectedCallback() {  
     }
 
     /**
      * Render Component
      */
     render() {
-
         let label = document.createElement('LABEL');
         label.className = 'flex flex-col';
 
@@ -87,8 +76,6 @@ class PointsViewer extends HTMLElement
         label.appendChild(contentDiv);
 
         Object.entries(this.points).forEach(([key, value]) => {
-
-
             let input = document.createElement('INPUT-FIELD');
             input.className = 'w-full textarea rounded-none mb-2';
             input.color = "bg-base-200";
@@ -114,7 +101,7 @@ class PointsViewer extends HTMLElement
 
                 let content = document.createElement('DIV');
                 content.className = 'collapse-content';
-                content.append(...this.callback(data, [], [this.dataset.name, key, "children", idx], false, this.color));
+                content.append(...this.callback(data, [], [this.dataset.name, key, "children", idx], false, "bg-base-100"));
                 details.appendChild(content);
           });
         });
@@ -165,26 +152,15 @@ class PointsViewer extends HTMLElement
             dialog.close();
         });
         actions.appendChild(cancelButton);
-
-
         label.appendChild(dialog);
-
-
         button.addEventListener('click', (event) => {
             event.preventDefault();
             dialog.showModal();
         });
-
         label.appendChild(button);
-        this.appendChild(label);
-
-
-            
+        this.appendChild(label);       
     }
     onClick(event){
-
     }
 }
-
-
 window.customElements.define('points-viewer', PointsViewer);

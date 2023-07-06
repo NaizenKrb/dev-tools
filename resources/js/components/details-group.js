@@ -1,28 +1,17 @@
 
-class DetailsGroup extends HTMLElement
-{
-
+class DetailsGroup extends HTMLElement{
     /**
      * Observed Attributes
      */
     static get observedAttributes() {
         return ['value'];
     }
-
     /**
      * Create a new ColorPicker HTMLElement
      */
     constructor() {
         super();
     }
-
-    /**
-     * Magic Getter / Setter
-     */
-
-    /**
-     * Magic Getter / Setter
-     */
     get label() {
         return this.getAttribute('label');
     }
@@ -43,8 +32,6 @@ class DetailsGroup extends HTMLElement
             this.setAttribute('color', value);
         }
     }
-
-
     /**
      * Attribute Changed Callback
      * @param {*} property 
@@ -57,27 +44,22 @@ class DetailsGroup extends HTMLElement
             return
         }
     }
-
     /**
      * Connected Callback
      */
     connectedCallback() {
-
         this.render();
     }
-
     /**
      * Disconnected Callback
      */
     disconnectedCallback() {
-        
     }
 
     /**
      * Render Component
      */
     render() {
-
         let label = document.createElement('LABEL');
         label.className = 'flex flex-col';
 
@@ -157,17 +139,10 @@ class DetailsGroup extends HTMLElement
             event.preventDefault();
             dialog.showModal();
         });
-
         label.appendChild(dialog);
-
-
-        this.appendChild(label);
-            
+        this.appendChild(label);    
     }
     onClick(event){
-
     }
 }
-
-
 window.customElements.define('details-group', DetailsGroup);

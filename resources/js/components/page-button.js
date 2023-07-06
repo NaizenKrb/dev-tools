@@ -1,21 +1,17 @@
 
-class PageButton extends HTMLElement
-{
-
+class PageButton extends HTMLElement{
     /**
      * Observed Attributes
      */
     static get observedAttributes() {
         return ['value'];
     }
-
     /**
      * Create a new ColorPicker HTMLElement
      */
     constructor() {
         super();
     }
-
     /**
      * Magic Getter / Setter
      */
@@ -29,7 +25,6 @@ class PageButton extends HTMLElement
             this.setAttribute('value', value);
         }
     }
-
     /**
      * Magic Getter / Setter
      */
@@ -43,7 +38,6 @@ class PageButton extends HTMLElement
             this.setAttribute('name', value);
         }
     }
-
     /**
      * Attribute Changed Callback
      * @param {*} property 
@@ -56,27 +50,21 @@ class PageButton extends HTMLElement
             return
         }
     }
-
     /**
      * Connected Callback
      */
     connectedCallback() {
-
         this.render();
     }
-
     /**
      * Disconnected Callback
      */
-    disconnectedCallback() {
-        
+    disconnectedCallback() { 
     }
-
     /**
      * Render Component
      */
     render() {
-
         let button = document.createElement('BUTTON');
         button.type = 'button';
         button.className = `btn w-full min-h-fit h-fit justify-start p-0 capitalize text-start rounded-none`;
@@ -88,10 +76,7 @@ class PageButton extends HTMLElement
         span.innerText = this.dataset.name;
 
         button.appendChild(span);
-       
-
         this.appendChild(button);
     }
 }
-
 window.customElements.define('page-button', PageButton);

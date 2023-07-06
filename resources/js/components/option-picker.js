@@ -1,13 +1,10 @@
-class OptionPicker extends HTMLElement
-{
-
+class OptionPicker extends HTMLElement{
     /**
      * Observed Attributes
      */
     static get observedAttributes() {
         return ['value'];
     }
-
     /**
      * Create a new ColorPicker HTMLElement
      */
@@ -49,22 +46,17 @@ class OptionPicker extends HTMLElement
             return
         }
     }
-
     /**
      * Connected Callback
      */
     connectedCallback() {
-
         this.render();
     }
-
     /**
      * Disconnected Callback
      */
     disconnectedCallback() {
-        
     }
-
     /**
      * Render Component
      */
@@ -85,7 +77,6 @@ class OptionPicker extends HTMLElement
             input.querySelector(`option[value="${input.value}"]`).setAttribute('selected', '');
             console.log(input.querySelector(`option[selected]`), input.value);
         });
-        
         Object.entries(this.pages).forEach(([key, value]) => {
             let option = document.createElement('OPTION');
             if (key === this.dataset.value) {
@@ -95,16 +86,12 @@ class OptionPicker extends HTMLElement
             option.innerText = key;
             input.appendChild(option);
         });
-        input.className = `select rounded-none ${this.color} border border-gray-300 bg-white px-3 py-2 outline-none focus:border-primary focus:ring-1 focus:ring-blue-500`
-
+        input.className = `select select-bordered rounded-none ${this.color} px-3 py-2 outline-none focus:border-primary focus:ring-1 focus:ring-blue-500`
         label.appendChild(span);
         label.appendChild(input);
-
         this.appendChild(label);
     }
     onClick(event){
-
     }
 }
-
 window.customElements.define('option-picker', OptionPicker);

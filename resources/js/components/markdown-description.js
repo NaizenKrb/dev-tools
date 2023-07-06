@@ -1,9 +1,6 @@
 
-class MarkdownDescription extends HTMLElement
-{
-
+class MarkdownDescription extends HTMLElement{
     static formAssociated = true;
-
     /**
      * Observed Attributes
      */
@@ -13,61 +10,47 @@ class MarkdownDescription extends HTMLElement
             'name'
         ];
     }
-
     /**
      * Create a new ColorPicker HTMLElement
      */
     constructor() {
         super();
-
         this._internals = this.attachInternals();
         this._internals.setFormValue(this.getAttribute('value') || '');
     }
-
     get form() {
         return this._internals.form;
     }
-
     get type() {
         return 'textarea';
     }
-
     get name() {
         return this.getAttribute('name');
     }
-
     set name(value) {
         value === false ? this.removeAttribute('name') : this.setAttribute('name', value)
     }
-
     get value() {
         return this.getAttribute('value');
     }
-
     set value(value) {
         this.setAttribute('value', value || '');
     }
-
     get validity() {
         return this._internals.validity;
     }
-
     get validationMessage() {
         return this._internals.validationMessage;
     }
-
     get willValidate() {
         return this._internals.willValidate;
     }
-
     checkValidity() {
         return this._internals.checkValidity();
     }
-
     reportValidity() {
         return this._internals.reportValidity();
     }
-
     /**
      * Toggle Attribute Helper
      */
@@ -78,7 +61,6 @@ class MarkdownDescription extends HTMLElement
             this.setAttribute(name, value === true ? '' : value);
         }
     }
-
     /**
      * Attribute Changed Callback
      * @param {*} property 
@@ -90,12 +72,10 @@ class MarkdownDescription extends HTMLElement
         if (oldValue === newValue) {
             return
         }
-
         if (property === 'value') {
             this._internals.setFormValue(newValue);
         }
     }
-
     /**
      * Connected Callback
      */
@@ -105,22 +85,17 @@ class MarkdownDescription extends HTMLElement
         }
         this._internals.setFormValue(this);
         this._internals.setValidity({});
-
         this.render();
-
         this.simpleMDE = new SimpleMDE({element: this.querySelector('textarea')});
         this.simpleMDE.codemirror.on('change', () => {
             this.setAttribute('value', this.simpleMDE.value());
         });
     }
-
     /**
      * Disconnected Callback
      */
     disconnectedCallback() {
-        
     }
-
     /**
      * Render Component
      */
@@ -146,9 +121,6 @@ class MarkdownDescription extends HTMLElement
       this.appendChild(element);
     }
     onClick(event){
-
     }
 }
-
-
 window.customElements.define('markdown-description', MarkdownDescription);

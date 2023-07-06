@@ -1,57 +1,50 @@
+
 id: halle3
 key: 57bKbpMmAS4
 order: 4
 visible: true
+
 title: Halle 3
-description: >
-  Raue Industriekulisse trifft in Halle 3 auf die Sensibilität eines
-  ausgesuchten Konzertsaals.
+description: |
+    Raue Industriekulisse trifft in Halle 3 auf die Sensibilität eines ausgesuchten Konzertsaals.
+    Auch hier wurde der Akustik besondere Aufmerksamkeit geschenkt.
+    Bühnenreflektoren, Absorptionsflächen und Schallsegel über Bühne und Zuschauerbereich optimieren die Klangwirkung.
+    Die Halle verfügt über eine Tribüne mit bis zu 1.500 Sitzplätzen in Reihe, eine mobile Bühne und eine fahrbare Obermaschinerie.
+    Auf 2.700 Quadratmetern lässt sie auch technisch keine Wünsche offen.
 
-  Auch hier wurde der Akustik besondere Aufmerksamkeit geschenkt.
-
-  Bühnenreflektoren, Absorptionsflächen und Schallsegel über Bühne und Zuschauerbereich optimieren die Klangwirkung.
-
-  Die Halle verfügt über eine Tribüne mit bis zu 1.500 Sitzplätzen in Reihe, eine mobile Bühne und eine fahrbare Obermaschinerie.
-
-  Auf 2.700 Quadratmetern lässt sie auch technisch keine Wünsche offen.
 alternatives:
   - id: steampunk
     title: Steampunk
-    thumbnail: icons/steampunk-flavor.jpg
+    thumbnail: "icons/steampunk-flavor.jpg"
   - id: weinmesse
     title: Weinmesse
-    thumbnail: icons/weinmesse-flavor.png
+    thumbnail: "icons/weinmesse-flavor.png"
+
 points:
-  overview:
-    title: Raumübersicht
-    children:
-      - title: Ansicht Nord
-        sweep: a62a647de5924d10a2c79e424481eed6
-        rotation:
-          - -1.85
-          - -29.17
-        thumbnail: icons/halle_3_ansicht_nord.jpg
-      - title: Queransicht Süd
-        sweep: 849dcfaa7335475d8707a8711800716b
-        rotation:
-          - 14.07
-          - 124.22
-        thumbnail: icons/halle_3_queransicht_süd.jpg
-      - title: Längsansicht West 1
-        sweep: 53786fd95c304ccfaedb576044f0a89f
-        rotation:
-          - 1.55
-          - -81.94
-        thumbnail: icons/halle_3_längsansicht_west_1.jpg
-      - title: Längsansicht West 2
-        sweep: 2322cb74ea0a48d4a75af5a6bb13f58a
-        rotation:
-          - 3.59
-          - 87.43
-        thumbnail: icons/halle_3_längsansicht_west_2.jpg
-      - title: Längsansicht West 3
-        sweep: 11c253fd8406405592498e781dbb2df5
-        rotation:
-          - -2.62
-          - 108.2
-        thumbnail: icons/halle_3_längsansicht_west_3.jpg
+    overview:
+        title: Raumübersicht
+        children:
+            - title: Ansicht Nord
+              sweep: a62a647de5924d10a2c79e424481eed6
+              rotation: [-1.85, -29.17]
+              thumbnail: "icons/halle_3_ansicht_nord.jpg"
+
+            - title: Queransicht Süd
+              sweep: 849dcfaa7335475d8707a8711800716b
+              rotation: [14.07, 124.22]
+              thumbnail: "icons/halle_3_queransicht_süd.jpg"
+
+            - title: Längsansicht West 1
+              sweep: 53786fd95c304ccfaedb576044f0a89f
+              rotation: [1.55, -81.94]
+              thumbnail: "icons/halle_3_längsansicht_west_1.jpg"
+
+            - title: Längsansicht West 2
+              sweep: 2322cb74ea0a48d4a75af5a6bb13f58a
+              rotation: [3.59, 87.43]
+              thumbnail: "icons/halle_3_längsansicht_west_2.jpg"
+
+            - title: Längsansicht West 3
+              sweep: 11c253fd8406405592498e781dbb2df5
+              rotation: [-2.62, 108.20]
+              thumbnail: "icons/halle_3_längsansicht_west_3.jpg"

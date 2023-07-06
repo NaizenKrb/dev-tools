@@ -1,21 +1,17 @@
 
-class InputField extends HTMLElement
-{
-
+class InputField extends HTMLElement{
     /**
      * Observed Attributes
      */
     static get observedAttributes() {
         return ['value'];
     }
-
     /**
      * Create a new ColorPicker HTMLElement
      */
     constructor() {
         super();
     }
-
     get name() {
         return this.getAttribute('name');
     }
@@ -26,7 +22,6 @@ class InputField extends HTMLElement
             this.setAttribute('name', value);
         }
     }
-
     /**
      * Magic Getter / Setter
      */
@@ -52,7 +47,6 @@ class InputField extends HTMLElement
             this.querySelector('input').value = (value || '');
         }
     }
-
     /**
      * Magic Getter / Setter
      */
@@ -109,22 +103,17 @@ class InputField extends HTMLElement
             return
         }
     }
-
     /**
      * Connected Callback
      */
     connectedCallback() {
-
         this.render();
     }
-
     /**
      * Disconnected Callback
      */
-    disconnectedCallback() {
-        
+    disconnectedCallback() {    
     }
-
     /**
      * Render Component
      */
@@ -169,16 +158,11 @@ class InputField extends HTMLElement
         else{
             input.className = this.className + ' ' + this.color + ' ' + 'rounded-none';
         }
-            
-
         label.appendChild(span);
         label.appendChild(input);
-
         this.appendChild(label);
     }
     onClick(event){
-
     }
 }
-
 window.customElements.define('input-field', InputField);

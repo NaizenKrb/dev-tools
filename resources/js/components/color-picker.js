@@ -1,14 +1,11 @@
 
-class ColorPicker extends HTMLElement
-{
-
+class ColorPicker extends HTMLElement{
     /**
      * Observed Attributes
      */
     static get observedAttributes() {
         return ['value'];
     }
-
     /**
      * Create a new ColorPicker HTMLElement
      */
@@ -29,7 +26,6 @@ class ColorPicker extends HTMLElement
             if(value.startsWith('0x')) {
                 value = value.slice(2);
                 value = '#' + value;
-            
             }
             this.setAttribute('value', value);
         }
@@ -57,7 +53,6 @@ class ColorPicker extends HTMLElement
             this.setAttribute('class-names', value);
         }
     }
-
     /**
      * Attribute Changed Callback
      * @param {*} property 
@@ -69,7 +64,6 @@ class ColorPicker extends HTMLElement
         if (oldValue === newValue) {
             return
         }
-
         if (property === 'value') {
             this.value = newValue;
           if (typeof this.inputText !== 'undefined') {
@@ -80,22 +74,17 @@ class ColorPicker extends HTMLElement
           }
         }
     }
-
     /**
      * Connected Callback
      */
     connectedCallback() {
-
         this.render();
     }
-
     /**
      * Disconnected Callback
      */
     disconnectedCallback() {
-        
     }
-
     /**
      * Render Component
      */
@@ -120,11 +109,10 @@ class ColorPicker extends HTMLElement
         inputColor.id = 'color-picker';
         
         inputColor.value = this.value;
-        inputColor.className = 'rounded-none overflow-hidden colorpick color-input h-8 w-8';
+        inputColor.className = 'rounded overflow-hidden colorpick color-input h-8 w-8';
         inputColor.addEventListener('input', this.onChange.bind(this));
         div.appendChild(inputColor)
         inputGroup.appendChild(div);
-
         this.appendChild(inputGroup);
     }
     onChange(event){
@@ -137,5 +125,4 @@ class ColorPicker extends HTMLElement
       }
     }
 }
-
 window.customElements.define('color-picker', ColorPicker);

@@ -1,42 +1,36 @@
+
 id: dampfgeblaesehaus
 key: hoEj3GSTire
 order: 1
 visible: true
+
 title: Dampfgebläsehaus
-description: >
-  Luft war einst das Element, um das es hier ging. Und luftig ist es auch heute:
-  das denkmalgeschützte Dampfgebläsehaus an der Jahrhunderthalle Bochum.
+description: |
+    Luft war einst das Element, um das es hier ging. Und luftig ist es auch heute: das denkmalgeschützte Dampfgebläsehaus an der Jahrhunderthalle Bochum.
+    Liebevoll restauriert, ergänzen seither moderne Akzente die Architektur: Die beeindruckende Glasfassade, dazu das beheizbare Schwingbodenparkett sowie
+    das Wechselspiel von Industriecharme und Lounge-Elementen geben diesen Räumlichkeiten eine individuelle Note.
+    Der große Saal im Erdgeschoss hat eine Fläche von ca. 178 qm. Perfekt für einen stilvollen Abend.
 
-  Liebevoll restauriert, ergänzen seither moderne Akzente die Architektur: Die beeindruckende Glasfassade, dazu das beheizbare Schwingbodenparkett sowie
-
-  das Wechselspiel von Industriecharme und Lounge-Elementen geben diesen Räumlichkeiten eine individuelle Note.
-
-  Der große Saal im Erdgeschoss hat eine Fläche von ca. 178 qm. Perfekt für einen stilvollen Abend.
 points:
-  overview:
-    title: Raumübersicht
-    children:
-      - title: Ausblick Kühltürme
-        sweep: a2246847ef374916bf03c22aae27a5f4
-        rotation:
-          - -7.7
-          - -108
-        thumbnail: icons/dampfgebläsehaus_ausblick_kühltürme.jpg
-      - title: Längsansicht West 1
-        sweep: ead04c502527474393864ef4da5b9d4c
-        rotation:
-          - -3.3
-          - -84.41
-        thumbnail: icons/dampfgebläsehaus_längsansicht_west_1.jpg
-      - title: Längsansicht West 2
-        sweep: 9e58bf0f549547009a738f2115fa7dd5
-        rotation:
-          - -3.01
-          - -90.93
-        thumbnail: icons/dampfgebläsehaus_längsansicht_west_2.jpg
-      - title: Längsansicht Ost
-        sweep: 28d3a3827ce243e68ac7809430fac486
-        rotation:
-          - -2.2
-          - 115.9
-        thumbnail: icons/dampfgebläsehaus_längsansicht_ost.jpg
+    overview:
+        title: Raumübersicht
+        children:
+            - title: Ausblick Kühltürme
+              sweep: a2246847ef374916bf03c22aae27a5f4
+              rotation: [-7.70, -108.00]
+              thumbnail: "icons/dampfgebläsehaus_ausblick_kühltürme.jpg"
+
+            - title: Längsansicht West 1
+              sweep: ead04c502527474393864ef4da5b9d4c
+              rotation: [-3.30, -84.41]
+              thumbnail: "icons/dampfgebläsehaus_längsansicht_west_1.jpg"
+
+            - title: Längsansicht West 2
+              sweep: 9e58bf0f549547009a738f2115fa7dd5
+              rotation: [-3.01, -90.93]
+              thumbnail: "icons/dampfgebläsehaus_längsansicht_west_2.jpg"
+
+            - title: Längsansicht Ost
+              sweep: 28d3a3827ce243e68ac7809430fac486
+              rotation: [-2.20, 115.90]
+              thumbnail: "icons/dampfgebläsehaus_längsansicht_ost.jpg"
