@@ -618,9 +618,7 @@ input[type="color"]::-webkit-color-swatch-wrapper {
     color: hsl(var(--bc) / var(--tw-text-opacity));
   }
 
-  .menu li > *:not(ul):not(details):active,
-.menu li > *:not(ul):not(details).active,
-.menu li > details > summary:active {
+  .menu :where(li:not(.menu-title):not(.disabled) > *:not(ul):not(details):not(.menu-title)):where(.active), .menu :where(li:not(.menu-title):not(.disabled) > details > summary:not(.menu-title)):where(.active) {
     --tw-bg-opacity: 1;
     background-color: hsl(var(--n) / var(--tw-bg-opacity));
     --tw-text-opacity: 1;
@@ -672,6 +670,11 @@ input[type="color"]::-webkit-color-swatch-wrapper {
   .btn[disabled],
   .btn:disabled {
   pointer-events: none;
+  --tw-border-opacity: 0;
+  background-color: hsl(var(--n) / var(--tw-bg-opacity));
+  --tw-bg-opacity: 0.2;
+  color: hsl(var(--bc) / var(--tw-text-opacity));
+  --tw-text-opacity: 0.2;
 }
 
 .btn-circle {
@@ -858,7 +861,11 @@ input[type="color"]::-webkit-color-swatch-wrapper {
     background-color: hsl(var(--pf) / var(--tw-bg-opacity));
   }
 
+<<<<<<< Updated upstream
   :where(.menu li:not(.menu-title):not(.disabled) > *:not(ul):not(details):not(.menu-title)):not(.active):hover, :where(.menu li:not(.menu-title):not(.disabled) > details > summary:not(.menu-title)):not(.active):hover {
+=======
+  .menu :where(li:not(.menu-title):not(.disabled) > *:not(ul):not(details):not(.menu-title)):not(.active):hover, .menu :where(li:not(.menu-title):not(.disabled) > details > summary:not(.menu-title)):not(.active):hover {
+>>>>>>> Stashed changes
     cursor: pointer;
     background-color: hsl(var(--bc) / 0.1);
     --tw-text-opacity: 1;
@@ -1062,6 +1069,7 @@ input[type="color"]::-webkit-color-swatch-wrapper {
 
 .select {
   display: inline-flex;
+  flex-shrink: 0;
   cursor: pointer;
   -webkit-user-select: none;
      -moz-user-select: none;
@@ -1211,16 +1219,6 @@ input[type="color"]::-webkit-color-swatch-wrapper {
   background-color: hsl(var(--pf) / var(--tw-bg-opacity));
   --tw-text-opacity: 1;
   color: hsl(var(--pc) / var(--tw-text-opacity));
-}
-
-.btn.btn-disabled,
-  .btn[disabled],
-  .btn:disabled {
-  --tw-border-opacity: 0;
-  background-color: hsl(var(--n) / var(--tw-bg-opacity));
-  --tw-bg-opacity: 0.2;
-  color: hsl(var(--bc) / var(--tw-text-opacity));
-  --tw-text-opacity: 0.2;
 }
 
 .btn-group > input[type="radio"]:checked.btn,
@@ -1595,9 +1593,10 @@ details.collapse summary::-webkit-details-marker {
   outline-offset: 2px;
 }
 
-.menu li > *:not(ul):not(details):active,
-.menu li > *:not(ul):not(details).active,
-.menu li > details > summary:active {
+.menu :where(li:not(.menu-title):not(.disabled) > *:not(ul):not(details):not(.menu-title)):active,
+    .menu :where(li:not(.menu-title):not(.disabled) > *:not(ul):not(details):not(.menu-title)):where(.active),
+    .menu :where(li:not(.menu-title):not(.disabled) > details > summary:not(.menu-title)):active,
+    .menu :where(li:not(.menu-title):not(.disabled) > details > summary:not(.menu-title)):where(.active) {
   --tw-bg-opacity: 1;
   background-color: hsl(var(--n) / var(--tw-bg-opacity));
   --tw-text-opacity: 1;
@@ -1857,6 +1856,23 @@ details.collapse summary::-webkit-details-marker {
   padding: 0px;
 }
 
+<<<<<<< Updated upstream
+=======
+.steps-horizontal .step {
+  display: grid;
+  grid-template-columns: repeat(1, minmax(0, 1fr));
+  grid-template-rows: repeat(2, minmax(0, 1fr));
+  place-items: center;
+  text-align: center;
+}
+
+.steps-vertical .step {
+  display: grid;
+  grid-template-columns: repeat(2, minmax(0, 1fr));
+  grid-template-rows: repeat(1, minmax(0, 1fr));
+}
+
+>>>>>>> Stashed changes
 .btn-group .btn:not(:first-child):not(:last-child) {
   border-top-left-radius: 0;
   border-top-right-radius: 0;
@@ -2090,6 +2106,13 @@ details.collapse summary::-webkit-details-marker {
   margin-top: 1rem;
 }
 
+<<<<<<< Updated upstream
+=======
+.block {
+  display: block;
+}
+
+>>>>>>> Stashed changes
 .flex {
   display: flex;
 }
